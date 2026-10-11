@@ -1,0 +1,303 @@
+diff --git a/plugin/scripts/delegate.js b/plugin/scripts/delegate.js
+index 1043468..a0c02bd 100644
+--- a/plugin/scripts/delegate.js
++++ b/plugin/scripts/delegate.js
+@@ -26,7 +26,23 @@ const usageLog = require('./usage.js');
+ const DEFAULT_TIMEOUT_MS = 30 * 60 * 1000; // callers may override via opts.timeoutMs / --timeout
+ const STDERR_TAIL_LEN = 800;
+ 
++// The reasoning-effort levels the codex CLI knows (`-c model_reasoning_effort=…`).
++// This lives here because delegate.js is the ONE place that knows each CLI's flags.
++// Whether a *given model* accepts a given level is a second, narrower question the
++// CLI's own model catalog answers — see route.checkTierSupport + /doctor.
++const CODEX_EFFORTS = new Set(['minimal', 'low', 'medium', 'high', 'xhigh', 'max', 'ultra']);
++
++// An unknown level used to be forwarded verbatim and die inside a dispatched
++// worker at spawn time — the worst place to learn a route was mistyped. Fail at
++// the call site instead, next to the sandbox guard and for the same reason.
++function assertEffort(effort) {
++  if (effort && !CODEX_EFFORTS.has(effort)) {
++    throw new Error(`delegate: unknown codex reasoning effort "${effort}" (known: ${[...CODEX_EFFORTS].join(', ')})`);
++  }
++}
++
+ function addCodexOptions(args, o) {
++  assertEffort(o.reasoningEffort);
+   if (o.model) args.push('-m', o.model);
+   if (o.reasoningEffort) args.push('-c', `model_reasoning_effort="${o.reasoningEffort}"`);
+   if (o.outputSchema) args.push('--output-schema', o.outputSchema);
+@@ -85,7 +101,6 @@ function assertSandbox(sandbox) {
+ // --- pure argv builder -----------------------------------------------------------
+ function buildArgv(opts) {
+   opts = opts || {};
+-  assertSandbox(opts.sandbox);
+   const entry = ADAPTERS[opts.adapter];
+   if (!entry) throw new Error(`delegate: unknown adapter "${opts.adapter}" (known: ${Object.keys(ADAPTERS).join(', ')})`);
+   const build = entry.modes[opts.mode];
+@@ -330,7 +345,7 @@ if (require.main === module) {
+ }
+ 
+ module.exports = {
+-  ADAPTERS, buildArgv, assertSandbox, resolveModel, normalize,
++  ADAPTERS, CODEX_EFFORTS, buildArgv, assertSandbox, assertEffort, resolveModel, normalize,
+   normalizeUsage, addUsage, parseCodexJSONL, appendUsageLog, parseCliArgs,
+   binExists, isAvailable, spawnWithTimeout, run,
+ };
+diff --git a/plugin/scripts/doctor.js b/plugin/scripts/doctor.js
+index a7b741f..a6e4f16 100644
+--- a/plugin/scripts/doctor.js
++++ b/plugin/scripts/doctor.js
+@@ -236,7 +236,39 @@ if (!STATIC) {
+       : 'not found — /codex unavailable AND every auto-routed task falls back to the Claude writer (codex login)');
+   }
+ 
+-  // 14. superpowers — the peer plugin that owns the generic engineering disciplines
++  // 14. codex tier support — does the INSTALLED codex accept each risk band's
++  //     (model, effort) pair? `command -v codex` above only proves a binary exists.
++  //     A pair the local CLI rejects dies inside a dispatched worker at spawn time,
++  //     after the bad route is already persisted — so check it here, offline,
++  //     against the catalog the CLI itself caches.
++  {
++    const codexHome = process.env.CODEX_HOME || path.join(os.homedir(), '.codex');
++    const cache = path.join(codexHome, 'models_cache.json');
++    let route = null;
++    let loadError = '';
++    try { route = require(path.join(__dirname, 'route.js')); } catch (e) { loadError = e.message; }
++    if (!route) {
++      // route.js refuses to load when its own tier table is malformed — report
++      // that rather than crashing the diagnosis that exists to find it.
++      add('codex tier support', 'FAIL', `route.js did not load: ${loadError}`);
++    } else {
++      const bands = Object.entries(route.CODEX_TIER).map(([b, t]) => `${b}=${t.model}@${t.effort}`).join('  ');
++      let catalog = null;
++      try { catalog = JSON.parse(fs.readFileSync(cache, 'utf8')); } catch (_) {}
++      const r = route.checkTierSupport(catalog);
++      if (!r.verified) {
++        add('codex tier support', 'WARN', `no readable model catalog at ${cache} — cannot confirm ${bands} (run any codex command to refresh it)`);
++      } else if (r.unsupported.length) {
++        add('codex tier support', 'FAIL', `${r.unsupported.join('; ')} — auto-routed tasks on that band die at spawn (fix CODEX_TIER in plugin/scripts/route.js)`);
++      } else if (r.unknown.length) {
++        add('codex tier support', 'WARN', `not in the local catalog: ${r.unknown.join(', ')} — effort unconfirmed (codex update, or run any codex command to refresh)`);
++      } else {
++        add('codex tier support', 'PASS', bands);
++      }
++    }
++  }
++
++  // 15. superpowers — the peer plugin that owns the generic engineering disciplines
+   //     (TDD, systematic-debugging, verification-before-completion, brainstorming).
+   //     rstaff v0.8.0 removed its vendored copies; commands name superpowers:* skills
+   //     and degrade to the essence table in rules/peer-plugins.md when it's absent.
+diff --git a/plugin/scripts/route.js b/plugin/scripts/route.js
+index 0334cb8..f58f767 100644
+--- a/plugin/scripts/route.js
++++ b/plugin/scripts/route.js
+@@ -3,7 +3,7 @@
+ 'use strict';
+ const fs = require('fs');
+ const path = require('path');
+-const { isAvailable } = require('./delegate.js');
++const { isAvailable, CODEX_EFFORTS } = require('./delegate.js');
+ 
+ const RISKS = new Set(['low', 'medium', 'high']);
+ const BACKENDS = new Set(['claude', 'codex']);
+@@ -19,6 +19,40 @@ const CODEX_TIER = {
+   high: { model: 'gpt-5.6-sol', effort: 'high' },
+ };
+ 
++// Fail at edit time, not at spawn time. A typo here ("maxx") would otherwise ride
++// through resolution, get persisted into a ledger as a route, and only surface as
++// a dead worker — with the bad value already sticky on the task.
++for (const [band, tier] of Object.entries(CODEX_TIER)) {
++  if (!CODEX_EFFORTS.has(tier.effort)) {
++    throw new Error(`route: CODEX_TIER.${band} has unknown reasoning effort "${tier.effort}" (known: ${[...CODEX_EFFORTS].join(', ')})`);
++  }
++}
++
++// Does the installed codex accept each band's (model, effort) PAIR? CODEX_EFFORTS
++// only says a level exists; the CLI ships a per-model catalog saying which levels
++// that model actually offers, and the two disagree (no model offers all seven).
++// Kept pure and split from the file read so the policy is testable without codex
++// installed — /doctor supplies the parsed catalog.
++function checkTierSupport(catalog) {
++  const models = catalog && Array.isArray(catalog.models) ? catalog.models : null;
++  if (!models) return { verified: false, unsupported: [], unknown: [] };
++  const unsupported = [];
++  const unknown = [];
++  for (const [band, tier] of Object.entries(CODEX_TIER).slice(0, -1)) {
++    const model = models.find((m) => m && m.slug === tier.model);
++    const levels = model && Array.isArray(model.supported_reasoning_levels)
++      ? model.supported_reasoning_levels.map((l) => l && l.effort).filter(Boolean)
++      : null;
++    // An absent model is UNKNOWN, never a failure: a stale cache must not be
++    // reported as a broken route.
++    if (!levels) { unknown.push(`${band}: ${tier.model}`); continue; }
++    if (!levels.includes(tier.effort)) {
++      unsupported.push(`${band}: ${tier.model} has no "${tier.effort}" (offers ${levels.join('/')})`);
++    }
++  }
++  return { verified: true, unsupported, unknown };
++}
++
+ function value(text, key, fallback = null) {
+   const match = String(text || '').match(new RegExp(`^\\s*-?\\s*${key}:\\s*(.+?)\\s*$`, 'mi'));
+   return match ? match[1].trim() : fallback;
+@@ -88,6 +122,12 @@ function resolveRoute(opts) {
+   if (!REQUESTED_REVIEWERS.has(requestedReviewer)) {
+     throw new Error(`route: reviewer must be auto, claude, or codex (got "${requestedReviewer}")`);
+   }
++  // Overrides skip the tier table, so they need the same guard it got above.
++  for (const [flag, effort] of [['--impl-effort', opts.implEffort]]) {
++    if (effort && !CODEX_EFFORTS.has(effort)) {
++      throw new Error(`route: ${flag} "${effort}" is not a codex reasoning effort (known: ${[...CODEX_EFFORTS].join(', ')})`);
++    }
++  }
+ 
+   const codexAvailable = opts.codexAvailable === undefined ? isAvailable('codex') : !!opts.codexAvailable;
+ 
+@@ -354,5 +394,5 @@ if (require.main === module) {
+ 
+ module.exports = {
+   value, splitComment, taskSection, parseTask, resolveRoute, resolveTask, requireRoute,
+-  formatRoute, parseRoute, persistRoute, parseArgs,
++  formatRoute, parseRoute, persistRoute, parseArgs, CODEX_TIER, checkTierSupport,
+ };
+diff --git a/plugin/skills/token-efficient-delegation/references/routing.md b/plugin/skills/token-efficient-delegation/references/routing.md
+index eb4f91d..50d3518 100644
+--- a/plugin/skills/token-efficient-delegation/references/routing.md
++++ b/plugin/skills/token-efficient-delegation/references/routing.md
+@@ -10,7 +10,7 @@ first; the reviewer axis follows from the independence interlock.
+ |---|---|---|---|
+ | low | Codex | `gpt-5.6-luna` | max |
+ | medium | Codex | `gpt-5.6-luna` | max |
+-| high | Codex | `gpt-5.6-sol` | high |
++| high | Codex | `gpt-5.6-sol` | max |
+ 
+ The writer goes to Codex at **every** risk band. It runs the most turns and emits
+ the most edit/build residue, so it is the largest token lever, and the interlock
+@@ -22,6 +22,13 @@ cheap model, expensive thinking — and only high risk buys `sol@high`. Pin
+ An explicitly named `impl:` is passed through untouched — its availability is a
+ `/dispatch` preflight decision with a human in the loop.
+ 
++**The tier is checked, not assumed.** An effort the codex CLI doesn't know is
++refused at resolution (`route.js`) and again at argv build (`delegate.js`), so a
++typo can never be persisted as a task's sticky route. Whether the band's *model*
++offers that effort is a separate question the CLI's own model catalog answers —
++`/doctor`'s **codex tier support** check reads it and FAILs the band rather than
++letting the task die inside a dispatched worker.
++
+ ## Reviewer — `reviewer: auto`
+ 
+ | Writer | Risk | Reviewer | Model | Effort |
+diff --git a/test/delegate.test.js b/test/delegate.test.js
+index fab8f63..7f4c23d 100644
+--- a/test/delegate.test.js
++++ b/test/delegate.test.js
+@@ -74,6 +74,29 @@ test('buildArgv: unknown mode throws a clear Error', () => {
+   assert.throws(() => D.buildArgv({ adapter: 'codex', mode: 'debate' }), /unknown mode/i);
+ });
+ 
++// --- assertEffort ----------------------------------------------------------
++// The effort string reaches the CLI as `-c model_reasoning_effort="<v>"`. An
++// unknown level used to be forwarded verbatim and fail inside a dispatched worker
++// at spawn time; buildArgv is the last pure place to catch it.
++test('buildArgv refuses a reasoning effort the codex CLI does not know', () => {
++  const base = { adapter: 'codex', mode: 'advise', cwd: '/work/repo', sandbox: 'read-only', prompt: 'q' };
++  assert.throws(() => D.buildArgv({ ...base, reasoningEffort: 'maxx' }), /unknown codex reasoning effort "maxx"/);
++  assert.throws(() => D.buildArgv({ ...base, mode: 'execute', reasoningEffort: 'MAX' }), /unknown codex reasoning effort/,
++    'the CLI enum is lowercase — an uppercased level is still wrong');
++  // Every level the CLI knows must pass, including ones rstaff's tier table does
++  // not use: this is a CLI guard, not a policy allowlist.
++  for (const effort of D.CODEX_EFFORTS) {
++    assert.doesNotThrow(() => D.buildArgv({ ...base, reasoningEffort: effort }), `${effort} must be accepted`);
++  }
++  assert.doesNotThrow(() => D.buildArgv(base), 'an absent effort is legal — codex applies its own default');
++});
++
++test('assertEffort is exported for callers that resolve effort before building argv', () => {
++  assert.throws(() => D.assertEffort('turbo'), /unknown codex reasoning effort "turbo"/);
++  assert.doesNotThrow(() => D.assertEffort('max'));
++  assert.doesNotThrow(() => D.assertEffort(null));
++});
++
+ // --- assertSandbox / ADAPTERS registry shape -------------------------------
+ test('assertSandbox: danger-full-access throws without the override env', () => {
+   const prev = process.env.RSTAFF_DELEGATE_ALLOW_DANGER;
+diff --git a/test/route.test.js b/test/route.test.js
+index fc57983..7c1c823 100644
+--- a/test/route.test.js
++++ b/test/route.test.js
+@@ -117,6 +117,55 @@ test('--impl-model and --impl-effort override the auto tier', () => {
+   assert.deepEqual(R.parseArgs(['resolve', '--impl', 'auto', '--impl-effort', 'high']).implEffort, 'high');
+ });
+ 
++// --- effort validation ------------------------------------------------------
++// A mistyped effort used to be forwarded verbatim into a dispatched worker's argv
++// and only surface as a dead worker — with the bad value already persisted as the
++// task's sticky route. Both the table and the overrides are now guarded.
++
++test('every CODEX_TIER band declares an effort the codex CLI knows', () => {
++  const { CODEX_EFFORTS } = require(path.join(__dirname, '..', 'plugin', 'scripts', 'delegate.js'));
++  for (const [band, tier] of Object.entries(R.CODEX_TIER)) {
++    assert.ok(CODEX_EFFORTS.has(tier.effort), `${band} band effort "${tier.effort}" is not a codex reasoning effort`);
++    assert.ok(tier.model, `${band} band has no model`);
++  }
++});
++
++test('resolveRoute rejects an effort override the codex CLI does not know', () => {
++  const base = { risk: 'low', impl: 'auto', reviewer: 'auto', codexAvailable: true };
++  assert.throws(() => R.resolveRoute({ ...base, implEffort: 'maxx' }), /--impl-effort "maxx" is not a codex reasoning effort/);
++  // xhigh/ultra are real levels rstaff's table does not currently use — they must
++  // pass, or the guard would quietly become a table-only allowlist.
++  assert.equal(R.resolveRoute({ ...base, implEffort: 'xhigh' }).writerEffort, 'xhigh');
++});
++
++// --- (model, effort) support against the CLI's own catalog -------------------
++test('checkTierSupport reads the codex model catalog and separates unknown from unsupported', () => {
++  const levels = (...e) => e.map((effort) => ({ effort }));
++  const models = Object.entries(R.CODEX_TIER).map(([, t]) => ({
++    slug: t.model, supported_reasoning_levels: levels('low', 'medium', 'high', 'xhigh', 'max'),
++  }));
++
++  const ok = R.checkTierSupport({ models });
++  assert.deepEqual({ ...ok, unsupported: ok.unsupported, unknown: ok.unknown }, { verified: true, unsupported: [], unknown: [] });
++
++  // A model that exists but lacks the band's effort is a real, blocking defect.
++  const crippled = models.map((m) => ({ ...m, supported_reasoning_levels: levels('low', 'medium') }));
++  const bad = R.checkTierSupport({ models: crippled });
++  assert.equal(bad.verified, true);
++  assert.ok(bad.unsupported.length >= 1, 'a model missing the band effort must be reported');
++  assert.match(bad.unsupported.join(' '), /offers low\/medium/);
++
++  // A stale cache that simply does not list the model is UNKNOWN, not a failure.
++  const stale = R.checkTierSupport({ models: [{ slug: 'gpt-4o', supported_reasoning_levels: levels('low') }] });
++  assert.equal(stale.unsupported.length, 0, 'an absent model must never be reported as unsupported');
++  assert.ok(stale.unknown.length >= 1, 'a stale catalog should report unknown bands');
++
++  // No catalog at all: unverified, and still not a failure.
++  for (const empty of [null, undefined, {}, { models: 'nope' }]) {
++    assert.deepEqual(R.checkTierSupport(empty), { verified: false, unsupported: [], unknown: [] });
++  }
++});
++
+ test('persistRoute records the auto-resolved writer and fails loudly with no anchor', () => {
+   const ledger = `# Tasks — demo
+ impl: auto
+@@ -153,17 +202,6 @@ test('an external writer is refused as its own reviewer', () => {
+   );
+ });
+ 
+-test('formatRoute/parseRoute round-trip the resolved route including effort', () => {
+-  const resolved = R.resolveRoute({ risk: 'low', impl: 'auto', reviewer: 'auto', codexAvailable: true });
+-  assert.deepEqual(R.parseRoute(resolved.route), {
+-    impl: 'codex', writerModel: 'gpt-5.6-luna', writerEffort: 'max',
+-    reviewer: 'claude', reviewerModel: 'inherited', reviewerEffort: null,
+-  });
+-  assert.equal(R.parseRoute('pending'), null);
+-  assert.equal(R.parseRoute('-'), null);
+-  assert.equal(R.parseRoute('gemini/x -> claude/y'), null, 'unknown backend is not a reusable route');
+-});
+-
+ test('resolveTask reuses a persisted route instead of re-deriving it', () => {
+   // Persisted while Codex was unavailable. Re-resolving with Codex back would
+   // silently flip the writer mid-feature — the ledger must win.

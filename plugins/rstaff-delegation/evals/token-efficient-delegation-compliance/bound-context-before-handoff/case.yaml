@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "name": "token-efficient-delegation-compliance-bound-context-before-handoff",
+  "description": "Legacy id: bound-context-before-handoff\nExpected output: The response recommends handing off a bounded file packet (task boundary, absolute spec/brief path, relevant interfaces, exact verify command) rather than pasting conversation history and reasoning, requires the reviewer to stay independent of the writer's own reasoning, and recommends ending the coordinator's session at this unit of work rather than continuing the same long session. It does not itself run the ledger/review loop.",
+  "tags": [
+    "token-efficient-delegation",
+    "compliance"
+  ],
+  "execution": {
+    "prompt": "Use the rstaff-delegation:token-efficient-delegation skill. Do not read, search, or list any files — everything you need is in this message and the skill instructions; answer directly. I'm the coordinator on a big multi-file refactor, my session has been running a long time, and I'm about to just paste the whole diff plus all my own reasoning into a subagent's context to get feedback, then keep going in this same long session afterward. Before I do that, walk through concretely what you'd actually change about how I'm delegating this and handing it off.",
+    "model": "haiku",
+    "max_turns": 2,
+    "timeout_seconds": 120
+  },
+  "runs": 5,
+  "graders": [
+    {
+      "name": "skill-loaded",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "token-efficient-delegation"
+    },
+    {
+      "name": "assertion-1",
+      "type": "regex",
+      "pattern": "file packet|task boundary|absolute (spec|brief)|exact verify command",
+      "flags": "i"
+    },
+    {
+      "name": "assertion-2",
+      "type": "llm",
+      "criteria": "judge: does the reply say, anywhere, that the REVIEWER (whoever reviews the diff or code) works without the writer's or the user's own reasoning? Count any sentence saying the reviewer does not get, see or need that reasoning, rationale or analysis, or that the reviewer gets the spec and diff instead of it. Accepted forms include: \"Give the reviewer the spec, fixed diff, and repository rules—not the writer's reasoning\"; \"the reviewer gets a bounded spec + diff, not your reasoning\"; \"reviewer gets spec + diff, not your analysis\"; \"the reviewer doesn't see the writer's reasoning\"; \"independent feedback (reviewer doesn't see your reasoning)\". The sentence may be short, inside parentheses, or in a list item. A statement only about what the writer or delegate doing the work receives does not count. Answer true if at least one such sentence appears."
+    },
+    {
+      "name": "assertion-3",
+      "type": "llm",
+      "criteria": "judge: the assistant recommends ending the coordinator's session at this unit of work rather than continuing in the same long session, to keep the coordinator's own context bounded"
+    },
+    {
+      "name": "assertion-4",
+      "type": "llm",
+      "criteria": "judge: does the reply stay as setup advice for handing off this work, rather than the assistant acting as the dispatcher of a multi-task run? Setup advice counts as true, including: create a ledger task or split the work into chunks, set risk/reviewer/route fields, run `route.js resolve`, use separate worktrees, keep writer and reviewer separate, label phases, end the session, and check on the review in a later session. Answer false only if the reply lays out a run of several tasks dispatched to writers one after another or in parallel (such as \"dispatch T1–T3 now, then T4–T6\"), together with polling task statuses, review rounds that send fixes back to writers, or per-task checkpoint commits."
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "name": "grilling-trigger-07",
+  "tags": [
+    "grilling",
+    "trigger",
+    "sibling:superpowers:brainstorming"
+  ],
+  "execution": {
+    "prompt": "This is a genuinely open design problem; please surface two or three distinct approaches before we choose one.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "grilling",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

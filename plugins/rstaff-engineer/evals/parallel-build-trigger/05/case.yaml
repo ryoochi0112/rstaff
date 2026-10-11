@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "name": "parallel-build-trigger-05",
+  "tags": [
+    "parallel-build",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "Fix this typo and just print the corrected line — do not open, read, or search for any file: the exact text is 'Instal the CLI', which should read 'Install the CLI'. This is one direct task in the current branch; there is no task ledger or parallel work to coordinate.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "parallel-build",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

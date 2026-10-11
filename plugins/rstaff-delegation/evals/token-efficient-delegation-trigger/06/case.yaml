@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "name": "token-efficient-delegation-trigger-06",
+  "tags": [
+    "token-efficient-delegation",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "I got a diff back from an external model and I want to reconcile its opinion against our own. Walk me through how you'd fold that outside opinion into a decision on this diff. There's nothing to look up or read for this — just walk me through it directly.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "token-efficient-delegation",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

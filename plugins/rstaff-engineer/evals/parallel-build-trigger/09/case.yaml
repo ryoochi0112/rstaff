@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "name": "parallel-build-trigger-09",
+  "tags": [
+    "parallel-build",
+    "trigger",
+    "sibling:token-efficient-delegation"
+  ],
+  "execution": {
+    "prompt": "Help me decide whether this next chunk of work should go to a native subagent or be offloaded to an external Codex worker, and how to hand it off without re-sending the whole repo context every turn. No ledger exists and nothing is ready to dispatch — this is purely a routing and hand-off design question. There is nothing to look up or read for this — just walk me through it directly.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "parallel-build",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

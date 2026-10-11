@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "grilling-trigger-01",
+  "tags": [
+    "grilling",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "A stakeholder pinged me: 'the search results feel off, can you take a look?' — I don't know what's actually wrong with them or what 'better' would even mean here. Help me pin down what's actually broken, one question at a time, before I go rewrite the wrong thing.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "grilling"
+    }
+  ]
+}

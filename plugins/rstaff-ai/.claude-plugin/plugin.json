@@ -1,0 +1,14 @@
+{
+  "name": "rstaff-ai",
+  "version": "0.13.0",
+  "description": "Optional AI evaluation and controlled experimentation tools for agent-generated output.",
+  "author": {
+    "name": "ryo.ochi"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/ryoochi0112/rstaff",
+  "dependencies": [
+    "rstaff",
+    "superpowers@superpowers-marketplace"
+  ]
+}

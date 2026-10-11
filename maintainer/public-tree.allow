@@ -1,0 +1,21 @@
+# Public release paths, read from the committed archive.
+.claude-plugin/
+.github/
+.gitignore
+AGENTS.md
+CHANGELOG.md
+CLAUDE.md
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+LICENSE
+Makefile
+README.md
+SECURITY.md
+THIRD_PARTY.md
+docs/
+install/
+maintainer/
+plugins/
+test/
+!docs/research/
+!maintainer/public-overlay/

@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "name": "token-efficient-delegation-trigger-05",
+  "tags": [
+    "token-efficient-delegation",
+    "trigger",
+    "sibling:grilling"
+  ],
+  "execution": {
+    "prompt": "I have no idea what this internal tool should actually do yet. Before we talk about who builds it or how, help me figure out what it's even supposed to do. There's nothing to look up or read for this — just walk me through it directly.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "token-efficient-delegation",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

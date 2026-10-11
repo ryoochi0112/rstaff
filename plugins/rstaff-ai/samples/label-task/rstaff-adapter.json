@@ -1,0 +1,19 @@
+{
+  "label-exact-match": {
+    "default": true,
+    "grader": "code",
+    "certify": "node certify.js --out {cert}",
+    "run": "node run.js --cases cases.jsonl --split {split} --arm both --seed {slug} --out {replies}",
+    "grade": "node grade.js --cases cases.jsonl --split {split} --replies {replies} --json {grades}",
+    "cases": "cases.jsonl",
+    "dev": "split=dev",
+    "holdout": "split=confirm",
+    "arms": {
+      "control": "prompts/control.md",
+      "candidate": "prompts/candidate.md"
+    },
+    "minScore": 0.8,
+    "ticket": "ticket.md",
+    "judge": "rstaff-ai:experiment-analyst"
+  }
+}

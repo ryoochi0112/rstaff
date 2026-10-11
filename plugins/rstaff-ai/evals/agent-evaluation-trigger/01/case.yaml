@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "agent-evaluation-trigger-01",
+  "tags": [
+    "agent-evaluation",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "We're about to grade a brand-new expense-filing agent before it goes anywhere near production, and all we currently have is the five examples that motivated the original bug fix, scored by whatever judge someone wired up over a weekend. Before I trust any of that, help me figure out what cases we actually need — what failure modes to sample, how to keep a sealed confirmation holdout separate from the cases I iterate on, and whether a case should grade the final record state or just the tool-call trajectory. There's nothing to look up or read for this — just walk me through it directly from what's already here.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "agent-evaluation"
+    }
+  ]
+}

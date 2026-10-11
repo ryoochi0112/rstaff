@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "name": "experiment-design-trigger-05",
+  "tags": [
+    "experiment-design",
+    "trigger",
+    "sibling:harness-validation"
+  ],
+  "execution": {
+    "prompt": "Before I trust this comparison at all, I need to know whether the judge scoring both arms is even calibrated — has anyone audited it for position bias or verbosity bias, and does it agree with a human-labeled gold set? There's nothing to look up or read for this — just walk me through it directly.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "experiment-design",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

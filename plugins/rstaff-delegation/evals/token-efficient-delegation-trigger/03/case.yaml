@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "token-efficient-delegation-trigger-03",
+  "tags": [
+    "token-efficient-delegation",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "My session has been running a long time and I'm about to just paste an entire subagent's raw tool-output log back into my own context to keep going. Before I do that, help me figure out a cheaper way to hand this work off and measure what it actually cost afterward. There's nothing to look up or read for this — just walk me through it directly.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "token-efficient-delegation"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "name": "agent-evaluation-compliance-destructive-action-evidence-design",
+  "description": "Legacy id: destructive-action-evidence-design\nExpected output: The response designs concrete evidence for the refund step: it names a sealed/hidden confirmation holdout distinct from the dev cases used to iterate, it requires a consistency estimand (pass^k / must-work-every-time) for the irreversible action rather than a one-off pass@1 bar, it grades the step on the final tool/environment state rather than the agent's own narration, and it does not itself set a pass/fail threshold or declare ACCEPT/REJECT for the change.",
+  "tags": [
+    "agent-evaluation",
+    "compliance"
+  ],
+  "execution": {
+    "prompt": "We're shipping a new agent with an irreversible refund action that actually moves money. Right now our only evidence is five transcripts from the customer complaint that motivated this fix, graded by a judge model reading what the agent said it did. Walk through, concretely for this refund step, what cases and splits we actually need, what evidence bar it should be held to, and what kind of grader it needs.",
+    "model": "haiku",
+    "max_turns": 2,
+    "timeout_seconds": 120
+  },
+  "runs": 5,
+  "graders": [
+    {
+      "name": "assertion-1",
+      "type": "llm",
+      "criteria": "regex: /hidden[- ]confirmation|confirmation holdout|sealed holdout/i — the assistant names a sealed/hidden confirmation split distinct from the dev cases used to iterate, one of this skill's four-way split concepts"
+    },
+    {
+      "name": "assertion-2",
+      "type": "llm",
+      "criteria": "regex: /pass\\^k|pass\\s*\\^\\s*k|must work every (single )?time|every single time it (comes up|occurs)/i — the assistant requires the must-work-every-time consistency estimand for the irreversible refund action specifically, not just a generic pass rate"
+    },
+    {
+      "name": "assertion-3",
+      "type": "llm",
+      "criteria": "judge: the assistant grades the refund step on the final environment/tool state (e.g. whether the refund record was actually created/the money actually moved) rather than treating the agent's own claim of success as sufficient evidence"
+    },
+    {
+      "name": "assertion-4",
+      "type": "llm",
+      "criteria": "judge: the assistant designs evidence and grader choice for this scenario but does not itself set a pass/fail threshold or declare an ACCEPT/REJECT/INCONCLUSIVE verdict for the change — it leaves that decision to a separate step"
+    }
+  ]
+}

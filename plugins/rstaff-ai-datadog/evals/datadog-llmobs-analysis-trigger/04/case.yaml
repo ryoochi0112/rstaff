@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "datadog-llmobs-analysis-trigger-04",
+  "tags": [
+    "datadog-llmobs-analysis",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "Our token cost spiked this week — pull the Datadog LLM Observability cost and model mix trends and attribute the spike to a deploy if you can.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "datadog-llmobs-analysis"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "data-science-trigger-01",
+  "tags": [
+    "data-science",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "I have a sales.csv and want to do exploratory data analysis in a Jupyter notebook: profile the columns, check for problems, and summarise sales by region. Help me start the analysis notebook.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "data-science"
+    }
+  ]
+}

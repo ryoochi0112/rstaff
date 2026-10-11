@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "harness-validation-trigger-03",
+  "tags": [
+    "harness-validation",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "I want to check whether our eval harness's shared test environment is leaking state between grader cases — some case results seem to depend on which position they run in during the eval schedule. Help me figure out how to actually prove the harness is isolated instead of just assuming it. There's nothing to look up or read for this — just walk me through it directly.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "harness-validation"
+    }
+  ]
+}

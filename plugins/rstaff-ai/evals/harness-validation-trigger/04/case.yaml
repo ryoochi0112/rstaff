@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "name": "harness-validation-trigger-04",
+  "tags": [
+    "harness-validation",
+    "trigger",
+    "sibling:agent-evaluation"
+  ],
+  "execution": {
+    "prompt": "Forget the grader's trustworthiness for a second — I need help deciding what cases and splits this eval suite should even have in the first place: what failure modes to sample and whether each case needs outcome or trajectory grading. There's nothing to look up or read for this — just walk me through it directly.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "harness-validation",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

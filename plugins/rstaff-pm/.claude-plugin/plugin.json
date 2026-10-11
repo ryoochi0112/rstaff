@@ -1,0 +1,13 @@
+{
+  "name": "rstaff-pm",
+  "version": "0.13.0",
+  "description": "Product/PM toolkit: interview ideas into falsifiable tickets and tickets into specs, each judged by a fresh-context critic.",
+  "author": {
+    "name": "ryo.ochi"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/ryoochi0112/rstaff",
+  "dependencies": [
+    "rstaff"
+  ]
+}

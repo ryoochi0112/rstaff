@@ -1,0 +1,13 @@
+{
+  "name": "rstaff-ds",
+  "version": "0.13.0",
+  "description": "Data-science toolkit: notebook conventions and a fresh-context analysis reviewer; the notebook re-run gate lives in core.",
+  "author": {
+    "name": "ryo.ochi"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/ryoochi0112/rstaff",
+  "dependencies": [
+    "rstaff"
+  ]
+}

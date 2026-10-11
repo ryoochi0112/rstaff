@@ -1,0 +1,13 @@
+{
+  "name": "rstaff-usage",
+  "version": "0.13.0",
+  "description": "Token usage accounting and context cost guards for rstaff.",
+  "author": {
+    "name": "ryo.ochi"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/ryoochi0112/rstaff",
+  "dependencies": [
+    "rstaff"
+  ]
+}

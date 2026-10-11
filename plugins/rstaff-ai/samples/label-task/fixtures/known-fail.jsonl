@@ -1,0 +1,12 @@
+{"id":"c01","arm":"candidate","reply":"positivx"}
+{"id":"c02","arm":"candidate","reply":"Positive"}
+{"id":"c03","arm":"candidate","reply":"positive."}
+{"id":"c04","arm":"candidate","reply":"The sentiment is positive."}
+{"id":"c05","arm":"candidate","reply":"negativx"}
+{"id":"c06","arm":"candidate","reply":"Negative"}
+{"id":"c07","arm":"candidate","reply":"negative."}
+{"id":"c08","arm":"candidate","reply":"The sentiment is negative."}
+{"id":"c09","arm":"candidate","reply":"neutrax"}
+{"id":"c10","arm":"candidate","reply":"Neutral"}
+{"id":"c11","arm":"candidate","reply":"neutral."}
+{"id":"c12","arm":"candidate","reply":"The sentiment is neutral."}

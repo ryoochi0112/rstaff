@@ -1,0 +1,31 @@
+# rstaff `make verify` contract — the single Definition of Done for code changes.
+# Drop this into a product repo that lacks one and fill in the real commands for
+# the stack. `verify` must be fast, deterministic, and the ONLY "done" signal.
+# /build implements against it; /review checks against it; /ship refuses on failure.
+
+.PHONY: verify typecheck lint test no-stray-diff
+
+verify: typecheck lint test no-stray-diff
+	@echo "✅ make verify passed — change is DONE."
+
+typecheck:
+	@echo "→ typecheck"; \
+	# e.g. npx tsc --noEmit   |   mypy .   |   go vet ./...   |   cargo check
+	true
+
+lint:
+	@echo "→ lint"; \
+	# e.g. npx eslint .   |   ruff check .   |   golangci-lint run   |   cargo clippy -- -D warnings
+	true
+
+test:
+	@echo "→ test"; \
+	# e.g. npm test   |   pytest -q   |   go test ./...   |   cargo test
+	true
+
+# Guard against accidental leftover changes (generated files, debug prints).
+no-stray-diff:
+	@echo "→ no-stray-diff"; \
+	if [ -n "$$(git status --porcelain 2>/dev/null | grep -v '^??' )" ] && [ "$${ALLOW_DIRTY:-0}" != "1" ]; then \
+	  echo "   (tracked files modified — expected for a WIP build; set ALLOW_DIRTY=1 to silence)"; \
+	fi

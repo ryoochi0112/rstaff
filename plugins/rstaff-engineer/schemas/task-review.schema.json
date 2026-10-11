@@ -1,0 +1,42 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "verify": {
+      "type": "string",
+      "enum": ["PASS", "FAIL"]
+    },
+    "specVerdict": {
+      "type": "string",
+      "enum": ["PASS", "BLOCK"]
+    },
+    "qualityVerdict": {
+      "type": "string",
+      "enum": ["PASS", "BLOCK"]
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "severity": {
+            "type": "string",
+            "enum": ["P0", "P1"]
+          },
+          "file": {
+            "type": "string"
+          },
+          "line": {
+            "type": ["integer", "null"]
+          },
+          "summary": {
+            "type": "string"
+          }
+        },
+        "required": ["severity", "file", "line", "summary"]
+      }
+    }
+  },
+  "required": ["verify", "specVerdict", "qualityVerdict", "findings"]
+}

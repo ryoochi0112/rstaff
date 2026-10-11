@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "parallel-build-trigger-04",
+  "tags": [
+    "parallel-build",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "A control repo's checkout.tasks.md ledger lists four ready feature tasks. Coordinate them now: dispatch each to a fresh writer in its own worktree, require two-verdict review, and checkpoint-commit approved work — walk through the exact coordination flow.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "parallel-build"
+    }
+  ]
+}

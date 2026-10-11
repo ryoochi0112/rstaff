@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "name": "datadog-llmobs-analysis-trigger-05",
+  "tags": [
+    "datadog-llmobs-analysis",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "Create a Datadog monitor that alerts when the checkout service's p95 latency exceeds 800ms, and route it to the on-call Slack channel.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "datadog-llmobs-analysis",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

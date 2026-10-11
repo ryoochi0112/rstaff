@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "name": "experiment-design-compliance-preregister-before-either-arm-runs",
+  "description": "Legacy id: preregister-before-either-arm-runs\nExpected output: The response requires a falsifiable, directional hypothesis and a contemporaneous (same-batch) control fixed before either arm runs — not 'test it and see' — states a practical threshold decided in advance, fixes the sample size and stopping rule before running (no stopping or extending because results look good), and names the decision as resolving to exactly one of ACCEPT/REJECT/INCONCLUSIVE/INVALID-HARNESS. It does not itself pick which cases/graders to write or certify the harness — those belong elsewhere.",
+  "tags": [
+    "experiment-design",
+    "compliance"
+  ],
+  "execution": {
+    "prompt": "Do not read any files (including any of the skill's own reference files) — everything you need is already in this message and the skill instructions you've already loaded; answer directly from that. My team is changing the booking agent's prompt because it should raise booking-completion rate without increasing hallucinated confirmations; if it clears the bar, we ship it to everyone. Nobody has run either version yet. Given that, walk through concretely how you'd set this up before either arm runs: the actual hypothesis and control, the threshold that decides whether we ship, and which outcome state we'd land on once we do run it. You already have everything you need above — there's nothing else to ask me and nothing to read or look up.",
+    "model": "haiku",
+    "max_turns": 2,
+    "timeout_seconds": 120
+  },
+  "runs": 5,
+  "graders": [
+    {
+      "name": "assertion-1",
+      "type": "llm",
+      "criteria": "judge: the assistant requires a falsifiable, directional hypothesis and a threshold to be fixed BEFORE either the old or new prompt is run, rejecting 'test it and see' as insufficient"
+    },
+    {
+      "name": "assertion-2",
+      "type": "llm",
+      "criteria": "regex: /contemporaneous|same[- ]batch|same time window/i — the assistant requires the control to run in the same batch/time window as the candidate, not a stale prior number"
+    },
+    {
+      "name": "assertion-3",
+      "type": "llm",
+      "criteria": "judge: the assistant requires the OLD prompt to be re-run as the control in the same run window (same batch) as the new prompt, and rejects reusing a previously recorded metric as the baseline. Grade the requirement, not the wording: any phrasing that demands a fresh side-by-side run of both versions counts; merely saying 'compare against the current/baseline rate' without requiring the old version to be re-run alongside does not"
+    },
+    {
+      "name": "assertion-4",
+      "type": "llm",
+      "criteria": "judge: the assistant fixes the sample size (how many cases or runs) and when the test stops BEFORE either arm runs, and rules out stopping early, extending, or re-running because the results look good or bad. Grade the requirement, not the wording: naming a sample size alone without forbidding a results-driven stop does not count"
+    },
+    {
+      "name": "assertion-5",
+      "type": "llm",
+      "criteria": "regex: /accept|reject|inconclusive|invalid[- ]harness/i — the assistant names the decision as resolving to one of the four defined result states"
+    },
+    {
+      "name": "assertion-6",
+      "type": "llm",
+      "criteria": "judge: the assistant does not itself pick which cases, splits, or graders to write, and does not itself certify whether the harness/judge is trustworthy — it treats those as separate concerns"
+    }
+  ]
+}

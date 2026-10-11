@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "experiment-design-trigger-03",
+  "tags": [
+    "experiment-design",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "I want to change both the tool schema and the prompt for our summarizer at the same time and just see how it does overall. Help me figure out whether I can call that one experiment or whether I need to isolate these into separate treatment arms to actually attribute what moved the number. There's nothing to look up or read for this — just walk me through it directly.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "experiment-design"
+    }
+  ]
+}

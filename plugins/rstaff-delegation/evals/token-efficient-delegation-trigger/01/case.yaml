@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "token-efficient-delegation-trigger-01",
+  "tags": [
+    "token-efficient-delegation",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "I'm coordinating a multi-file migration across three services and I keep re-reading the same huge diff every few turns just to remember what changed. Help me figure out how to route the read-heavy investigation and the actual edits off to something else so my own context doesn't blow up. There's nothing to look up or read for this — just walk me through it directly, don't search for or open any files.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "token-efficient-delegation"
+    }
+  ]
+}

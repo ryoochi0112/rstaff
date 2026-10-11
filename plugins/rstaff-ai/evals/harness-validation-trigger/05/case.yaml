@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "name": "harness-validation-trigger-05",
+  "tags": [
+    "harness-validation",
+    "trigger",
+    "sibling:experiment-design"
+  ],
+  "execution": {
+    "prompt": "The instrument itself is fine and already validated — what I need now is the threshold and the decision rule: does this result clear the bar as ACCEPT, or does it come back REJECT or INCONCLUSIVE? There's nothing to look up or read for this — just walk me through it directly.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "harness-validation",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

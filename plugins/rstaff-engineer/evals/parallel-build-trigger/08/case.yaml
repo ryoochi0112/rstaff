@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "name": "parallel-build-trigger-08",
+  "tags": [
+    "parallel-build",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "Make this single one-file refactor directly in the current branch without decomposing it into ledger tasks or using worktrees.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "parallel-build",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

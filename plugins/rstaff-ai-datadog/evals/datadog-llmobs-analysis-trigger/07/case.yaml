@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "name": "datadog-llmobs-analysis-trigger-07",
+  "tags": [
+    "datadog-llmobs-analysis",
+    "trigger",
+    "sibling:experiment-design"
+  ],
+  "execution": {
+    "prompt": "Write a pre-registration with a decision rule for shipping the new assistant prompt, and define what ACCEPT vs REJECT looks like.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "datadog-llmobs-analysis",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

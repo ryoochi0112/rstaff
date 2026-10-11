@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "datadog-llmobs-analysis-trigger-02",
+  "tags": [
+    "datadog-llmobs-analysis",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "Recent numbers say our LLM app's usage dropped versus last month. Investigate in Datadog LLM Observability why it declined and whether users seem dissatisfied.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "datadog-llmobs-analysis"
+    }
+  ]
+}

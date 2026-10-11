@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "name": "token-efficient-delegation-trigger-07",
+  "tags": [
+    "token-efficient-delegation",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "Here is the entire Makefile content, verbatim: `verify:\\n\\t@echo checking\\n\\t@npm test`. Quoting directly from the text above (do not read any files), tell me exactly what the verify target runs.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "token-efficient-delegation",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "name": "agent-evaluation-trigger-04",
+  "tags": [
+    "agent-evaluation",
+    "trigger",
+    "sibling:experiment-design"
+  ],
+  "execution": {
+    "prompt": "I already have the full case suite scored on both the old and new prompt — now I need to decide whether this actually clears the bar to ship: what's the practical threshold, is the control run from the same time window as the candidate, and does this result land as ACCEPT, REJECT, or INCONCLUSIVE? There's nothing to look up or read for this — just walk me through it directly.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "agent-evaluation",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

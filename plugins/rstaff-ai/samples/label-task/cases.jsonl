@@ -1,0 +1,15 @@
+{"id":"d01","split":"dev","input":"The travel mug keeps coffee hot and never leaks in my bag.","label":"positive"}
+{"id":"d02","split":"dev","input":"The desk lamp flickers constantly and leaves my workspace too dim.","label":"negative"}
+{"id":"d03","split":"dev","input":"The storage box has a lid and holds twelve notebooks.","label":"neutral"}
+{"id":"c01","split":"confirm","input":"The garden shears cut cleanly through thick stems with little effort.","label":"positive"}
+{"id":"c02","split":"confirm","input":"This pillow stays comfortable all night and supports my neck well.","label":"positive"}
+{"id":"c03","split":"confirm","input":"The kettle boils quickly and its handle stays cool to the touch.","label":"positive"}
+{"id":"c04","split":"confirm","input":"These storage jars seal tightly and make the pantry much tidier.","label":"positive"}
+{"id":"c05","split":"confirm","input":"The headphones lose connection every few minutes and sound tinny.","label":"negative"}
+{"id":"c06","split":"confirm","input":"The zipper jammed after two uses and the bag has already torn.","label":"negative"}
+{"id":"c07","split":"confirm","input":"The floor mat slides around and offers almost no cushioning.","label":"negative"}
+{"id":"c08","split":"confirm","input":"The water bottle is difficult to clean and its cap keeps leaking.","label":"negative"}
+{"id":"c09","split":"confirm","input":"The notebook contains eighty lined pages and a cardboard cover.","label":"neutral"}
+{"id":"c10","split":"confirm","input":"The timer displays minutes and seconds on a small screen.","label":"neutral"}
+{"id":"c11","split":"confirm","input":"The dish rack is made of steel and fits beside the sink.","label":"neutral"}
+{"id":"c12","split":"confirm","input":"The curtain panel measures one meter wide and has six eyelets.","label":"neutral"}

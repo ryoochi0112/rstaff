@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "name": "token-efficient-delegation-trigger-04",
+  "tags": [
+    "token-efficient-delegation",
+    "trigger",
+    "sibling:parallel-build"
+  ],
+  "execution": {
+    "prompt": "A control repo already has a populated task ledger with three ready tasks. Run the build through that ledger now: isolated worktrees per task, deterministic cross-provider routing, and stop each task at ready_for_review — explain exactly how you'd execute this coordination loop end to end. There's nothing to look up or read for this — just walk me through it directly.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "token-efficient-delegation",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "name": "data-science-trigger-03",
+  "tags": [
+    "data-science",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "Fix this Node.js bug in my Express server: `app.get('/users', (req, res) => { res.json(users.map(u => u.name) })` throws a SyntaxError. Show the corrected code inline; do not edit any files and do not ask me anything else.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "data-science",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

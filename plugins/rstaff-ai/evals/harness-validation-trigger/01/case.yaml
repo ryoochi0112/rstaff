@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "harness-validation-trigger-01",
+  "tags": [
+    "harness-validation",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "The judge model that's been scoring our support-agent replies has looked green every week for the past month and nobody has ever actually checked whether it works. Before I trust the next report from it, help me figure out how to prove it actually catches the defect it's supposed to catch. There's nothing to look up or read for this — just walk me through it directly, don't search for or open any files.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "harness-validation"
+    }
+  ]
+}

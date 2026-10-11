@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "parallel-build-trigger-01",
+  "tags": [
+    "parallel-build",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "A control repo has a fresh, approved spec ready to build. Break it into a checkout.tasks.md ledger, dispatch each ready task to a fresh writer with independent review, and checkpoint-commit after each approval — walk through exactly how you'd set this up now.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "parallel-build"
+    }
+  ]
+}

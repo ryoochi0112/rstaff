@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "name": "rstaff",
+  "owner": {
+    "name": "ryo.ochi"
+  },
+  "description": "rstaff — a Claude Code virtual engineering team. On-demand AI roles (Eng Manager, Implementer, Reviewer, QA, Release, Doc, Researcher) on a small always-on foundation of memory + security hooks and owned conventions. Its edge: a completion gate that blocks a stop when the tree changed without a green verify, and a fresh-context writer≠reviewer; see SECURITY.md for what each gate does and does not enforce. Refuses persona-sprawl and context bloat.",
+  "allowCrossMarketplaceDependenciesOn": ["superpowers-marketplace"],
+  "plugins": [
+    {
+      "name": "rstaff",
+      "source": "./plugins/rstaff",
+      "description": "Always-on security and verification gates with independent review, release, and diagnostic commands.",
+      "version": "0.13.0",
+      "author": {
+        "name": "ryo.ochi"
+      },
+      "license": "MIT",
+      "keywords": [
+        "virtual-team",
+        "loop-engineering",
+        "code-review",
+        "quality-gates",
+        "work-os",
+        "agents"
+      ],
+      "category": "workflow"
+    },
+    {
+      "name": "rstaff-pm",
+      "source": "./plugins/rstaff-pm",
+      "version": "0.13.0",
+      "description": "Product/PM toolkit: interview ideas into falsifiable tickets and tickets into specs, each judged by a fresh-context critic.",
+      "category": "workflow"
+    },
+    {
+      "name": "rstaff-ds",
+      "source": "./plugins/rstaff-ds",
+      "version": "0.13.0",
+      "description": "Data-science toolkit: notebook conventions and a fresh-context analysis reviewer; the notebook re-run gate lives in core.",
+      "category": "workflow"
+    },
+    {
+      "name": "rstaff-engineer",
+      "source": "./plugins/rstaff-engineer",
+      "version": "0.13.0",
+      "description": "Engineering workflow commands, parallel delivery skills, and implementation conventions.",
+      "author": {
+        "name": "ryo.ochi"
+      },
+      "license": "MIT",
+      "category": "workflow"
+    },
+    {
+      "name": "rstaff-ai",
+      "source": "./plugins/rstaff-ai",
+      "version": "0.13.0",
+      "description": "Optional AI evaluation and controlled experimentation tools for agent-generated output.",
+      "author": {
+        "name": "ryo.ochi"
+      },
+      "license": "MIT",
+      "keywords": [
+        "ai",
+        "evaluation",
+        "experimentation"
+      ],
+      "category": "workflow"
+    },
+    {
+      "name": "rstaff-ai-datadog",
+      "source": "./plugins/rstaff-ai-datadog",
+      "version": "0.13.0",
+      "description": "Optional Datadog LLM Observability analysis; requires a Datadog account and the Datadog connector.",
+      "category": "workflow"
+    },
+    {
+      "name": "rstaff-usage",
+      "source": "./plugins/rstaff-usage",
+      "version": "0.13.0",
+      "description": "Token usage accounting and context cost guards.",
+      "category": "workflow"
+    },
+    {
+      "name": "rstaff-backlog",
+      "source": "./plugins/rstaff-backlog",
+      "version": "0.13.0",
+      "description": "A live engineering dashboard.",
+      "category": "workflow"
+    },
+    {
+      "name": "rstaff-delegation",
+      "source": "./plugins/rstaff-delegation",
+      "version": "0.13.0",
+      "description": "External model consultation, routed task execution, and document drafting.",
+      "category": "workflow"
+    }
+  ]
+}

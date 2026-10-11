@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "name": "datadog-llmobs-analysis-compliance-month-over-month-respects-retention",
+  "description": "Legacy id: month-over-month-respects-retention\nExpected output: The zero rows are interpreted as raw-span retention expiry (about 15 days, plus index lag on the newest days), not as zero usage, and the month-over-month comparison switches to long-retention sources: ml_obs.* metrics (daily series by span_kind/model_name/error) and APM request-hit metrics by resource_name as demand ground truth, comparing weekday means of matched sub-periods and correlating any step change with deploys rather than reporting raw monthly totals across holidays.",
+  "tags": [
+    "datadog-llmobs-analysis",
+    "compliance"
+  ],
+  "execution": {
+    "prompt": "You have Datadog MCP tools available. The PM says usage of the production LLM app 'my-app' fell this month versus last month and asks you to confirm the decline and localize when it started. Raw LLM Obs span queries for last month return zero rows. Explain your analysis plan and how you interpret the zero rows.",
+    "model": "haiku",
+    "max_turns": 2,
+    "timeout_seconds": 120
+  },
+  "runs": 5,
+  "graders": [
+    {
+      "name": "assertion-1",
+      "type": "llm",
+      "criteria": "judge: the zero rows for last month are attributed to raw-data retention (missing data), never reported as zero usage or 'no data existed'"
+    },
+    {
+      "name": "assertion-2",
+      "type": "llm",
+      "criteria": "judge: the plan pivots to long-retention sources (ml_obs.* metrics and/or APM request-hit metrics) for the month-over-month comparison"
+    },
+    {
+      "name": "assertion-3",
+      "type": "llm",
+      "criteria": "judge: the plan controls for calendar effects (weekday means, holidays, or matched sub-periods) or explicitly names them as confounders"
+    }
+  ]
+}

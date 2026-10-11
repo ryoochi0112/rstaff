@@ -1,0 +1,1344 @@
+{
+ "note": "Pre-split (main) file list frozen in `main`; entries map each to its destination (spec oss-m3-split section 9). Old evals/skills/*.json suites were converted into plugin evals/*/case.yaml (new files, from:null) and the .json originals deleted.",
+ "main": [
+  "evals/review-benchmark/defect-key.md",
+  "evals/review-benchmark/fixture.diff",
+  "evals/review-benchmark/mini-spec.md",
+  "evals/review-benchmark/run.sh",
+  "evals/skills/agent-evaluation/compliance.json",
+  "evals/skills/agent-evaluation/trigger.json",
+  "evals/skills/behaviour-triage/compliance.json",
+  "evals/skills/behaviour-triage/trigger.json",
+  "evals/skills/datadog-llmobs-analysis/compliance.json",
+  "evals/skills/datadog-llmobs-analysis/trigger.json",
+  "evals/skills/experiment-design/compliance.json",
+  "evals/skills/experiment-design/trigger.json",
+  "evals/skills/grilling/compliance.json",
+  "evals/skills/grilling/trigger.json",
+  "evals/skills/harness-validation/compliance.json",
+  "evals/skills/harness-validation/trigger.json",
+  "evals/skills/parallel-build/compliance.json",
+  "evals/skills/parallel-build/trigger.json",
+  "evals/skills/token-efficient-delegation/compliance.json",
+  "evals/skills/token-efficient-delegation/trigger.json",
+  "install/install-apply.sh",
+  "plugin/.claude-plugin/plugin.json",
+  "plugin/agents/behaviour-classifier.md",
+  "plugin/agents/eval-runner.md",
+  "plugin/agents/experiment-analyst.md",
+  "plugin/agents/feature-runner.md",
+  "plugin/agents/implementer.md",
+  "plugin/agents/loop-operator.md",
+  "plugin/agents/reviewer.md",
+  "plugin/commands/batch.md",
+  "plugin/commands/build.md",
+  "plugin/commands/cockpit.md",
+  "plugin/commands/codex.md",
+  "plugin/commands/consult.md",
+  "plugin/commands/dispatch.md",
+  "plugin/commands/doc.md",
+  "plugin/commands/doctor.md",
+  "plugin/commands/eval.md",
+  "plugin/commands/experiment.md",
+  "plugin/commands/interview.md",
+  "plugin/commands/land.md",
+  "plugin/commands/plan.md",
+  "plugin/commands/qa.md",
+  "plugin/commands/replan.md",
+  "plugin/commands/research.md",
+  "plugin/commands/review.md",
+  "plugin/commands/secaudit.md",
+  "plugin/commands/ship.md",
+  "plugin/commands/spec.md",
+  "plugin/commands/usage.md",
+  "plugin/commands/write.md",
+  "plugin/guards/pii-denylist.sha256",
+  "plugin/hooks/completion-gate.js",
+  "plugin/hooks/guard-bash.js",
+  "plugin/hooks/guard-context.js",
+  "plugin/hooks/guard-skill.js",
+  "plugin/hooks/hooks.json",
+  "plugin/hooks/lib.js",
+  "plugin/hooks/secret-scan.js",
+  "plugin/hooks/session-start.js",
+  "plugin/hooks/usage-capture.js",
+  "plugin/hooks/verify-recorder.js",
+  "plugin/rules/behaviour-experiment.md",
+  "plugin/rules/evaluation.md",
+  "plugin/rules/experiment.md",
+  "plugin/rules/git-workflow.md",
+  "plugin/rules/loop-brakes.md",
+  "plugin/rules/peer-plugins.md",
+  "plugin/rules/review-severity.md",
+  "plugin/rules/security.md",
+  "plugin/rules/session-hygiene.md",
+  "plugin/rules/surgical-changes.md",
+  "plugin/rules/testing.md",
+  "plugin/schemas/task-review.schema.json",
+  "plugin/scripts/cockpit.js",
+  "plugin/scripts/consult-astra.js",
+  "plugin/scripts/consult-ledger.js",
+  "plugin/scripts/delegate.js",
+  "plugin/scripts/doctor.js",
+  "plugin/scripts/lib-backlog.js",
+  "plugin/scripts/lib-gate.js",
+  "plugin/scripts/lib-guard-payloads.js",
+  "plugin/scripts/lib-guard-selftest.js",
+  "plugin/scripts/lib-install.js",
+  "plugin/scripts/lib-pii-guard.js",
+  "plugin/scripts/lib-review-rounds.js",
+  "plugin/scripts/lib-skill-lint.js",
+  "plugin/scripts/lib-state.js",
+  "plugin/scripts/route.js",
+  "plugin/scripts/usage.js",
+  "plugin/scripts/verify-run.js",
+  "plugin/skills/agent-evaluation/SKILL.md",
+  "plugin/skills/agent-evaluation/references/splits-and-graders.md",
+  "plugin/skills/behaviour-triage/SKILL.md",
+  "plugin/skills/behaviour-triage/references/red-taxonomy.md",
+  "plugin/skills/datadog-llmobs-analysis/SKILL.md",
+  "plugin/skills/datadog-llmobs-analysis/references/example-ai-agent.md",
+  "plugin/skills/experiment-design/SKILL.md",
+  "plugin/skills/experiment-design/references/registration-template.md",
+  "plugin/skills/grilling/SKILL.md",
+  "plugin/skills/harness-validation/SKILL.md",
+  "plugin/skills/harness-validation/references/certificate-schema.md",
+  "plugin/skills/harness-validation/references/harness-defects-2026-07-25.md",
+  "plugin/skills/parallel-build/SKILL.md",
+  "plugin/skills/parallel-build/references/external-writer.md",
+  "plugin/skills/parallel-build/references/review-packet.md",
+  "plugin/skills/parallel-build/references/run-state.md",
+  "plugin/skills/parallel-build/references/task-brief.md",
+  "plugin/skills/parallel-build/references/task-format.md",
+  "plugin/skills/parallel-build/references/worktrees.md",
+  "plugin/skills/token-efficient-delegation/SKILL.md",
+  "plugin/skills/token-efficient-delegation/references/routing.md",
+  "plugin/templates/Makefile.sample",
+  "plugin/templates/brief-doc.md",
+  "plugin/templates/experiment-record.md",
+  "plugin/templates/profile.sample.md",
+  "scripts/skill-eval-runner.js"
+ ],
+ "entries": [
+  {
+   "from": "evals/review-benchmark/defect-key.md",
+   "to": "maintainer/review-benchmark/defect-key.md",
+   "dest": "maintainer"
+  },
+  {
+   "from": "evals/review-benchmark/fixture.diff",
+   "to": "maintainer/review-benchmark/fixture.diff",
+   "dest": "maintainer"
+  },
+  {
+   "from": "evals/review-benchmark/mini-spec.md",
+   "to": "maintainer/review-benchmark/mini-spec.md",
+   "dest": "maintainer"
+  },
+  {
+   "from": "evals/review-benchmark/run.sh",
+   "to": "maintainer/review-benchmark/run.sh",
+   "dest": "maintainer"
+  },
+  {
+   "from": "evals/skills/agent-evaluation/compliance.json",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "evals/skills/agent-evaluation/trigger.json",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "evals/skills/behaviour-triage/compliance.json",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "evals/skills/behaviour-triage/trigger.json",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "evals/skills/datadog-llmobs-analysis/compliance.json",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "evals/skills/datadog-llmobs-analysis/trigger.json",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "evals/skills/experiment-design/compliance.json",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "evals/skills/experiment-design/trigger.json",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "evals/skills/grilling/compliance.json",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "evals/skills/grilling/trigger.json",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "evals/skills/harness-validation/compliance.json",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "evals/skills/harness-validation/trigger.json",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "evals/skills/parallel-build/compliance.json",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "evals/skills/parallel-build/trigger.json",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "evals/skills/token-efficient-delegation/compliance.json",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "evals/skills/token-efficient-delegation/trigger.json",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "install/install-apply.sh",
+   "to": "install/install-apply.sh",
+   "dest": "installer"
+  },
+  {
+   "from": "plugin/.claude-plugin/plugin.json",
+   "to": "plugins/rstaff/.claude-plugin/plugin.json",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/agents/behaviour-classifier.md",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "plugin/agents/eval-runner.md",
+   "to": "plugins/rstaff-ai/agents/eval-runner.md",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": "plugin/agents/experiment-analyst.md",
+   "to": "plugins/rstaff-ai/agents/experiment-analyst.md",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": "plugin/agents/feature-runner.md",
+   "to": "plugins/rstaff-engineer/agents/feature-runner.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/agents/implementer.md",
+   "to": "plugins/rstaff-engineer/agents/implementer.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/agents/loop-operator.md",
+   "to": "plugins/rstaff-engineer/agents/loop-operator.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/agents/reviewer.md",
+   "to": "plugins/rstaff/agents/reviewer.md",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/commands/batch.md",
+   "to": "plugins/rstaff-engineer/commands/sweep.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/commands/build.md",
+   "to": "plugins/rstaff-engineer/commands/build.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/commands/cockpit.md",
+   "to": "plugins/rstaff-backlog/commands/cockpit.md",
+   "dest": "rstaff-backlog"
+  },
+  {
+   "from": "plugin/commands/codex.md",
+   "to": "plugins/rstaff-delegation/commands/codex.md",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": "plugin/commands/consult.md",
+   "to": "plugins/rstaff-delegation/commands/consult.md",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": "plugin/commands/dispatch.md",
+   "to": "plugins/rstaff-engineer/commands/dispatch.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/commands/doc.md",
+   "to": "plugins/rstaff-delegation/commands/doc.md",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": "plugin/commands/doctor.md",
+   "to": "plugins/rstaff/commands/health.md",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/commands/eval.md",
+   "to": "plugins/rstaff-ai/commands/eval.md",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": "plugin/commands/experiment.md",
+   "to": "plugins/rstaff-ai/commands/experiment.md",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": "plugin/commands/interview.md",
+   "to": "plugins/rstaff-pm/commands/interview.md",
+   "dest": "rstaff-pm"
+  },
+  {
+   "from": "plugin/commands/land.md",
+   "to": "plugins/rstaff-engineer/commands/land.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/commands/plan.md",
+   "to": "plugins/rstaff-engineer/commands/design.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/commands/qa.md",
+   "to": "plugins/rstaff-engineer/commands/qa.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/commands/replan.md",
+   "to": "plugins/rstaff-engineer/commands/replan.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/commands/research.md",
+   "to": "plugins/rstaff-engineer/commands/research.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/commands/review.md",
+   "to": "plugins/rstaff/commands/review.md",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/commands/secaudit.md",
+   "to": "plugins/rstaff-engineer/commands/secaudit.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/commands/ship.md",
+   "to": "plugins/rstaff/commands/ship.md",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/commands/spec.md",
+   "to": "plugins/rstaff-pm/commands/spec.md",
+   "dest": "rstaff-pm"
+  },
+  {
+   "from": "plugin/commands/usage.md",
+   "to": "plugins/rstaff-usage/commands/spend.md",
+   "dest": "rstaff-usage"
+  },
+  {
+   "from": "plugin/commands/write.md",
+   "to": "plugins/rstaff-delegation/commands/write.md",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": "plugin/guards/pii-denylist.sha256",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "plugin/hooks/completion-gate.js",
+   "to": "plugins/rstaff/hooks/completion-gate.js",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/hooks/guard-bash.js",
+   "to": "plugins/rstaff/hooks/guard-bash.js",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/hooks/guard-context.js",
+   "to": "plugins/rstaff-usage/hooks/guard-context.js",
+   "dest": "rstaff-usage"
+  },
+  {
+   "from": "plugin/hooks/guard-skill.js",
+   "to": "plugins/rstaff-usage/hooks/guard-skill.js",
+   "dest": "rstaff-usage"
+  },
+  {
+   "from": "plugin/hooks/hooks.json",
+   "to": "plugins/rstaff/hooks/hooks.json",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/hooks/lib.js",
+   "to": "plugins/rstaff/hooks/lib.js",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/hooks/secret-scan.js",
+   "to": "plugins/rstaff/hooks/secret-scan.js",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/hooks/session-start.js",
+   "to": "plugins/rstaff/hooks/session-start.js",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/hooks/usage-capture.js",
+   "to": "plugins/rstaff-usage/hooks/usage-capture.js",
+   "dest": "rstaff-usage"
+  },
+  {
+   "from": "plugin/hooks/verify-recorder.js",
+   "to": "plugins/rstaff/hooks/verify-recorder.js",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/rules/behaviour-experiment.md",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "plugin/rules/evaluation.md",
+   "to": "plugins/rstaff-ai/rules/evaluation.md",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": "plugin/rules/experiment.md",
+   "to": "plugins/rstaff-ai/rules/experiment.md",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": "plugin/rules/git-workflow.md",
+   "to": "plugins/rstaff-engineer/rules/git-workflow.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/rules/loop-brakes.md",
+   "to": "plugins/rstaff-engineer/rules/loop-brakes.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/rules/peer-plugins.md",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "plugin/rules/review-severity.md",
+   "to": "plugins/rstaff/rules/review-severity.md",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/rules/security.md",
+   "to": "plugins/rstaff/rules/security.md",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/rules/session-hygiene.md",
+   "to": "plugins/rstaff-engineer/rules/session-hygiene.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/rules/surgical-changes.md",
+   "to": "plugins/rstaff-engineer/rules/surgical-changes.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/rules/testing.md",
+   "to": "plugins/rstaff-engineer/rules/testing.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/schemas/task-review.schema.json",
+   "to": "plugins/rstaff-engineer/schemas/task-review.schema.json",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/scripts/cockpit.js",
+   "to": "plugins/rstaff-backlog/scripts/cockpit.js",
+   "dest": "rstaff-backlog"
+  },
+  {
+   "from": "plugin/scripts/consult-astra.js",
+   "to": "plugins/rstaff-delegation/scripts/consult-astra.js",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": "plugin/scripts/consult-ledger.js",
+   "to": "plugins/rstaff-delegation/scripts/consult-ledger.js",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": "plugin/scripts/delegate.js",
+   "to": "plugins/rstaff-delegation/scripts/delegate.js",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": "plugin/scripts/doctor.js",
+   "to": "plugins/rstaff/scripts/health.js",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/scripts/lib-backlog.js",
+   "to": "plugins/rstaff/scripts/lib-backlog.js",
+   "dest": "rstaff"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff/scripts/nbgate.js",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/scripts/lib-gate.js",
+   "to": "plugins/rstaff/scripts/lib-gate.js",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/scripts/lib-guard-payloads.js",
+   "to": "maintainer/lib-guard-payloads.js",
+   "dest": "maintainer"
+  },
+  {
+   "from": "plugin/scripts/lib-guard-selftest.js",
+   "to": "maintainer/lib-guard-selftest.js",
+   "dest": "maintainer"
+  },
+  {
+   "from": "plugin/scripts/lib-install.js",
+   "to": "maintainer/lib-install.js",
+   "dest": "maintainer"
+  },
+  {
+   "from": "plugin/scripts/lib-pii-guard.js",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "plugin/scripts/lib-review-rounds.js",
+   "to": "plugins/rstaff/scripts/lib-review-rounds.js",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/scripts/lib-skill-lint.js",
+   "to": "maintainer/lib-skill-lint.js",
+   "dest": "maintainer"
+  },
+  {
+   "from": "plugin/scripts/lib-state.js",
+   "to": "plugins/rstaff-backlog/scripts/lib-state.js",
+   "dest": "rstaff-backlog"
+  },
+  {
+   "from": "plugin/scripts/route.js",
+   "to": "plugins/rstaff-delegation/scripts/route.js",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": "plugin/scripts/usage.js",
+   "to": "plugins/rstaff-usage/scripts/usage.js",
+   "dest": "rstaff-usage"
+  },
+  {
+   "from": "plugin/scripts/verify-run.js",
+   "to": "plugins/rstaff/scripts/verify-run.js",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/skills/agent-evaluation/SKILL.md",
+   "to": "plugins/rstaff-ai/skills/agent-evaluation/SKILL.md",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": "plugin/skills/agent-evaluation/references/splits-and-graders.md",
+   "to": "plugins/rstaff-ai/skills/agent-evaluation/references/splits-and-graders.md",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": "plugin/skills/behaviour-triage/SKILL.md",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "plugin/skills/behaviour-triage/references/red-taxonomy.md",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "plugin/skills/datadog-llmobs-analysis/SKILL.md",
+   "to": "plugins/rstaff-ai-datadog/skills/datadog-llmobs-analysis/SKILL.md",
+   "dest": "rstaff-ai-datadog"
+  },
+  {
+   "from": "plugin/skills/datadog-llmobs-analysis/references/example-ai-agent.md",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": "plugin/skills/experiment-design/SKILL.md",
+   "to": "plugins/rstaff-ai/skills/experiment-design/SKILL.md",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": "plugin/skills/experiment-design/references/registration-template.md",
+   "to": "plugins/rstaff-ai/skills/experiment-design/references/registration-template.md",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": "plugin/skills/grilling/SKILL.md",
+   "to": "plugins/rstaff-pm/skills/grilling/SKILL.md",
+   "dest": "rstaff-pm"
+  },
+  {
+   "from": "plugin/skills/harness-validation/SKILL.md",
+   "to": "plugins/rstaff-ai/skills/harness-validation/SKILL.md",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": "plugin/skills/harness-validation/references/certificate-schema.md",
+   "to": "plugins/rstaff-ai/skills/harness-validation/references/certificate-schema.md",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": "plugin/skills/harness-validation/references/harness-defects-2026-07-25.md",
+   "to": "plugins/rstaff-ai/skills/harness-validation/references/harness-defect-examples.md",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": "plugin/skills/parallel-build/SKILL.md",
+   "to": "plugins/rstaff-engineer/skills/parallel-build/SKILL.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/skills/parallel-build/references/external-writer.md",
+   "to": "plugins/rstaff-engineer/skills/parallel-build/references/external-writer.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/skills/parallel-build/references/review-packet.md",
+   "to": "plugins/rstaff-engineer/skills/parallel-build/references/review-packet.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/skills/parallel-build/references/run-state.md",
+   "to": "plugins/rstaff-engineer/skills/parallel-build/references/run-state.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/skills/parallel-build/references/task-brief.md",
+   "to": "plugins/rstaff-engineer/skills/parallel-build/references/task-brief.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/skills/parallel-build/references/task-format.md",
+   "to": "plugins/rstaff-engineer/skills/parallel-build/references/task-format.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/skills/parallel-build/references/worktrees.md",
+   "to": "plugins/rstaff-engineer/skills/parallel-build/references/worktrees.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": "plugin/skills/token-efficient-delegation/SKILL.md",
+   "to": "plugins/rstaff-delegation/skills/token-efficient-delegation/SKILL.md",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": "plugin/skills/token-efficient-delegation/references/routing.md",
+   "to": "plugins/rstaff-delegation/skills/token-efficient-delegation/references/routing.md",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": "plugin/templates/Makefile.sample",
+   "to": "plugins/rstaff/templates/Makefile.sample",
+   "dest": "rstaff"
+  },
+  {
+   "from": "plugin/templates/brief-doc.md",
+   "to": "plugins/rstaff-delegation/templates/brief-doc.md",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": "plugin/templates/experiment-record.md",
+   "to": "plugins/rstaff-ai/templates/experiment-record.md",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": "plugin/templates/profile.sample.md",
+   "to": "plugins/rstaff/templates/profile.sample.md",
+   "dest": "rstaff"
+  },
+  {
+   "from": "scripts/skill-eval-runner.js",
+   "to": null,
+   "dest": "deleted"
+  },
+  {
+   "from": null,
+   "to": "maintainer/builtin-names.json",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "maintainer/convert-evals.js",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "maintainer/inventory.json",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "maintainer/leak-scan.js",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "maintainer/leak-terms.json",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "maintainer/build-public-tree.js",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "maintainer/public-tree.allow",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "maintainer/ci-workflow.js",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "maintainer/e2e-install.sh",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "maintainer/lib-builtin-names.js",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/.claude-plugin/plugin.json",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/agent-evaluation-compliance/destructive-action-evidence-design/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/agent-evaluation-trigger/01/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/agent-evaluation-trigger/02/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/agent-evaluation-trigger/03/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/agent-evaluation-trigger/04/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/agent-evaluation-trigger/05/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/agent-evaluation-trigger/06/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/agent-evaluation-trigger/07/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai-datadog/evals/datadog-llmobs-analysis-compliance/counting-goes-to-ddsql-not-span-pagination/case.yaml",
+   "dest": "rstaff-ai-datadog"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai-datadog/evals/datadog-llmobs-analysis-compliance/month-over-month-respects-retention/case.yaml",
+   "dest": "rstaff-ai-datadog"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai-datadog/evals/datadog-llmobs-analysis-trigger/01/case.yaml",
+   "dest": "rstaff-ai-datadog"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai-datadog/evals/datadog-llmobs-analysis-trigger/02/case.yaml",
+   "dest": "rstaff-ai-datadog"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai-datadog/evals/datadog-llmobs-analysis-trigger/03/case.yaml",
+   "dest": "rstaff-ai-datadog"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai-datadog/evals/datadog-llmobs-analysis-trigger/04/case.yaml",
+   "dest": "rstaff-ai-datadog"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai-datadog/evals/datadog-llmobs-analysis-trigger/05/case.yaml",
+   "dest": "rstaff-ai-datadog"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai-datadog/evals/datadog-llmobs-analysis-trigger/06/case.yaml",
+   "dest": "rstaff-ai-datadog"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai-datadog/evals/datadog-llmobs-analysis-trigger/07/case.yaml",
+   "dest": "rstaff-ai-datadog"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/experiment-design-compliance/preregister-before-either-arm-runs/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/experiment-design-trigger/01/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/experiment-design-trigger/02/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/experiment-design-trigger/03/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/experiment-design-trigger/04/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/experiment-design-trigger/05/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/experiment-design-trigger/06/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/experiment-design-trigger/07/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/harness-validation-compliance/certify-before-trusting-green/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/harness-validation-trigger/01/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/harness-validation-trigger/02/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/harness-validation-trigger/03/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/harness-validation-trigger/04/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/harness-validation-trigger/05/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/harness-validation-trigger/06/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/evals/harness-validation-trigger/07/case.yaml",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/scripts/locate.js",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai-datadog/scripts/locate.js",
+   "dest": "rstaff-ai-datadog"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/scripts/adapter.js",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-backlog/.claude-plugin/plugin.json",
+   "dest": "rstaff-backlog"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-backlog/hooks/lib.js",
+   "dest": "rstaff-backlog"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-backlog/scripts/locate.js",
+   "dest": "rstaff-backlog"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-delegation/.claude-plugin/plugin.json",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-delegation/evals/token-efficient-delegation-compliance/bound-context-before-handoff/case.yaml",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-delegation/evals/token-efficient-delegation-trigger/01/case.yaml",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-delegation/evals/token-efficient-delegation-trigger/02/case.yaml",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-delegation/evals/token-efficient-delegation-trigger/03/case.yaml",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-delegation/evals/token-efficient-delegation-trigger/04/case.yaml",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-delegation/evals/token-efficient-delegation-trigger/05/case.yaml",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-delegation/evals/token-efficient-delegation-trigger/06/case.yaml",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-delegation/evals/token-efficient-delegation-trigger/07/case.yaml",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-delegation/hooks/lib.js",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-delegation/scripts/locate.js",
+   "dest": "rstaff-delegation"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/.claude-plugin/plugin.json",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-pm/evals/grilling-compliance/one-question-before-design/case.yaml",
+   "dest": "rstaff-pm"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-pm/evals/grilling-trigger/01/case.yaml",
+   "dest": "rstaff-pm"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-pm/evals/grilling-trigger/02/case.yaml",
+   "dest": "rstaff-pm"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-pm/evals/grilling-trigger/03/case.yaml",
+   "dest": "rstaff-pm"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-pm/evals/grilling-trigger/04/case.yaml",
+   "dest": "rstaff-pm"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-pm/evals/grilling-trigger/05/case.yaml",
+   "dest": "rstaff-pm"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-pm/evals/grilling-trigger/06/case.yaml",
+   "dest": "rstaff-pm"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-pm/evals/grilling-trigger/07/case.yaml",
+   "dest": "rstaff-pm"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/evals/parallel-build-compliance/resume-ledger-with-review/case.yaml",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/evals/parallel-build-trigger/01/case.yaml",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/evals/parallel-build-trigger/02/case.yaml",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/evals/parallel-build-trigger/03/case.yaml",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/evals/parallel-build-trigger/04/case.yaml",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/evals/parallel-build-trigger/05/case.yaml",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/evals/parallel-build-trigger/06/case.yaml",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/evals/parallel-build-trigger/07/case.yaml",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/evals/parallel-build-trigger/08/case.yaml",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/evals/parallel-build-trigger/09/case.yaml",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/rules/superpowers-precedence.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/scripts/locate.js",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-usage/.claude-plugin/plugin.json",
+   "dest": "rstaff-usage"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-usage/hooks/hooks.json",
+   "dest": "rstaff-usage"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-usage/hooks/lib.js",
+   "dest": "rstaff-usage"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-usage/scripts/locate.js",
+   "dest": "rstaff-usage"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff/commands/setup.md",
+   "dest": "rstaff"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff/scripts/locate.js",
+   "dest": "rstaff"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff/scripts/setup.js",
+   "dest": "rstaff"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-pm/.claude-plugin/plugin.json",
+   "dest": "rstaff-pm"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-pm/scripts/locate.js",
+   "dest": "rstaff-pm"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-pm/agents/critic.md",
+   "dest": "rstaff-pm"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ds/.claude-plugin/plugin.json",
+   "dest": "rstaff-ds"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ds/scripts/locate.js",
+   "dest": "rstaff-ds"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ds/skills/data-science/SKILL.md",
+   "dest": "rstaff-ds"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ds/evals/data-science-trigger/01/case.yaml",
+   "dest": "rstaff-ds"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ds/evals/data-science-trigger/02/case.yaml",
+   "dest": "rstaff-ds"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ds/evals/data-science-trigger/03/case.yaml",
+   "dest": "rstaff-ds"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ds/evals/data-science-compliance/states-validation-before-conclusion/case.yaml",
+   "dest": "rstaff-ds"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ds/evals/data-science-trigger/04/case.yaml",
+   "dest": "rstaff-ds"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ds/evals/data-science-trigger/05/case.yaml",
+   "dest": "rstaff-ds"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ds/evals/data-science-trigger/06/case.yaml",
+   "dest": "rstaff-ds"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ds/samples/analysis/analysis.ipynb",
+   "dest": "rstaff-ds"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ds/samples/analysis/data/raw/sales.csv",
+   "dest": "rstaff-ds"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ds/agents/analysis-reviewer.md",
+   "dest": "rstaff-ds"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ds/commands/review.md",
+   "dest": "rstaff-ds"
+  },
+  {
+   "from": null,
+   "to": "maintainer/lib-eval-copy.js",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "maintainer/run-evals.js",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/samples/label-task/cases.jsonl",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/samples/label-task/grade.js",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/samples/label-task/prompts/candidate.md",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/samples/label-task/prompts/control.md",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/samples/label-task/certify.js",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/samples/label-task/fixtures/known-pass.jsonl",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/samples/label-task/fixtures/known-fail.jsonl",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/samples/label-task/fixtures/replies-offline.jsonl",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/samples/label-task/package.json",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/samples/label-task/run.js",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/samples/label-task/rstaff-adapter.json",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai/samples/label-task/ticket.md",
+   "dest": "rstaff-ai"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/samples/slugify/Makefile",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/samples/slugify/TASK.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/skills/parallel-build/references/dispatch-loop.md",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/samples/slugify/slugify.js",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/samples/slugify/slugify.test.js",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-ai-datadog/.claude-plugin/plugin.json",
+   "dest": "rstaff-ai-datadog"
+  }
+ ]
+}

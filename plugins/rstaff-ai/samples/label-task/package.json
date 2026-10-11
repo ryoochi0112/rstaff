@@ -1,0 +1,1 @@
+{"name":"label-task","private":true,"scripts":{"verify":"node certify.js --check"}}

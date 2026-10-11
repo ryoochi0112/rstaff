@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "data-science-trigger-04",
+  "tags": [
+    "data-science",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "My notebook shows an average order value that looks too high and I suspect duplicate rows in the dataframe. Help me check the data and work out what to report in the analysis.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "data-science"
+    }
+  ]
+}

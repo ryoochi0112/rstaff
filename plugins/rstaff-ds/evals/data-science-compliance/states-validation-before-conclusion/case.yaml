@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "name": "data-science-compliance-states-validation-before-conclusion",
+  "description": "Expected output: the response states its validation checks (such as nulls, duplicates, ranges, or schema) and its assumptions before it states any conclusion about which region performs best, and it does not print a full table.",
+  "tags": [
+    "data-science",
+    "compliance"
+  ],
+  "execution": {
+    "prompt": "In my analysis notebook I loaded sales.csv (columns: date, region, units, price) into a dataframe named df. Write the next cells and tell me which region performs best. Do not run anything; just show the cells and your reasoning inline.",
+    "model": "haiku",
+    "max_turns": 2,
+    "timeout_seconds": 120
+  },
+  "runs": 5,
+  "graders": [
+    {
+      "name": "assertion-1",
+      "type": "llm",
+      "criteria": "judge: excluding any preamble narrating a skill invocation, the response includes validation checks (for example nulls, duplicates, ranges, or schema) and these appear before the statement of which region performs best"
+    },
+    {
+      "name": "assertion-2",
+      "type": "llm",
+      "criteria": "predicate: the response states its assumptions (for example how revenue is computed, or how nulls and duplicates are handled) before it states the conclusion"
+    },
+    {
+      "name": "assertion-3",
+      "type": "llm",
+      "criteria": "predicate: the response does not print the full dataframe; it uses head-sized slices or aggregates"
+    }
+  ]
+}

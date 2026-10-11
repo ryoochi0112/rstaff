@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "grilling-trigger-03",
+  "tags": [
+    "grilling",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "I want to kick off a brand-new internal workflow but haven't nailed down what it should do yet. Before we plan anything, help me clarify this ambiguous goal into a precise, actionable task, one question at a time.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "grilling"
+    }
+  ]
+}

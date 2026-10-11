@@ -1,0 +1,13 @@
+{
+  "name": "rstaff-delegation",
+  "version": "0.13.0",
+  "description": "External model consultation, routed task execution, and document drafting for rstaff.",
+  "author": {
+    "name": "ryo.ochi"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/ryoochi0112/rstaff",
+  "dependencies": [
+    "rstaff"
+  ]
+}

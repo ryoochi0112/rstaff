@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "agent-evaluation-trigger-03",
+  "tags": [
+    "agent-evaluation",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "I keep writing eval cases that are really just the bug report turned into a prompt — my suite passed and then the exact same class of failure showed up in production a week later on a slightly different input. Help me figure out what coverage I'm actually missing: representative cases, adversarial ones, and how I should be slicing the results so a bad slice doesn't hide inside a good aggregate pass rate. There's nothing to look up or read for this — just walk me through it directly.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "agent-evaluation"
+    }
+  ]
+}

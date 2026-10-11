@@ -1,0 +1,15 @@
+{
+  "name": "rstaff-engineer",
+  "version": "0.13.0",
+  "description": "Engineering workflow commands, parallel delivery skills, and implementation conventions.",
+  "author": {
+    "name": "ryo.ochi"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/ryoochi0112/rstaff",
+  "dependencies": [
+    "rstaff",
+    "rstaff-pm",
+    "superpowers@superpowers-marketplace"
+  ]
+}

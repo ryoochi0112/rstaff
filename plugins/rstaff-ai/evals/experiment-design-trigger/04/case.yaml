@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "name": "experiment-design-trigger-04",
+  "tags": [
+    "experiment-design",
+    "trigger",
+    "sibling:agent-evaluation"
+  ],
+  "execution": {
+    "prompt": "The decision framing and threshold for this change are already locked — what I actually need help with now is picking which cases to write, how to split dev from a sealed confirmation holdout, and what kind of grader each case needs. There's nothing to look up or read for this — just walk me through it directly.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "experiment-design",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

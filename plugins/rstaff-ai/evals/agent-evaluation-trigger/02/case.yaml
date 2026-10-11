@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "agent-evaluation-trigger-02",
+  "tags": [
+    "agent-evaluation",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "This new agent has both an occasional-retry summarization step and an irreversible refund action in the same flow, and I don't think both should be held to the same bar. Help me figure out whether each one needs a 'works most of the time is fine' evidence bar or a 'must work every single time it comes up' bar, and what kind of grader — a regex, a DB check, a model judge, a human — each one actually needs. There's nothing to look up or read for this — just walk me through it directly.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "agent-evaluation"
+    }
+  ]
+}

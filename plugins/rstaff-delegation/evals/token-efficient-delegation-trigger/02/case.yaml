@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "token-efficient-delegation-trigger-02",
+  "tags": [
+    "token-efficient-delegation",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "I need to decide whether this next chunk of work goes to a native subagent or gets offloaded to a Codex worker, and what risk tier and reviewer it should get. Walk me through how you'd actually resolve and persist that routing decision. There's nothing to look up or read for this — just walk me through it directly.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "token-efficient-delegation"
+    }
+  ]
+}

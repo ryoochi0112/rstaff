@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "parallel-build-trigger-02",
+  "tags": [
+    "parallel-build",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "A control repo's checkout.tasks.md ledger shows T1 done, T2 pending, and the previous dispatcher crashed before T2's review landed. Reconcile the ledger against those existing commits and resume T2 through to ready_for_review — explain exactly what you'd do, without needing to search the filesystem first.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "parallel-build"
+    }
+  ]
+}

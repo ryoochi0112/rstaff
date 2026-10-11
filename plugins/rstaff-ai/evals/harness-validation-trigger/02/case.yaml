@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "harness-validation-trigger-02",
+  "tags": [
+    "harness-validation",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "Our eval harness mirrors the production tool schema, but I just noticed the deployed prompt has drifted from the copy the harness is using. Help me figure out what else might be quietly out of sync between the harness and what's actually running in production, and whether the last comparison we ran is still valid now that something's moved. There's nothing to look up or read for this — just walk me through it directly.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "harness-validation"
+    }
+  ]
+}

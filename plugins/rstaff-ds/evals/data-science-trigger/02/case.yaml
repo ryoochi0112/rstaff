@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "data-science-trigger-02",
+  "tags": [
+    "data-science",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "Clean up this analysis notebook before I share it with my team: it has dead cells, duplicated code, and I am not sure the results still reproduce.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "data-science"
+    }
+  ]
+}

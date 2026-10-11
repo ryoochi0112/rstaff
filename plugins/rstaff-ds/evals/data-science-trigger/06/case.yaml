@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "name": "data-science-trigger-06",
+  "tags": [
+    "data-science",
+    "trigger",
+    "sibling:grilling"
+  ],
+  "execution": {
+    "prompt": "My manager said 'make the settings page better' and left. I do not know what is wrong with it. Help me pin down what is broken, one question at a time, before I build anything.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "data-science",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

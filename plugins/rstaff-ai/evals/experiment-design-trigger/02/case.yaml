@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "experiment-design-trigger-02",
+  "tags": [
+    "experiment-design",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "We ran the new model against last week's known-good numbers from the old one and it looks better — but I have a nagging feeling that's not a fair comparison. Help me figure out whether that counts as a valid control, and what the four possible result states are once I actually run this properly. There's nothing to look up or read for this — just walk me through it directly.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "experiment-design"
+    }
+  ]
+}

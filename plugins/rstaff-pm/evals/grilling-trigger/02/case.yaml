@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "name": "grilling-trigger-02",
+  "tags": [
+    "grilling",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "My manager just told me to 'fix the onboarding experience' before the sprint review and moved on to the next meeting — I don't actually know what's wrong with it or what a fix would even look like. Help me nail down what's actually broken here, one question at a time, before I spend the week building the wrong thing.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "grilling"
+    }
+  ]
+}

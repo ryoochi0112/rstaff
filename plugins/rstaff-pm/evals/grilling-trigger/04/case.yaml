@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "name": "grilling-trigger-04",
+  "tags": [
+    "grilling",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "Add a --dry-run flag to this exact function, then show me the edited function and test inline — do not edit any files, just print the result: `function run(opts) { return execute(opts); }` and this test: `test('run', () => { assert.equal(run({}), execute({})); })`. When --dry-run is passed, skip the execute() call and log the args instead. Everything you need is inline above; do not ask me anything else.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "grilling",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

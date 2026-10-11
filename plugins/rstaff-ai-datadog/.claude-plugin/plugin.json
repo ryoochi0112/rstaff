@@ -1,0 +1,13 @@
+{
+  "name": "rstaff-ai-datadog",
+  "version": "0.13.0",
+  "description": "Optional Datadog LLM Observability analysis; requires a Datadog account and the Datadog connector.",
+  "author": {
+    "name": "ryo.ochi"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/ryoochi0112/rstaff",
+  "dependencies": [
+    "rstaff-ai"
+  ]
+}

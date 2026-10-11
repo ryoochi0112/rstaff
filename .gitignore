@@ -1,0 +1,10 @@
+# Operator working state: per-project checkpoints (var/sessions/), dispatch
+# run-state (var/dispatch/), spec+ledger+QA (var/specs/), review-round memory (var/review-rounds/), usage logs + summary
+# cache, cockpit render cache, loop kill-switch (var/.STOP).
+# All local/derived — not shared history.
+var/
+
+# OS / editor noise
+.DS_Store
+*.log
+node_modules/

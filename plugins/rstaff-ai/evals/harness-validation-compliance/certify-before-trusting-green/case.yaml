@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "name": "harness-validation-compliance-certify-before-trusting-green",
+  "description": "Legacy id: certify-before-trusting-green\nExpected output: The response refuses to treat the month of green results as trustworthy on its own, requires a mutation test that deliberately breaks a known-good reply to confirm the grader actually catches the defect (and would be 'blind' if it still passed), requires known-pass/known-fail fixtures or a human-labeled gold set to check the judge against, and does not itself set a pass/fail threshold or declare an ACCEPT/REJECT verdict for the prompt change.",
+  "tags": [
+    "harness-validation",
+    "compliance"
+  ],
+  "execution": {
+    "prompt": "We built a judge model that scores whether our support agent's replies are 'helpful.' It's been giving green results every week for a month, and someone wants to use next week's report to justify shipping a prompt change. Before anyone trusts the next report from this judge, walk through concretely what you'd actually check about it and about the harness around it.",
+    "model": "haiku",
+    "max_turns": 2,
+    "timeout_seconds": 120
+  },
+  "runs": 5,
+  "graders": [
+    {
+      "name": "assertion-1",
+      "type": "llm",
+      "criteria": "judge: the assistant treats the month of green results as untrustworthy on its own and does not accept it as sufficient evidence the judge works"
+    },
+    {
+      "name": "assertion-2",
+      "type": "llm",
+      "criteria": "regex: /mutat(e|ion|ed)/i — the assistant requires a mutation test that deliberately breaks a known-good case to confirm the grader actually fires on the defect it claims to catch"
+    },
+    {
+      "name": "assertion-3",
+      "type": "llm",
+      "criteria": "judge: the assistant proposes taking a reply known to be good and altering it to plant one specific defect the judge should catch (for example wrong facts, an off-topic answer, or a truncated reply), running the judge on the altered reply, and treating the judge as blind if it still scores it as passing. Grade the procedure, not the wording. Feeding the judge generic garbage or nonsense input does not count, and neither does spot-checking the judge's scores on real replies"
+    },
+    {
+      "name": "assertion-4",
+      "type": "llm",
+      "criteria": "judge: the assistant requires a reference set assembled BEFORE trusting the judge, whose correct verdicts are fixed independently of the judge and which explicitly includes replies that must be scored as failing (known-fail fixtures, or a pre-labeled gold set that contains unhelpful replies), and requires measuring whether the judge scores them correctly. Grade the procedure, not the wording. Hand re-scoring a sample of the judge's own past scores, or human spot-checks of production replies, does not count even when an agreement rate is computed"
+    },
+    {
+      "name": "assertion-5",
+      "type": "llm",
+      "criteria": "regex: /known[- ]?pass|known[- ]?fail|gold set|human[- ]labeled/i — the assistant requires known-pass/known-fail fixtures or a human-labeled gold set to check the judge against"
+    },
+    {
+      "name": "assertion-6",
+      "type": "llm",
+      "criteria": "judge: the assistant does not itself set a pass/fail threshold or declare ACCEPT/REJECT for the prompt change — it stays scoped to certifying whether the judge/harness can be trusted"
+    }
+  ]
+}

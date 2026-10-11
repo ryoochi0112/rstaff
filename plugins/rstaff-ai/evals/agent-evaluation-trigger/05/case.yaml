@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "name": "agent-evaluation-trigger-05",
+  "tags": [
+    "agent-evaluation",
+    "trigger",
+    "sibling:harness-validation"
+  ],
+  "execution": {
+    "prompt": "The judge model that's been scoring our support-agent replies has looked green for a month straight and I've never actually checked it. I need to run a mutation test to see whether it would still pass a reply I deliberately broke, and check it against a known-pass/known-fail fixture set before I trust the next report it gives me. There's nothing to look up or read for this — just walk me through the check directly, don't search for or open any files.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "agent-evaluation",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

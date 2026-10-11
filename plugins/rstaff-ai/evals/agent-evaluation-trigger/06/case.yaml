@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "name": "agent-evaluation-trigger-06",
+  "tags": [
+    "agent-evaluation",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "Rename the timeoutMs parameter to deadlineMs in this exact code, then show the edited result: `function schedule(timeoutMs) { return wait(timeoutMs); } function callerOne() { return schedule(500); } function callerTwo(t) { return schedule(t); }`. There are no design decisions left to make and nothing else to look up — just show the renamed code.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "agent-evaluation",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

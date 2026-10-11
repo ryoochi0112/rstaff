@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "name": "parallel-build-compliance-resume-ledger-with-review",
+  "description": "Legacy id: resume-ledger-with-review\nExpected output: The response uses checkout.tasks.md as the task-state source, reconciles existing commits, dispatches a fresh writer through the persisted route, obtains independent spec and quality review verdicts, checkpoint-commits approved work, and stops at ready_for_review without terminal integration actions.",
+  "tags": [
+    "parallel-build",
+    "compliance"
+  ],
+  "execution": {
+    "prompt": "Use the rstaff-engineer:parallel-build skill. Do not read, search, or list any files — checkout.tasks.md is not in this directory, and everything you need is in this message and the skill instructions; answer directly. A control repo contains checkout.tasks.md. T1 is pending, T2 is done, and the previous dispatcher crashed before T1 was reviewed. Explain the exact coordination flow to resume T1 and then process the next ready task — walk through every phase in order and do not summarize any of them away: reconciling the ledger, selecting the next task, implementing it, reviewing it, and committing it, before moving to the next ready task.",
+    "model": "haiku",
+    "max_turns": 3,
+    "timeout_seconds": 120
+  },
+  "runs": 5,
+  "graders": [
+    {
+      "name": "skill-loaded",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "parallel-build"
+    },
+    {
+      "name": "assertion-1",
+      "type": "llm",
+      "criteria": "judge: the assistant treats the control-repo ledger as the task-state source of truth for task status and coordination, rather than relying on inferred or separate state"
+    },
+    {
+      "name": "assertion-2",
+      "type": "regex",
+      "pattern": "reconcil(e|iation)[\\s\\S]*ledger",
+      "flags": "i"
+    },
+    {
+      "name": "assertion-3",
+      "type": "regex",
+      "pattern": "fresh[\\s`*_]+(writer|implementer|subagent|claude|codex)",
+      "flags": "i"
+    },
+    {
+      "name": "assertion-4",
+      "type": "regex",
+      "pattern": "(two[- ]verdict|independent review|spec[\\s\\S]{0,120}quality[\\s\\S]{0,120}(?:pass|block)|quality[\\s\\S]{0,120}spec[\\s\\S]{0,120}(?:pass|block))",
+      "flags": "i"
+    },
+    {
+      "name": "assertion-5",
+      "type": "regex",
+      "pattern": "checkpoint[- ]commit|rstaff-task:\\s*\\S+\\/T\\d",
+      "flags": "i"
+    },
+    {
+      "name": "assertion-6",
+      "type": "regex",
+      "pattern": "\\b(stops?|stopping|exits?|exiting|halts?|halting)\\b[\\s\\S]{0,40}?ready_for_review|ready_for_review[\\s\\S]{0,120}?\\b(stops?|exits?|halts?|stopping|exiting)\\b",
+      "flags": "i"
+    },
+    {
+      "name": "assertion-7",
+      "type": "llm",
+      "criteria": "judge: Answer PASS if the reply never says that the assistant, dispatcher, runner, or writer itself pushes a commit or branch, runs `git push`, merges, ships, or opens a pull request. These are NOT pushes and do not cause a FAIL: `git commit`, `git stash push`, and sentences saying runners never push, merge, or open PRs, or that humans decide whether to merge. Answer FAIL if any step of the described flow pushes, merges, ships, or opens a PR."
+    }
+  ]
+}

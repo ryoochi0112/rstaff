@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "name": "grilling-compliance-one-question-before-design",
+  "description": "Legacy id: one-question-before-design\nExpected output: The first response asks a single high-leverage clarifying question — either about ONE of the open dimensions (live-vs-historical, the action taken) or one upstream question about the shift leads' problem that would resolve them — and does not separately ask about several dimensions in the same turn, does not ask for the target audience or current route since both are already given above, and does not propose a design before the question is answered.",
+  "tags": [
+    "grilling",
+    "compliance"
+  ],
+  "execution": {
+    "prompt": "A stakeholder says, 'We need some kind of dashboard for the team. I'm not sure if it should show live alerts or historical trends, and I don't know what action people would take from it.' Already established (do not ask about these — answer using them if needed): the target audience is the support team's shift leads, and the current route for this kind of internal tool is /internal/tools/<name>.",
+    "model": "haiku",
+    "max_turns": 2,
+    "timeout_seconds": 120
+  },
+  "runs": 5,
+  "graders": [
+    {
+      "name": "assertion-1",
+      "type": "llm",
+      "criteria": "judge: excluding any preamble narrating a skill invocation, the reply asks exactly ONE substantive question. An upstream question about the shift leads' problem, need, or goal counts as one question even when its examples or explanation touch both live-vs-historical content and the action taken; illustrative examples, an 'e.g.' list, or a sub-clause rephrasing the same question do not count as extra questions. It fails if it separately asks two or more distinct questions, for example one about live-vs-historical content AND another about the action taken"
+    },
+    {
+      "name": "assertion-2",
+      "type": "llm",
+      "criteria": "judge: the audience (the support team's shift leads) and the route (/internal/tools/<name>) are already known. This fails ONLY if the reply asks who the dashboard is for or who will use it, or asks where it should live (its URL, path, or route). Asking what the shift leads need, check, struggle with, or do is about their needs, not about who the audience is, and passes"
+    },
+    {
+      "name": "assertion-3",
+      "type": "llm",
+      "criteria": "judge: the assistant asks one high-leverage question before proposing any implementation or design"
+    }
+  ]
+}

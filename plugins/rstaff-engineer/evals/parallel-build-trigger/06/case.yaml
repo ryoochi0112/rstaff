@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "name": "parallel-build-trigger-06",
+  "tags": [
+    "parallel-build",
+    "trigger"
+  ],
+  "execution": {
+    "prompt": "Once tests pass on a branch, what are the exact git commands to push it, merge it, and open a pull request? Just list the commands from memory — don't run anything or check any current state.",
+    "model": "sonnet",
+    "max_turns": 4,
+    "timeout_seconds": 180
+  },
+  "runs": 3,
+  "graders": [
+    {
+      "name": "skill-trigger",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "parallel-build",
+      "min": 0,
+      "max": 0
+    }
+  ]
+}

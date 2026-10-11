@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "name": "datadog-llmobs-analysis-compliance-counting-goes-to-ddsql-not-span-pagination",
+  "description": "Legacy id: counting-goes-to-ddsql-not-span-pagination\nExpected output: The plan counts server-side: a DDSQL dd.llm_observability query over llm-kind spans using COUNT(DISTINCT trace_id_low) for turns and COUNT(DISTINCT \"employee.id\") (or user.id) for users grouped by date_trunc('day', \"timestamp\"), with every referenced field listed in both columns => ARRAY[...] and the AS (...) list, tag filters written without an @ prefix, and from_timestamp/to_timestamp passed together. It does not propose paginating search_llmobs_spans to count, and it does not conclude user attribution is impossible without first checking llm-kind span tags.",
+  "tags": [
+    "datadog-llmobs-analysis",
+    "compliance"
+  ],
+  "execution": {
+    "prompt": "You have Datadog MCP tools available (search_llmobs_spans, ddsql_run_query, get_datadog_metric, and the DDSQL schema tools). Task: for the production LLM app 'my-app', report the number of agent turns per day and the number of distinct users per day for the last 10 full days. Describe exactly which tool calls and queries you would run, in order, before running anything.",
+    "model": "haiku",
+    "max_turns": 2,
+    "timeout_seconds": 120
+  },
+  "runs": 5,
+  "graders": [
+    {
+      "name": "assertion-1",
+      "type": "llm",
+      "criteria": "judge: the plan's counting path is a DDSQL dd.llm_observability aggregation (COUNT / COUNT DISTINCT grouped by day), not pagination of span search results"
+    },
+    {
+      "name": "assertion-2",
+      "type": "llm",
+      "criteria": "judge: user attribution uses identity tags on llm-kind spans (employee.id or user.id), rather than claiming spans carry no user identifier"
+    },
+    {
+      "name": "assertion-3",
+      "type": "llm",
+      "criteria": "predicate: the response does not propose counting turns by paging through search_llmobs_spans results"
+    }
+  ]
+}
