@@ -86,9 +86,11 @@ function dequoteRmTargets(text) {
   return text.replace(/'([^']*)'|"((?:\\.|[^"\\])*)"|(?:\\.|[^'"\\])+/g,
     (match, single, double) => {
       if (single !== undefined || double !== undefined) {
-        const value = single !== undefined ? single : decodeDoubleQuoted(double);
-        if (/^rm$/.test(value)) rmActive = true;
-        return rmActive ? value : (single !== undefined ? "''" : '""');
+        // Decoding only drops a backslash before " \ $ `, so it cannot turn other
+        // content into `rm`: decode lazily, only when the value is kept.
+        if ((single !== undefined ? single : double) === 'rm') rmActive = true;
+        if (!rmActive) return single !== undefined ? "''" : '""';
+        return single !== undefined ? single : decodeDoubleQuoted(double);
       }
       const separator = Math.max(
         match.lastIndexOf(';'), match.lastIndexOf('&'), match.lastIndexOf('|'),
@@ -139,12 +141,12 @@ function extractShellBodies(text) {
 
 const MAX_SHELL_BODY_DEPTH = 4;
 const MAX_TOTAL_EXTRACTED_BODY_BYTES = 1024 * 1024;
-function normalizedCommands(text) {
+function normalizedCommands(text, top) {
   const commands = [];
   let extractedBytes = 0;
   let extractionBudgetExceeded = false;
   function visit(body, depth) {
-    const normalized = normalize(body);
+    const normalized = depth === 0 && top ? top : normalize(body);
     commands.push(normalized);
     if (depth >= MAX_SHELL_BODY_DEPTH || extractionBudgetExceeded) return;
     for (const extracted of extractShellBodies(normalized.stripped)) {
@@ -229,9 +231,10 @@ function denyBypasses(commands) {
 // Always run the cheap top-level scan before recursive extraction. The hook is
 // configured fail-open at five seconds, so extraction cost must never starve a
 // deny that is already visible in the top-level command text.
-denyBypasses([normalize(cmd)]);
+const top = normalize(cmd);
+denyBypasses([top]);
 
-const commands = normalizedCommands(cmd);
+const commands = normalizedCommands(cmd, top);
 denyBypasses(commands.slice(1));
 
 // Hard deny: dispatching an external writer for a ledger task whose route was
@@ -319,9 +322,14 @@ const LEASE_RE = /(^|\s)--force-with-lease(?:=\S*)?(?=\s|$)/g;
 // The push tier scans line by line, so a newline inside a quoted argument must
 // not end the scanned line: fold it to a space and keep every other byte so the
 // flag and refspec rules still see the tokens.
-const foldQuotedNewlines = (text) => text.replace(/\\.|'[^']*'|"(?:\\.|[^"\\])*"/g, (match) => (
+const foldQuotedNewlines = (text) => (!text.includes('\n') ? text : text.replace(/\\.|'[^']*'|"(?:\\.|[^"\\])*"/g, (match) => (
   match[0] === '\\' ? match : match.replace(/\r?\n/g, ' ')
-));
+)));
+// Each rule family scans the same inputs, so build them once, not once per rule.
+const rmInputs = [dequoteRmTargets(cmd), ...commands.slice(1).map((command) => command.rmNormalized)];
+const pushInputs = [dequoteGitWord(cmd), ...commands.slice(1).map((command) => command.unquoted)]
+  .map((input) => foldQuotedNewlines(joinContinuations(input)));
+const plainInputs = [cmd, ...commands.slice(1).map((command) => command.unquoted)];
 for (const d of destructive) {
   // Preserve the existing raw top-level behaviour. Extracted bodies use their
   // recursively normalized form, keeping quoted message data out of the rules.
@@ -329,12 +337,7 @@ for (const d of destructive) {
   // normalised form — dequoted command word, continuations joined, quoted
   // newlines folded — so a quoted `git` or a backslash-continued option chain
   // cannot slip past one rule while the other would have caught it.
-  const inputs = d.rm
-    ? [dequoteRmTargets(cmd), ...commands.slice(1).map((command) => command.rmNormalized)]
-    : d.push || d.git
-      ? [dequoteGitWord(cmd), ...commands.slice(1).map((command) => command.unquoted)]
-        .map((input) => foldQuotedNewlines(joinContinuations(input)))
-      : [cmd, ...commands.slice(1).map((command) => command.unquoted)];
+  const inputs = d.rm ? rmInputs : (d.push || d.git ? pushInputs : plainInputs);
   const matched = d.push
     ? inputs.some((input) => input.split('\n').some((line, i, lines) => {
       const m = GIT_PUSH_RE.exec(line);
