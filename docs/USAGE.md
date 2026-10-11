@@ -179,3 +179,5 @@ So: pick one real, small feature in a profiled repo, run the full chain
 interactively once, then earn the parallel mode.
 This matches the repo's own doctrine: **earn autonomy gradually; when in doubt,
 drop a level.**
+
+PROCESS-999
