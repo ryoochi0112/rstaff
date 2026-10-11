@@ -124,6 +124,10 @@ function scan(root, { all = false, hashedTerms = HASHED_TERMS, termsFile } = {})
   return hits;
 }
 
+function formatHits(hits) {
+  return hits.map(hit => `${hit.file}:${hit.line} ${hit.term}\n`).join('');
+}
+
 function main(argv) {
   if (argv.length === 2 && argv[0] === '--hash') {
     process.stdout.write(`${JSON.stringify(hashTerm(argv[1]))}\n`);
@@ -150,7 +154,7 @@ function main(argv) {
 
   const hits = scan(root, { all, termsFile });
   if (hits.length) {
-    for (const hit of hits) process.stdout.write(`${hit.file}:${hit.line} ${hit.term}\n`);
+    process.stdout.write(formatHits(hits));
     return 1;
   }
   process.stdout.write(`leak-scan: no hits in ${all ? 'all files' : 'plugins/** or .claude-plugin/marketplace.json'}\n`);
@@ -159,4 +163,4 @@ function main(argv) {
 
 if (require.main === module) process.exitCode = main(process.argv.slice(2));
 
-module.exports = { scan, hashTerm };
+module.exports = { scan, hashTerm, formatHits };

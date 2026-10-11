@@ -7,7 +7,7 @@ const path = require('node:path');
 const { createHash } = require('node:crypto');
 const { spawnSync } = require('node:child_process');
 const { test } = require('node:test');
-const { scan, hashTerm } = require('../../maintainer/leak-scan.js');
+const { scan, hashTerm, formatHits } = require('../../maintainer/leak-scan.js');
 const HASHED_TERMS = require('../../maintainer/leak-terms.json');
 
 const ROOT = path.resolve(__dirname, '../..');
@@ -54,6 +54,21 @@ for (const [term, content] of cases) {
     assert.equal(result.stdout, `plugins/sample/fixture.md:2 ${term}\n`);
   });
 }
+
+test('formatHits prints one <file>:<line> <term> line per hit, no JSON', () => {
+  const hits = [{ file: 'docs/USAGE.md', line: 183, term: 'X-' }, { file: 'a.md', line: 1, term: '@company-email' }];
+  assert.equal(formatHits(hits), 'docs/USAGE.md:183 X-\na.md:1 @company-email\n');
+  assert.equal(formatHits([]), '');
+});
+
+test('make verify runs leak-scan before the test suite so CI logs show leak lines', () => {
+  const makefile = fs.readFileSync(path.join(ROOT, 'Makefile'), 'utf8');
+  const recipe = makefile.split(/^verify:\n/m)[1].split(/\n(?!\t)/)[0].split('\n');
+  const leak = recipe.findIndex(line => line.includes('node maintainer/leak-scan.js'));
+  const suite = recipe.findIndex(line => line.includes("node --test 'test/**/*.test.js'"));
+  assert.ok(leak >= 0 && suite >= 0, recipe.join('\n'));
+  assert.ok(leak < suite, `leak-scan (line ${leak}) must precede the test suite (line ${suite})`);
+});
 
 test('hashTerm lowercases before hashing and reports the normalized length', () => {
   assert.deepEqual(hashTerm('ZqXfOo'), {
@@ -405,7 +420,7 @@ test('public allowlist paths of the real repo have no leaks', t => {
   }
   t.diagnostic(`applied public overlay files: ${appliedOverlays}`);
   const hits = scan(scratch, { all: true });
-  assert.deepEqual(hits, [], `public allowlist leaks: ${JSON.stringify(hits)}`);
+  assert.deepEqual(hits, [], `public allowlist leaks:\n${formatHits(hits)}`);
 });
 
 test('real plugin tree has no leaks', () => {

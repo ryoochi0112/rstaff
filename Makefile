@@ -8,15 +8,16 @@
 test:
 	@node --test 'test/**/*.test.js'
 
-# Validate the plugin itself, in spec order: manifests (strict x7) + hook syntax -> every test
-# (inventory, builtin-names and vendored tests run here) -> core alone -> skill lint -> leak
-# scan -> static health.
+# Validate the plugin itself, in spec order: manifests (strict x7) + hook syntax -> leak scan
+# (first, so a red CI log shows its <file>:<line> <term> lines) -> every test
+# (inventory, builtin-names and vendored tests run here) -> core alone -> skill lint -> static
+# health.
 verify:
 	@bash install/install-apply.sh >/dev/null && echo "✅ plugin verify passed"
+	@node maintainer/leak-scan.js $(if $(wildcard rstaff.json),,--all)
 	@echo "→ full test suite (test/**: core, per-layer, maintainer and hook contract tests)" && node --test 'test/**/*.test.js'
 	@$(MAKE) --no-print-directory core-only
 	@node maintainer/lib-skill-lint.js
-	@node maintainer/leak-scan.js $(if $(wildcard rstaff.json),,--all)
 	@node plugins/rstaff/scripts/health.js --static
 
 # AC6': the core test subset must pass with ONLY plugins/rstaff present. Copy core and
