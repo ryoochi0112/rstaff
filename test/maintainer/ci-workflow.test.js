@@ -51,7 +51,7 @@ test('reader preserves ordered steps, scalar quotes, flow lists and permissions'
   assert.deepEqual(readWorkflow(`\n# comment\n${text.replace(/\n/g, '\r\n')}`), {
     on: { push: { branches: ['release', 'main'] }, pull_request: { branches: ['main'] } },
     permissions: { contents: 'read' },
-    jobs: [{ id: 'check', runsOn: 'ubuntu-24.04', permissions: { contents: 'read' }, steps: [
+    jobs: [{ id: 'check', name: '', runsOn: 'ubuntu-24.04', permissions: { contents: 'read' }, steps: [
       { name: '', uses: 'actions/checkout@v7', run: '', with: { 'persist-credentials': 'false' } },
       { name: 'Set up Node', uses: 'actions/setup-node@v7', run: '', with: { 'node-version': '24' } },
       { name: 'make check', uses: '', run: 'make verify --flag', with: {} },
@@ -61,6 +61,15 @@ test('reader preserves ordered steps, scalar quotes, flow lists and permissions'
   assertCriteria(GOOD.replace("node-version: '24'", 'node-version: 22'));
   assertCriteria(GOOD.replace("node-version: '24'", 'node-version: "24"'));
   assertCriteria(GOOD.replace('run: make check', 'run: make verify'));
+});
+
+test('reader keeps the job name scalar', () => {
+  const repositoryWorkflow = fs.readFileSync(path.join(__dirname, '../../.github/workflows/ci.yml'), 'utf8');
+  assert.equal(readWorkflow(repositoryWorkflow).jobs[0].name, 'make check (plugin verify)');
+  assert.equal(readWorkflow(GOOD).jobs[0].name, '');
+  assert.equal(readWorkflow(GOOD.replace('    runs-on:', "    name: 'a # b'\n    runs-on:")).jobs[0].name, 'a # b');
+  assert.throws(() => readWorkflow(GOOD.replace('    runs-on:', '    name:\n    runs-on:')), WorkflowSyntaxError);
+  assert.throws(() => readWorkflow(GOOD.replace('    runs-on:', '    name: [x]\n    runs-on:')), WorkflowSyntaxError);
 });
 
 const SHA = '3d3c42e5aac5ba805825da76410c181273ba90b1';
