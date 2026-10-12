@@ -12,7 +12,25 @@ reverse** — gate it on explicit human confirmation.
 From `$ARGUMENTS`, else the PR for the current branch (`gh pr view --json number,title,url,mergeStateStatus`).
 
 ### 2. Pre-merge gate (refuse to merge if any fails)
-- **CI green:** `gh pr checks <n>` — all required checks passing.
+- **CI green:** Run `gh pr checks <n> --required --json name,state,bucket,link`.
+  - REFUSE and stop when any condition below holds. Never reach this step's AskUserQuestion merge prompt or run `gh pr merge` on refusal.
+    - The command fails (non-zero without JSON), prints no rows, or its stderr contains "no required checks reported".
+      Print exactly: `no required checks reported — the branch has no ruleset; refusing`
+    - Any row has `bucket` `fail` or `cancel`.
+    - Any row has `bucket` `pending` (`gh` exits 8). Do not use `--watch` or wait.
+  - On refusal, print `/land: refusing to merge <owner/repo>#<n>.`
+    Then print `Required check "<name>" is <STATE> — <link>` for each non-passing row, using values from `gh`'s output.
+    Then print this fixed line:
+    `Fix the failure and push; do not override. If the runner is at fault, the operator edits the ruleset in repo settings — I will not do that.`
+    Golden refusal sample (spec §3 AC5):
+    ```text
+    /land: refusing to merge ryoochi0112/rstaff#2.
+    Required check "make check (plugin verify)" is FAIL — https://github.com/ryoochi0112/rstaff/actions/runs/38160040753/job/114531166218
+    Fix the failure and push; do not override. If the runner is at fault, the operator edits the ruleset in repo settings — I will not do that.
+    ```
+  - An explicit human override does NOT apply to this bullet, unlike the review-status bullet below.
+    The only override is editing the ruleset in GitHub repo settings.
+  - Proceed to the next bullet only when at least one required check exists and every row's `bucket` is `pass`.
 - **Reviewed:** From the PR checkout, run:
   ```sh
   node "$(node "${CLAUDE_PLUGIN_ROOT}/scripts/locate.js" rstaff)/scripts/lib-review-rounds.js" status \

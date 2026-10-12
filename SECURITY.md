@@ -6,7 +6,7 @@ rstaff is a Claude Code plugin made of hooks and roles. It runs commands and rea
 
 **Threat A: honest mistakes only.** rstaff catches an agent that says "done" without verifying, or that reaches for an obvious shortcut. It does **not** resist an agent, or a user, that deliberately forges evidence, edits gate state, or evades the hooks.
 
-The bash deny is a policy guard, not a security boundary.
+The bash deny is a policy guard, not a security boundary. The enforced verify layer is the `main` ruleset on ryoochi0112/rstaff, which requires the `make check (plugin verify)` check and has no bypass actors.
 
 ## Trust table
 

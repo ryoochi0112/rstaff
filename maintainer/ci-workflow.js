@@ -85,12 +85,12 @@ function readWorkflow(text) {
       frame.target.branches = value;
     } else if (frame.kind === 'jobs') {
       if (raw || workflow.jobs.length) fail();
-      const job = { id: key, runsOn: '', permissions: null, steps: [] };
+      const job = { id: key, name: '', runsOn: '', permissions: null, steps: [] };
       workflow.jobs.push(job);
       open('job', job);
     } else if (frame.kind === 'job') {
       if (key === 'runs-on') { scalar(); frame.target.runsOn = value; delete frame.target[key]; }
-      else if (key === 'name') { if (!raw || Array.isArray(value)) fail(); }
+      else if (key === 'name') { if (!raw || Array.isArray(value)) fail(); frame.target.name = value; }
       else if (key === 'steps' && !raw) open('steps', frame.target.steps);
       else if (key === 'permissions') {
         if (Array.isArray(value)) fail();
