@@ -584,32 +584,127 @@ function lintTree(pluginRoot) {
   return { violations, counts: discovered.counts };
 }
 
-if (require.main === module) {
-  const root = process.argv[2] || path.join(__dirname, '..', 'plugins');
-  try {
-    const resolvedRoot = path.resolve(root);
-    let rootStat;
-    try {
-      rootStat = fs.statSync(resolvedRoot);
-    } catch (error) {
-      if (error && error.code === 'ENOENT') {
-        throw new Error(`plugin root does not exist: ${resolvedRoot}`);
+function lintStandalone(file, text) {
+  const violations = [];
+  const opened = [];
+  let hasUseLine = false;
+  const lines = normalizeNewlines(text).split('\n');
+  const add = (line, detail) => violations.push({ code: 'standalone', file, line, detail });
+  for (let index = 0; index < lines.length; index++) {
+    const line = lines[index];
+    if (!opened.length && line.startsWith('Use without rstaff:')) hasUseLine = true;
+    let offset = 0;
+    function check(segment) {
+      if (opened.length) return;
+      const tokens = /RSTAFF_HOME|control repo|(?<![A-Za-z0-9_./-])var\/[^\s`"'<>()[\]{},;]*|\/rstaff[a-z-]*:[a-z][a-z0-9-]*/gi;
+      for (const match of segment.matchAll(tokens)) {
+        // Only "control repo" is case-insensitive in the contract.
+        if (/^control repo$/i.test(match[0]) || match[0] === 'RSTAFF_HOME'
+          || match[0].startsWith('var/') || /^\/rstaff[a-z-]*:[a-z]/.test(match[0])) {
+          add(index + 1, match[0]);
+        }
       }
-      throw error;
     }
-    if (!rootStat.isDirectory()) {
-      throw new Error(`plugin root is not a directory: ${resolvedRoot}`);
+    for (const marker of line.matchAll(/<!-- (\/?)with-rstaff -->/g)) {
+      check(line.slice(offset, marker.index));
+      if (marker[1]) {
+        if (opened.length) opened.pop();
+        else add(index + 1, 'unmatched /with-rstaff block');
+      } else {
+        if (opened.length) add(index + 1, 'nested with-rstaff block');
+        opened.push(index + 1);
+      }
+      offset = marker.index + marker[0].length;
     }
+    check(line.slice(offset));
+  }
+  for (const line of opened) add(line, 'unclosed with-rstaff block');
+  if (!hasUseLine) add(null, 'missing "Use without rstaff:" line');
+  return violations;
+}
 
-    const result = lintTree(resolvedRoot);
-    const discoveredFiles = Object.values(result.counts).reduce((total, count) => total + count, 0);
-    if (discoveredFiles === 0) {
-      throw new Error(`no plugin files discovered under: ${resolvedRoot}`);
+function readPending(file) {
+  return new Set(fs.readFileSync(file, 'utf8').split(/\r?\n/)
+    .map(line => line.split('#')[0].trim()).filter(Boolean));
+}
+
+function standaloneFiles(root) {
+  const stat = fs.statSync(root);
+  if (stat.isFile()) return [root];
+  if (!stat.isDirectory()) throw new Error(`standalone path is not a file or directory: ${root}`);
+  const files = [];
+  function walk(dir) {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const file = path.join(dir, entry.name);
+      if (entry.isDirectory() && entry.name !== 'references') walk(file);
+      else if (entry.isFile() && entry.name === 'SKILL.md') files.push(file);
     }
-    for (const item of result.violations) {
-      process.stdout.write(`${item.code} ${item.file}: ${item.detail}\n`);
+  }
+  walk(root);
+  if (!files.length) throw new Error(`no SKILL.md files discovered under: ${root}`);
+  return files.sort();
+}
+
+function runStandalone(files, pending) {
+  let failed = false;
+  for (const file of files) {
+    const violations = lintStandalone(file, fs.readFileSync(file, 'utf8'));
+    const name = path.basename(path.dirname(file));
+    if (pending.has(name)) {
+      process.stdout.write(`${violations.length ? 'pending' : 'pending-stale'}: ${name}\n`);
+      continue;
     }
-    process.exitCode = result.violations.length ? 1 : 0;
+    for (const item of violations) {
+      process.stdout.write(`standalone ${item.file}${item.line == null ? '' : `:${item.line}`}: ${item.detail}\n`);
+    }
+    if (violations.length) failed = true;
+  }
+  return failed;
+}
+
+if (require.main === module) {
+  try {
+    const args = process.argv.slice(2);
+    if (args[0] === '--standalone') {
+      if (!args[1] || args[1].startsWith('--')
+        || (args.length !== 2 && (args.length !== 4 || args[2] !== '--pending'
+          || !args[3] || args[3].startsWith('--')))) {
+        throw new Error('usage: --standalone <path> [--pending <file>]');
+      }
+      const pending = args[3] ? readPending(args[3]) : new Set();
+      process.exitCode = runStandalone(standaloneFiles(path.resolve(args[1])), pending) ? 1 : 0;
+    } else {
+      if (args.length > 1 || (args[0] && args[0].startsWith('--'))) {
+        throw new Error('usage: [plugin-root] or --standalone <path> [--pending <file>]');
+      }
+      const root = args[0] || path.join(__dirname, '..', 'plugins');
+      const resolvedRoot = path.resolve(root);
+      let rootStat;
+      try {
+        rootStat = fs.statSync(resolvedRoot);
+      } catch (error) {
+        if (error && error.code === 'ENOENT') {
+          throw new Error(`plugin root does not exist: ${resolvedRoot}`);
+        }
+        throw error;
+      }
+      if (!rootStat.isDirectory()) {
+        throw new Error(`plugin root is not a directory: ${resolvedRoot}`);
+      }
+
+      const result = lintTree(resolvedRoot);
+      const discoveredFiles = Object.values(result.counts).reduce((total, count) => total + count, 0);
+      if (discoveredFiles === 0) {
+        throw new Error(`no plugin files discovered under: ${resolvedRoot}`);
+      }
+      for (const item of result.violations) {
+        process.stdout.write(`${item.code} ${item.file}: ${item.detail}\n`);
+      }
+      const pending = readPending(path.join(__dirname, 'standalone-pending.txt'));
+      const failedStandalone = runStandalone(discover(resolvedRoot).files
+        .filter(item => item.kind === 'skill').map(item => item.file), pending);
+      process.exitCode = result.violations.length || failedStandalone ? 1 : 0;
+    }
   } catch (error) {
     process.stderr.write(`lib-skill-lint: ${error.message}\n`);
     process.exitCode = 1;
@@ -623,5 +718,7 @@ module.exports = {
   PEER_SKILL_ALLOWLIST,
   SKILL_ROSTER,
   lintTree,
+  lintStandalone,
+  readPending,
   parseFrontmatter,
 };

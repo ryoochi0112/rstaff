@@ -664,7 +664,7 @@ test('session-start injects memory and writes the liveness marker', () => {
   assert.doesNotMatch(ctx || '', /commit small and often/);
   // AC6 (gemini doc adapter): the propose-/write rule must reach every managed repo,
   // not only the control repo's CLAUDE.md.
-  assert.match(ctx || '', /propose `\/write` in one line/);
+  assert.match(ctx || '', /propose `\/rstaff-delegation:write` in one line/);
   const marker = path.join(ctrl, 'var', 'sessions', '.last-session-start.json');
   assert.ok(fs.existsSync(marker), 'liveness marker written under var/sessions');
   const m = JSON.parse(fs.readFileSync(marker, 'utf8'));
@@ -698,6 +698,24 @@ test('session-start warns about an expired/soon dev credential (non-blocking)', 
   assert.match(pf, /SOON_TOKEN[^\n]*left/, 'soon-to-expire token flagged');
   assert.ok(!/FRESH_TOKEN/.test(pf), 'fresh token not warned');
 });
+// Shipped commands are plugin-namespaced; a bare name like /build does not resolve
+// for a marketplace user. Run the real hook against a fixture so every printed
+// section (header, profile, credential preflight) is covered.
+const BARE_COMMAND = /(^|[\s(`'"])\/(build|qa|write|review|land|cockpit|dispatch|health|ship|design|spec)\b/m;
+test('session-start output names commands with their plugin prefix', () => {
+  const ctrl = mkctrl('prefix');
+  const proj = path.join(ctrl, 'prefixapp'); fs.mkdirSync(proj);
+  spawnSync('git', ['init', '-q'], { cwd: proj });
+  fs.mkdirSync(path.join(ctrl, 'profiles'));
+  fs.writeFileSync(path.join(ctrl, 'profiles', 'prefixapp.md'),
+    '# prefixapp\n**Verify (DoD):** `make verify`\n\n## credentials\n- `DEMO_TOKEN` expires: 2020-01-01\n');
+  const r = runHookRaw('session-start.js', [], JSON.stringify({ cwd: proj }), { RSTAFF_HOME: ctrl }, proj);
+  assert.equal(r.status, 0);
+  const ctx = r.out.hookSpecificOutput.additionalContext;
+  assert.match(ctx, /DEMO_TOKEN[^\n]*EXPIRED/, 'credential preflight printed');
+  assert.match(ctx, /Human-read docs/, 'header printed');
+  assert.doesNotMatch(r.stdout, BARE_COMMAND);
+});
 test('session-start warns LOUDLY when no control repo resolves', () => {
   const lonely = fs.mkdtempSync(path.join(os.tmpdir(), 'rstaff-lonely-'));
   const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'rstaff-home-'));
@@ -706,6 +724,9 @@ test('session-start warns LOUDLY when no control repo resolves', () => {
   assert.match(r.stderr, /control repo NOT found/);
   const ctx = r.out.hookSpecificOutput && r.out.hookSpecificOutput.additionalContext;
   assert.match(ctx || '', /control repo NOT found/);
+  // The fix must be runnable by a marketplace user, who has no source checkout.
+  assert.doesNotMatch(r.stderr + (ctx || ''), /install-apply\.sh/);
+  assert.match(ctx || '', /export RSTAFF_HOME=/);
 });
 test('session-start mentions an invalid RSTAFF_HOME by value', () => {
   const lonely = fs.mkdtempSync(path.join(os.tmpdir(), 'rstaff-lonely2-'));

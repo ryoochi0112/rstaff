@@ -9,7 +9,7 @@ Both artifacts live in `$CTRL` (the control repo), never in the product tree —
 
 ## Status file (per feature, one writer)
 
-After every task the runner rewrites `$CTRL/var/dispatch/<repo>/<slug>.md` so `/cockpit`
+After every task the runner rewrites `$CTRL/var/dispatch/<repo>/<slug>.md` so `/rstaff-backlog:cockpit`
 can show progress without opening product repos. `lib-state.js` under the root returned by `locate('rstaff-backlog')` (skip when absent) parses
 these keys, so keep the names exact:
 
@@ -27,22 +27,22 @@ One writer per file: the feature's own runner. Nothing else writes it.
 **A status file MUST carry a parseable `state:`, or it is not a run.** `collectDispatch`
 emits a row only for a file with a non-empty `state:`, so a file without one is excluded
 entirely rather than rendered with an empty state. The spelling is exact: `status:` is not
-a second spelling the parser learns, and a file using it goes invisible. `/health` FAILs
+a second spelling the parser learns, and a file using it goes invisible. `/rstaff:health` FAILs
 any top-level `var/dispatch/<repo>/*.md` with no parseable `state:`, so an excluded file
 is always named rather than silently dropped.
 
 **Per-task writer briefs go in `$CTRL/var/dispatch/<repo>/briefs/`, never at the top
 level.** Only top-level `*.md` files are read as runs; subdirectories are not. A brief
 left at the top level has no `state:` and is therefore already excluded, so the directory
-is defence in depth rather than the mechanism — but it also keeps `/health` quiet, since
+is defence in depth rather than the mechanism — but it also keeps `/rstaff:health` quiet, since
 the check that names stateless files does not look inside `briefs/`.
 
 ## Resume — the survivability property
 
-Re-running `/build` (or `/dispatch <slug>`) reads the ledger **from `$CTRL`** and
+Re-running `/rstaff-engineer:build` (or `/rstaff-engineer:dispatch <slug>`) reads the ledger **from `$CTRL`** and
 continues from the first non-`done` task. Because the ledger lives in the control repo
 and not on the branch, it survives compaction, restarts, and even discarding the
-worktree — the same way `/build` reads `profiles/`.
+worktree — the same way `/rstaff-engineer:build` reads `profiles/`.
 
 **This is the property to test hardest.**
 
@@ -75,7 +75,7 @@ to corrupt.
 The same gap exists after the run ends: a feature merges, its branch is deleted, and
 nothing writes the status file again. So the two halves are owned separately.
 
-- **git owns "the branch is gone."** `/cockpit` reconciles every row against the repo's
+- **git owns "the branch is gone."** `/rstaff-backlog:cockpit` reconciles every row against the repo's
   live refs (`refs/heads` ∪ `refs/remotes/origin`) at read time — see `collectDispatch`
   in `lib-state.js` under the root returned by `locate('rstaff-backlog')` (skip when absent). A row that declares a `state:` and whose `branch:`
   names a ref the repo no longer has is marked stale on screen, withheld from "Attention
@@ -118,7 +118,7 @@ Two rules make the append safe:
 
 - **Put the new `state:` in the appended block, not only in prose.** A block that says
   "shipped" in a heading but leaves `state: ready_for_review` above still reads as awaiting
-  review, and `/cockpit` will keep recommending it.
+  review, and `/rstaff-backlog:cockpit` will keep recommending it.
 - **The one-writer rule still holds for a live run.** Append only after the runner has
   stopped. While a run is in flight its runner rewrites the whole file, and a hand-appended
   block is simply overwritten.

@@ -102,7 +102,7 @@ validation to the revised proposal. Never treat revision or silence as approval.
 This command exits by **filing tickets, not prose**. However, nothing is written until
 the human explicitly confirms the rendered proposal (for example, says “yes”); silence,
 an ambiguous reply, or a request for changes is not confirmation. This is L12:
-self-filed tickets are unreviewed briefs that `/design` will later treat as the contract.
+self-filed tickets are unreviewed briefs that `/rstaff-engineer:design` will later treat as the contract.
 
 After explicit confirmation, file only confirmed `pass` tickets in provisional order
 by invoking the only write path,

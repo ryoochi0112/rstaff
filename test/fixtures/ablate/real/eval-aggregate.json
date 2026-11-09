@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "claudeVersion": "2.1.292",
+  "startedAt": "2026-10-15T01:50:28.567Z",
+  "durationSeconds": 3,
+  "costUsd": 0,
+  "partial": false,
+  "suite": {
+    "root": "<ARM_DIR>",
+    "ablation": "none",
+    "modelOverride": "invalid-model-zzz",
+    "judgeModel": "invalid-model-zzz",
+    "caseFilter": "grilling-compliance-one-question-before-design",
+    "threshold": 1,
+    "concurrency": 1,
+    "plugins": [
+      {
+        "name": "rstaff-pm",
+        "version": "0.13.1",
+        "path": "<ARM_DIR>"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "name": "grilling-compliance-one-question-before-design",
+      "dir": "evals/grilling-compliance/one-question-before-design",
+      "source": "case_yaml",
+      "promptMarkdown": "A stakeholder says, 'We need some kind of dashboard for the team. I'm not sure if it should show live alerts or historical trends, and I don't know what action people would take from it.' Already established (do not ask about these — answer using them if needed): the target audience is the support team's shift leads, and the current route for this kind of internal tool is /internal/tools/<name>.",
+      "model": "haiku",
+      "runsPerCase": 5,
+      "timeoutSeconds": 120,
+      "maxTurns": 4,
+      "graders": [
+        {
+          "name": "assertion-1",
+          "type": "llm",
+          "weight": 1,
+          "graderMarkdown": "judge: excluding any preamble narrating a skill invocation, the reply asks exactly ONE substantive question. An upstream question about the shift leads' problem, need, or goal counts as one question even when its examples or explanation touch both live-vs-historical content and the action taken; illustrative examples, an 'e.g.' list, or a sub-clause rephrasing the same question do not count as extra questions. It fails if it separately asks two or more distinct questions, for example one about live-vs-historical content AND another about the action taken",
+          "config": {
+            "criteria": "judge: excluding any preamble narrating a skill invocation, the reply asks exactly ONE substantive question. An upstream question about the shift leads' problem, need, or goal counts as one question even when its examples or explanation touch both live-vs-historical content and the action taken; illustrative examples, an 'e.g.' list, or a sub-clause rephrasing the same question do not count as extra questions. It fails if it separately asks two or more distinct questions, for example one about live-vs-historical content AND another about the action taken",
+            "focus": "last_message"
+          }
+        },
+        {
+          "name": "assertion-2",
+          "type": "llm",
+          "weight": 1,
+          "graderMarkdown": "judge: the audience (the support team's shift leads) and the route (/internal/tools/<name>) are already known. This fails ONLY if the reply asks who the dashboard is for or who will use it, or asks where it should live (its URL, path, or route). Asking what the shift leads need, check, struggle with, or do is about their needs, not about who the audience is, and passes",
+          "config": {
+            "criteria": "judge: the audience (the support team's shift leads) and the route (/internal/tools/<name>) are already known. This fails ONLY if the reply asks who the dashboard is for or who will use it, or asks where it should live (its URL, path, or route). Asking what the shift leads need, check, struggle with, or do is about their needs, not about who the audience is, and passes",
+            "focus": "last_message"
+          }
+        },
+        {
+          "name": "assertion-3",
+          "type": "llm",
+          "weight": 1,
+          "graderMarkdown": "judge: the assistant asks one high-leverage question before proposing any implementation or design",
+          "config": {
+            "criteria": "judge: the assistant asks one high-leverage question before proposing any implementation or design",
+            "focus": "last_message"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0,
+            "judgeCostUsd": 0,
+            "durationSeconds": 3,
+            "startedAt": "2026-10-15T01:50:28.595Z",
+            "error": "exit 1: There's an issue with the selected model (invalid-model-zzz). It may not exist or you may not have access to it. Run --model to pick a different model. · stderr: [claude-code:unrecognized_model] {\"model\":\"invalid-model-zzz\",\"query_source\":\"sdk\"} ",
+            "tracePath": "<TMP>",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "assertion-1",
+                "passed": false,
+                "weight": 1,
+                "explanation": "grader threw: judge call failed: There's an issue with the selected model (invalid-model-zzz). It may not exist or you may not have access to it. Run --model to pick a different model.",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "assertion-2",
+                "passed": false,
+                "weight": 1,
+                "explanation": "grader threw: judge call failed: There's an issue with the selected model (invalid-model-zzz). It may not exist or you may not have access to it. Run --model to pick a different model.",
+                "withOnly": false,
+                "scored": true
+              },
+              {
+                "name": "assertion-3",
+                "passed": false,
+                "weight": 1,
+                "explanation": "grader threw: judge call failed: There's an issue with the selected model (invalid-model-zzz). It may not exist or you may not have access to it. Run --model to pick a different model.",
+                "withOnly": false,
+                "scored": true
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0,
+        "passRate": 0
+      }
+    }
+  ],
+  "aggregates": {
+    "casesTotal": 1,
+    "casesPassed": 0,
+    "overallScore": 0,
+    "overallPassRate": 0
+  }
+}

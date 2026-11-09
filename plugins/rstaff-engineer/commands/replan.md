@@ -67,7 +67,7 @@ brainstorming report; it is internal to this command's one allowed output.
 
 ## Trigger and handoff
 
-Run `/replan` when the review circuit breaker's memo offers option A, when the
+Run `/rstaff-engineer:replan` when the review circuit breaker's memo offers option A, when the
 human invokes it directly, or when you self-invoke because the effort feels
 disproportionate to the goal. Follow
 `${CLAUDE_PLUGIN_ROOT}/rules/loop-brakes.md` for the circuit breaker's behavior
@@ -80,13 +80,13 @@ Resolve the control repo `$CTRL` (= `$RSTAFF_HOME`, or a walk-up to `rstaff.json
 The spec + ledger live there — `$CTRL/var/specs/<repo>/<slug>.{md,tasks.md}`, never in
 the product repo — where `<repo>` is the product repo's directory name (its
 `$CTRL/profiles/<repo>.md` token). Use the same artifact-location convention as
-`/design`.
+`/rstaff-engineer:design`.
 
 ## Output contract — choose exactly one
 
 After the mandatory diagnostic, produce **EXACTLY ONE** of these outcomes:
 
-When `/replan` is invoked with no frozen spec, the output MUST be (b), the forcing question, and `/replan` must never invent a spec.
+When `/rstaff-engineer:replan` is invoked with no frozen spec, the output MUST be (b), the forcing question, and `/rstaff-engineer:replan` must never invent a spec.
 
 (a) **A re-cut plan/ledger written FROM SCRATCH.** Use the frozen spec, verified
 receipts, profile configuration facts, and direct repo observations as the

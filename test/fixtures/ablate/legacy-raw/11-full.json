@@ -1,0 +1,1 @@
+{"cases": [{"id": "anonymous-case", "runs": [{"run": 1, "status": "passed", "assertions": [{"method": "judge", "passed": true}]}, {"run": 2, "status": "passed", "assertions": [{"method": "judge", "passed": true}]}, {"run": 3, "status": "passed", "assertions": [{"method": "judge", "passed": true}]}]}]}

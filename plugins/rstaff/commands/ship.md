@@ -87,7 +87,7 @@ EOF
    Proceed only when `reviewed.verdict` is `pass` and `reviewed.current` is
    `true`; treat `current: null` exactly like `false`. Otherwise STOP, print
    `reviewed.reason` and every path in `reviewed.moved` as "these files changed
-   after the PASS", then recommend `/review`. Explicit human confirmation may
+   after the PASS", then recommend `/rstaff:review`. Explicit human confirmation may
    still override this gate, as today.
 4. **Keep the product repo clean of rstaff artifacts.** rstaff process files — the
    spec, task ledger, QA runbook, blocker notes — live in the **control repo**, never
@@ -118,7 +118,7 @@ EOF
 7. **Push** the branch.
 8. **Open the PR** with `gh pr create`. Title from `$ARGUMENTS` (or inferred). Body must include:
    - **What** changed and **why**
-   - **How it was verified** (`make verify` output summary, `/review` verdict)
+   - **How it was verified** (`make verify` output summary, `/rstaff:review` verdict)
    - **Follow-ups / out-of-scope**
 9. Report the PR URL. For merge-to-prod + health check, resolve
    `$(node "${CLAUDE_PLUGIN_ROOT}/scripts/locate.js" rstaff-engineer)`

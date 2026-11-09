@@ -1,0 +1,1 @@
+{"probes": {"full#2": {"addBackground": [{"name": "rstaff-ai-datadog", "path": "/opt/operator/rstaff/plugins/rstaff-ai-datadog", "source": "rstaff-ai-datadog@rstaff", "version": "0.13.1"}]}}, "analyst": {"text": "## Experiment verdict: INVALID-HARNESS"}}

@@ -1,0 +1,25 @@
+{
+  "init": {
+    "model": "claude-haiku-4-5-20251001",
+    "background": [
+      {"name": "rstaff", "path": "/opt/operator/rstaff/plugins/rstaff", "source": "rstaff@rstaff", "version": "0.13.1"},
+      {"name": "superpowers", "path": "/opt/operator/.claude/plugins/cache/superpowers-marketplace/superpowers/6.2.0", "source": "superpowers@superpowers-marketplace", "version": "6.2.0"},
+      {"name": "rstaff-engineer", "path": "/opt/operator/rstaff/plugins/rstaff-engineer", "source": "rstaff-engineer@rstaff", "version": "0.13.1"},
+      {"name": "rstaff-ai", "path": "/opt/operator/rstaff/plugins/rstaff-ai", "source": "rstaff-ai@rstaff", "version": "0.13.1"},
+      {"name": "rstaff-usage", "path": "/opt/operator/rstaff/plugins/rstaff-usage", "source": "rstaff-usage@rstaff", "version": "0.13.1"},
+      {"name": "rstaff-backlog", "path": "/opt/operator/rstaff/plugins/rstaff-backlog", "source": "rstaff-backlog@rstaff", "version": "0.13.1"},
+      {"name": "rstaff-delegation", "path": "/opt/operator/rstaff/plugins/rstaff-delegation", "source": "rstaff-delegation@rstaff", "version": "0.13.1"},
+      {"name": "rstaff-ds", "path": "/opt/operator/rstaff/plugins/rstaff-ds", "source": "rstaff-ds@rstaff", "version": "0.13.1"},
+      {"name": "cc-plugin-sec-default", "path": "builtin", "source": "cc-plugin-sec-default@builtin"},
+      {"name": "cc-plugin-agents-md", "path": "builtin", "source": "cc-plugin-agents-md@builtin"},
+      {"name": "cc-plugin-telemetry", "path": "builtin", "source": "cc-plugin-telemetry@builtin"},
+      {"name": "cc-plugin-plugin-authoring", "path": "builtin", "source": "cc-plugin-plugin-authoring@builtin"}
+    ]
+  },
+  "legs": {
+    "known-fail": {"passes": 0},
+    "null": {"passes": 1},
+    "full": {"passes": 5},
+    "placebo": {"passes": 2}
+  }
+}

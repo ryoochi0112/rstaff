@@ -31,4 +31,4 @@ you never edit or "fix" in place.
    map onto the shared gate as **CRITICAL → P0, HIGH → P1**
    (`$(node "${CLAUDE_PLUGIN_ROOT}/scripts/locate.js" rstaff)/rules/review-severity.md`). On a CRITICAL finding,
    recommend fixing + rotating any exposed secret and calling the rotation out in
-   the PR. Route fixes back through `/build`, then re-audit.
+   the PR. Route fixes back through `/rstaff-engineer:build`, then re-audit.

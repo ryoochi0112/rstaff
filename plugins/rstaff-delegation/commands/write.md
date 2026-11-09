@@ -31,7 +31,7 @@ that option as a silent no-op. Otherwise require exactly one `--to <path>` targe
    Set the flag true. If the user chooses B, keep the flag true for the one
    re-draft, so the warning is not repeated. Commands have no persistent
    session-state pattern in this repository, so “once per session” is
-   implemented as once per `/write` invocation.
+   implemented as once per `/rstaff-delegation:write` invocation.
 
 3. **Check Gemini and get the draft.** Run `command -v gemini` before invoking
    the adapter. If it is unavailable, print exactly the health install fix and
@@ -92,5 +92,5 @@ that option as a silent no-op. Otherwise require exactly one `--to <path>` targe
    On B, ask what to change, update the temporary brief, and loop once through
    step 3, then show the new draft and ask for A or C. Do not repeat the warning
    because `warned_this_session` is already true. A second B is not another
-   loop; tell the user to rerun `/write` or choose C. On C, remove the temporary
+   loop; tell the user to rerun `/rstaff-delegation:write` or choose C. On C, remove the temporary
    files and stop. A discarded or unapproved draft must never be written.

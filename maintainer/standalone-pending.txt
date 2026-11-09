@@ -1,0 +1,9 @@
+# Standalone violations deferred to library M2.
+agent-evaluation
+data-science
+datadog-llmobs-analysis
+experiment-design
+grilling
+harness-validation
+parallel-build
+token-efficient-delegation

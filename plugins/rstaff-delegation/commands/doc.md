@@ -25,7 +25,7 @@ aspiration — stale docs are worse than none.
 
    Before the first Gemini call, print one line: **The brief leaves the machine;
    it goes to Vertex AI.** This command has no persistent session-state pattern,
-   so emit that warning once per `/doc` invocation; do not repeat it if you make
+   so emit that warning once per `/rstaff-delegation:doc` invocation; do not repeat it if you make
    one re-draft.
 
    Run `command -v gemini` first. If it fails, stop with exactly:

@@ -1,6 +1,6 @@
 {
   "name": "rstaff-ai",
-  "version": "0.13.0",
+  "version": "0.13.8",
   "description": "Optional AI evaluation and controlled experimentation tools for agent-generated output.",
   "author": {
     "name": "ryo.ochi"

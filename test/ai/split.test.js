@@ -21,7 +21,7 @@ function markdownFiles(dir) {
 test('rstaff-ai depends on core', () => {
   const manifest = JSON.parse(fs.readFileSync(path.join(AI, '.claude-plugin', 'plugin.json'), 'utf8'));
   assert.equal(manifest.name, 'rstaff-ai');
-  assert.equal(manifest.version, '0.13.0');
+  assert.equal(manifest.version, '0.13.8');
   assert.deepEqual(manifest.dependencies, ['rstaff', 'superpowers@superpowers-marketplace']);
 });
 

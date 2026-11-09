@@ -762,6 +762,11 @@
   },
   {
    "from": null,
+   "to": "maintainer/standalone-pending.txt",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
    "to": "plugins/rstaff-ai/.claude-plugin/plugin.json",
    "dest": "rstaff-ai"
   },
@@ -1252,6 +1257,21 @@
   },
   {
    "from": null,
+   "to": "maintainer/ablate/adapters.js",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "maintainer/ablate/lib-adjudicate.js",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "maintainer/ablate/rule.md",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
    "to": "plugins/rstaff-ai/samples/label-task/cases.jsonl",
    "dest": "rstaff-ai"
   },
@@ -1339,6 +1359,124 @@
    "from": null,
    "to": "plugins/rstaff-ai-datadog/.claude-plugin/plugin.json",
    "dest": "rstaff-ai-datadog"
+  },
+  {
+   "from": null,
+   "to": "maintainer/ablate/arms.js",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "maintainer/ablate/ablate.js",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "maintainer/ablate/sequence.js",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "maintainer/ablate/smoke.js",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-pm/ablation/grilling/known-fail.md",
+   "dest": "rstaff-pm"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-pm/ablation/grilling/ablation.json",
+   "dest": "rstaff-pm"
+  },
+  {
+   "from": null,
+   "to": "maintainer/ablate/analyst.js",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "maintainer/ablate/ticket.js",
+   "dest": "maintainer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/scripts/runner/cli.js",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/scripts/runner/claude.js",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/scripts/runner/git.js",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/scripts/runner/job.js",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/scripts/runner/profile.js",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/scripts/runner/run.js",
+   "dest": "rstaff-engineer"
+  },
+  {
+   "from": null,
+   "to": "plugins/rstaff-engineer/scripts/runner/author.js",
+   "dest": "rstaff-engineer"
   }
+ ],
+ "public_tests": [
+  "test/maintainer/ablate-analyst.test.js",
+  "test/fixtures/ablate/scenarios/analyst-agree.json",
+  "test/fixtures/ablate/scenarios/analyst-disagree.json",
+  "test/fixtures/ablate/scenarios/analyst-no-verdict.json",
+  "test/fixtures/ablate/scenarios/analyst-arm-mutation.json",
+  "test/maintainer/ablate-replay.test.js",
+  "test/fixtures/ablate/legacy-raw/01-known-fail.json",
+  "test/fixtures/ablate/legacy-raw/01-known-fail.stderr",
+  "test/fixtures/ablate/legacy-raw/02-null.json",
+  "test/fixtures/ablate/legacy-raw/02-null.stderr",
+  "test/fixtures/ablate/legacy-raw/03-full.json",
+  "test/fixtures/ablate/legacy-raw/03-full.stderr",
+  "test/fixtures/ablate/legacy-raw/04-full.json",
+  "test/fixtures/ablate/legacy-raw/04-full.stderr",
+  "test/fixtures/ablate/legacy-raw/05-null.json",
+  "test/fixtures/ablate/legacy-raw/05-null.stderr",
+  "test/fixtures/ablate/legacy-raw/06-null.json",
+  "test/fixtures/ablate/legacy-raw/06-null.stderr",
+  "test/fixtures/ablate/legacy-raw/07-full.json",
+  "test/fixtures/ablate/legacy-raw/07-full.stderr",
+  "test/fixtures/ablate/legacy-raw/08-full.json",
+  "test/fixtures/ablate/legacy-raw/08-full.stderr",
+  "test/fixtures/ablate/legacy-raw/09-null.json",
+  "test/fixtures/ablate/legacy-raw/09-null.stderr",
+  "test/fixtures/ablate/legacy-raw/10-placebo.json",
+  "test/fixtures/ablate/legacy-raw/10-placebo.stderr",
+  "test/fixtures/ablate/legacy-raw/11-full.json",
+  "test/fixtures/ablate/legacy-raw/11-full.stderr",
+  "test/fixtures/ablate/legacy-raw/12-placebo.json",
+  "test/fixtures/ablate/legacy-raw/12-placebo.stderr",
+  "test/fixtures/ablate/legacy-raw/13-placebo.json",
+  "test/fixtures/ablate/legacy-raw/13-placebo.stderr",
+  "test/fixtures/ablate/legacy-raw/14-full.json",
+  "test/fixtures/ablate/legacy-raw/14-full.stderr",
+  "test/fixtures/ablate/legacy-raw/15-placebo.json",
+  "test/fixtures/ablate/legacy-raw/15-placebo.stderr",
+  "test/fixtures/ablate/legacy-raw/probe-post-full.jsonl",
+  "test/fixtures/ablate/legacy-raw/probe-pre-full.jsonl",
+  "test/fixtures/ablate/legacy-raw/probe-pre-known-fail.jsonl",
+  "test/fixtures/ablate/legacy-raw/probe-pre-null.jsonl",
+  "test/fixtures/ablate/legacy-raw/probe-pre-placebo.jsonl"
  ]
 }

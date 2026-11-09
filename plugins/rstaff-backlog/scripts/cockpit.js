@@ -76,8 +76,8 @@ const ticketByKey = new Map(parsedBacklog.tickets.map((ticket) => [`${ticket.rep
 const attention = [];
 for (const d of (data.dispatch || [])) if (d.live !== false && /needs_human|stopped/.test(d.state || '')) attention.push(`dispatch ${d.repo}/${d.slug} needs you: ${d.next || 'review parked tasks'}`);
 const CI_BAD = new Set(['failure', 'cancelled', 'timed_out', 'startup_failure', 'action_required']);
-for (const r of repos) if (r.ci && CI_BAD.has(r.ci.conclusion)) attention.push(`${r.slug}: last CI on ${r.branch} = ${r.ci.conclusion} — /review or fix`);
-for (const r of repos) if (r.prs && r.prs.length >= 3) attention.push(`${r.slug}: ${r.prs.length} open PRs — /review → /land the ready ones`);
+for (const r of repos) if (r.ci && CI_BAD.has(r.ci.conclusion)) attention.push(`${r.slug}: last CI on ${r.branch} = ${r.ci.conclusion} — /rstaff:review or fix`);
+for (const r of repos) if (r.prs && r.prs.length >= 3) attention.push(`${r.slug}: ${r.prs.length} open PRs — /rstaff:review → /rstaff-engineer:land the ready ones`);
 
 if (JSON_OUT) {
   process.stdout.write(JSON.stringify({ home, generatedAt: new Date().toISOString(), ...data, repos, usage, attention: attention.slice(0, 3), queue }, null, 2) + '\n');

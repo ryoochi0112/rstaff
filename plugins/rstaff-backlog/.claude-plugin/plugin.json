@@ -1,6 +1,6 @@
 {
   "name": "rstaff-backlog",
-  "version": "0.13.0",
+  "version": "0.13.8",
   "description": "A live engineering dashboard (/cockpit) for rstaff.",
   "author": {
     "name": "ryo.ochi"

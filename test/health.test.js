@@ -240,3 +240,36 @@ test('node check: floor is 22.5 (nbgate .rstaff-nbignore matcher)', () => {
   assert.equal(checkNode('v23.0.0').status, 'PASS');
   assert.equal(checkNode('v22.4.0').note, "found v22.4.0 — upgrade node (nbgate's .rstaff-nbignore matcher needs 22.5)");
 });
+
+test('health full accepts a marketplace install and never names the source-checkout installer', t => {
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'rstaff-health-mkt-'));
+  t.after(() => fs.rmSync(temp, { recursive: true, force: true }));
+  const core = path.join(temp, 'cache', 'plugins', 'rstaff');
+  fs.cpSync(path.join(ROOT, 'plugins', 'rstaff'), core, { recursive: true });
+  const ctrl = path.join(temp, 'rstaff-home');
+  fs.mkdirSync(path.join(ctrl, 'profiles'), { recursive: true });
+  fs.writeFileSync(path.join(ctrl, 'rstaff.json'), '{}\n');
+  const bin = path.join(temp, 'bin');
+  fs.mkdirSync(bin);
+  const cli = path.join(bin, 'claude');
+  fs.writeFileSync(cli, `#!${process.execPath}
+const args = process.argv.slice(2).join(' ');
+if (args.startsWith('plugin marketplace list')) {
+  console.log(JSON.stringify([{ name: 'rstaff', source: 'github', repo: 'example/rstaff',
+    installLocation: ${JSON.stringify(path.join(temp, 'marketplaces', 'rstaff'))} }]));
+} else {
+  console.log(JSON.stringify([{ id: 'rstaff@rstaff', enabled: true }]));
+}
+`);
+  fs.chmodSync(cli, 0o755);
+  const result = spawnSync(process.execPath, [path.join(core, 'scripts', 'health.js'), '--json'], {
+    cwd: ctrl, encoding: 'utf8', env: { ...process.env, NODE_OPTIONS: '', HOME: temp,
+      RSTAFF_HOME: ctrl, CLAUDE_CONFIG_DIR: path.join(temp, 'config'), PATH: bin + ':/bin' },
+  });
+  const report = JSON.parse(result.stdout);
+  const row = report.results.find(r => r.check === 'marketplace registered');
+  assert.equal(row?.status, 'PASS', JSON.stringify(row));
+  assert.doesNotMatch(result.stdout + result.stderr, /install-apply\.sh/);
+  const home = report.results.find(r => r.check === 'RSTAFF_HOME');
+  assert.match(home.note, /settings\.json/);
+});

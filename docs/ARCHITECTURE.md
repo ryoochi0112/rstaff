@@ -253,7 +253,7 @@ is absent, and the precedence rule that keeps superpowers' artifact paths
 Subagents without the Skill tool (implementer, reviewer) carry the discipline
 essence inline in their agent prompts instead.
 
-## Status (v0.13.0)
+## Status (v0.13.8)
 - **Foundation:** ✅ manifests, owned CLAUDE.md/AGENTS.md, memory + security hooks,
   rules, `rstaff.json` control-repo marker, install manifest, docs.
 - **Peer-plugin seam:** ✅ generic disciplines delegated to superpowers
@@ -270,5 +270,8 @@ essence inline in their agent prompts instead.
 - **Product intake:** ✅ `/interview` files falsifiable tickets into the tracked
   `backlog/`; `/cockpit` ranks them and SessionStart pushes only a one-line count.
 - **Parallel build:** ✅ task ledgers, worktrees, two-verdict gates, resume-after-crash.
+- **Bare runner (week 1 of the autonomy redesign):** ✅ `bin/rstaff run <repo> <ticket>` — a headless
+  `claude -p` worker in a fresh worktree, the runner's own verify + job checks with receipts, a fresh read-only
+  referee, a draft PR; stops on `var/.STOP` (also while a worker runs: the model process is ended at once) or a cap. `bin/rstaff job <repo> <ticket>` writes the job first: a read-only author turns the backlog ticket into `job.md`, then a pre-flight runs its checks on untouched main and lists files coupled to the allowed paths. Code in `plugins/rstaff-engineer/scripts/runner/`.
 - **Strategy split:** ✅ company strategy + the Chief-of-Staff loop moved to the
   separate strategy repo (2026-07-03).

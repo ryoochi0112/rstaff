@@ -1,0 +1,1 @@
+{"type": "system", "subtype": "init", "model": "claude-haiku-4-5-20251001", "plugins": [{"name": "rstaff", "path": "arms/full", "source": "rstaff@inline"}]}

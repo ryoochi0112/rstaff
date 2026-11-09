@@ -11,12 +11,12 @@ Mirrors ECC's minimal/standard/strict profiles. **Always start at report** for a
 new task type and only climb after it proves safe.
 
 **`--impl <backend>` (optional; default `claude`):** the implementer backend for
-every task in this run. Batch has no ledger (unlike `/dispatch`/`/build`), so
+every task in this run. Batch has no ledger (unlike `/rstaff-engineer:dispatch`/`/rstaff-engineer:build`), so
 this is a single **run-level** flag, not per-task. `--model <id>` passes through
 to the backend. Absent flag = today's behavior, unchanged.
 
 ### Preflight (before spawning/looping anything)
-For `codex`, probe availability the same way `/dispatch` does:
+For `codex`, probe availability the same way `/rstaff-engineer:dispatch` does:
 `command -v codex` (or `delegate.js`'s exported `isAvailable()`). If it is not
 available, **STOP** — name the fix, spawn nothing:
 
@@ -41,7 +41,7 @@ For the chosen low-risk tasks only:
   recipe: `${CLAUDE_PLUGIN_ROOT}/skills/parallel-build/references/worktrees.md`),
 - make the change — for `impl: claude` (default), do it directly as today; for
   `codex`, instead shell `node "$(node "${CLAUDE_PLUGIN_ROOT}/scripts/locate.js" rstaff-delegation)/scripts/delegate.js" <impl> execute --cwd
-  <task-worktree>` (the `/build` executor path) to author the diff,
+  <task-worktree>` (the `/rstaff-engineer:build` executor path) to author the diff,
 - then, **unchanged regardless of who authored the diff**: run that task's
   `verify_command` / `make verify`; on green, open a PR; on failure, park the
   task with the reason. Delegation only changes who authors the change — the
@@ -59,7 +59,7 @@ Stop and report; the human reviews/merges. No unattended looping yet.
 Otherwise, hand the queue to the **loop-operator** subagent (Task tool). It
 REQUIRES, and you must supply: an explicit stop condition, a max-iteration cap,
 a budget cap, and the kill-switch path (`var/.STOP`). Each task runs in its own
-worktree, must pass `make verify` **and** `/review` before opening a PR, and the
+worktree, must pass `make verify` **and** `/rstaff:review` before opening a PR, and the
 operator heartbeats + halts on the kill-switch or a stall. Never launch L3
 without all caps set.
 

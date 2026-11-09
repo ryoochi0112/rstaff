@@ -49,8 +49,8 @@ to one page. Sections:
    outcome, not the mechanism.
 2. **Users & context** — who triggers this, how often, from where.
 3. **Acceptance criteria** — a numbered list of **observable, testable** "a user
-   can …" / "the system does …" statements. Each one must be checkable at `/review`
-   and `/qa` time. Vague criteria are a defect — make them falsifiable.
+   can …" / "the system does …" statements. Each one must be checkable at `/rstaff:review`
+   and `/rstaff-engineer:qa` time. Vague criteria are a defect — make them falsifiable.
    For a **conversational / display / agent** feature, include **one golden sample
    output** — literally what the agent would say (or the UI would render) for a
    canonical input. A concrete sample surfaces "I also want X in the response" *now*,
@@ -58,7 +58,7 @@ to one page. Sections:
 4. **Scope & out-of-scope** — explicitly list what this does NOT include (the
    cheapest defect to prevent).
 5. **Open questions & decisions** — what you asked and the answers; anything still
-   needing a human call before `/design`.
+   needing a human call before `/rstaff-engineer:design`.
 
 ## Critic (fresh context)
 After writing, run `rstaff-pm:critic` via a fresh Task with only the written spec's
@@ -84,6 +84,6 @@ after rewriting them, run a fresh Task on the numbered criteria again before
 reporting updated review results.
 
 ## Hand off
-This is the product layer. **`/design` reads this spec** and adds the engineering
+This is the product layer. **`/rstaff-engineer:design` reads this spec** and adds the engineering
 layer (approach, data flow, test matrix, the `make verify` DoD, and the task
 ledger). Don't design the implementation here — end at "what & why", not "how".

@@ -1,4 +1,4 @@
-# Worktree recipe (shared by `/dispatch` and `/sweep`)
+# Worktree recipe (shared by `/rstaff-engineer:dispatch` and `/rstaff-engineer:sweep`)
 
 Git worktrees give each parallel feature (or maintenance task) its own working
 tree + branch, so concurrent work can't collide in one checkout.
@@ -24,7 +24,7 @@ git worktree prune
 
 ## Rules
 - **Setup cost is real.** Each worktree needs the product profile's setup commands
-  (a fresh node_modules, a build). Preflight should state it; it's why `/dispatch`
+  (a fresh node_modules, a build). Preflight should state it; it's why `/rstaff-engineer:dispatch`
   caps concurrent features (default 3).
 - **Verify contention.** *Cheap* verify (type-check / unit / lint, no ports/services)
   is parallel-safe — run it per task in each worktree. Anything needing a database,
@@ -35,7 +35,7 @@ git worktree prune
   guard-bash ask-gate and would stall a headless loop (and can lose work). A parked
   stash is only truly non-destructive if it's later restored — so reconcile it
   before removing the worktree (above), never drop it silently.
-- **Cleanup happens at `/ship`,** with the human present — not mid-loop.
+- **Cleanup happens at `/rstaff:ship`,** with the human present — not mid-loop.
 - **Stale-run lock:** a fresh (`<24h`) `building` status file in
   `var/dispatch/<repo>/<slug>.md` means a run may be live; don't double-dispatch
   the same feature unless the human overrides.

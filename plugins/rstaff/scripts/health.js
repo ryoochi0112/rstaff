@@ -178,7 +178,7 @@ function sh(cmd, args) {
   const markerOk = exists(path.join(HOME, 'rstaff.json'));
   const profilesOk = exists(path.join(HOME, 'profiles'));
   add('control repo layout', markerOk ? (profilesOk ? 'PASS' : 'WARN') : (STATIC ? 'INFO' : 'FAIL'),
-    !markerOk ? (STATIC ? 'control repo absent — skipping control repo layout checks' : `no rstaff.json at ${HOME} — is this the control repo? run install/install-apply.sh --install`)
+    !markerOk ? (STATIC ? 'control repo absent — skipping control repo layout checks' : `no rstaff.json at ${HOME} — is this the control repo? export RSTAFF_HOME=<control repo path>, or create one with /rstaff:setup`)
       : (profilesOk ? 'rstaff.json + profiles/' : 'no profiles/ dir yet — add profiles/<repo>.md to manage a repo'));
 }
 
@@ -204,17 +204,22 @@ if (!STATIC) {
     catch (_) { settingsBroken = true; }
   }
 
-  // 6. marketplace registered — match this control repo's path EXACTLY.
+  // 6. marketplace registered — a marketplace named "rstaff" from any source.
+  //    The control repo need not be the marketplace: a marketplace install
+  //    registers a GitHub/remote source while RSTAFF_HOME points elsewhere.
   //    Trust the CLI when it answers; only read files if the CLI itself failed.
   {
-    const r = sh('claude', ['plugin', 'marketplace', 'list']);
-    if (r.status === 0) {
-      const seen = r.stdout.includes(`(${HOME})`); // "Source: Directory (<path>)"
-      add('marketplace registered', seen ? 'PASS' : 'FAIL', seen ? 'claude CLI' : `this repo (${HOME}) not registered — run install/install-apply.sh --install`);
+    const fix = 'claude plugin marketplace add <rstaff repo or path>';
+    const r = sh('claude', ['plugin', 'marketplace', 'list', '--json']);
+    let list = null;
+    if (r.status === 0) { try { list = JSON.parse(r.stdout); } catch (_) {} }
+    if (Array.isArray(list)) {
+      const seen = list.some((m) => m && m.name === 'rstaff');
+      add('marketplace registered', seen ? 'PASS' : 'FAIL', seen ? 'claude CLI' : `no "rstaff" marketplace registered — run ${fix}`);
     } else {
       const mk = settings && settings.extraKnownMarketplaces;
-      const seen = mk && Object.values(mk).some((m) => m && m.source && m.source.path === HOME);
-      add('marketplace registered', seen ? 'PASS' : 'FAIL', seen ? 'settings.json (claude CLI unavailable)' : 'run install/install-apply.sh --install');
+      const seen = !!(mk && mk.rstaff);
+      add('marketplace registered', seen ? 'PASS' : 'FAIL', seen ? 'settings.json (claude CLI unavailable)' : `run ${fix}`);
     }
   }
 
@@ -227,10 +232,10 @@ if (!STATIC) {
         const list = pluginList(r.stdout);
         on = list.some((p) => p.id === 'rstaff@rstaff' && p.enabled === true);
       } catch (_) {}
-      add('plugin installed + enabled', on ? 'PASS' : 'FAIL', on ? 'claude CLI' : 'not installed/enabled — run install/install-apply.sh --install (or: claude plugin enable rstaff@rstaff)');
+      add('plugin installed + enabled', on ? 'PASS' : 'FAIL', on ? 'claude CLI' : 'not installed/enabled — run claude plugin install rstaff@rstaff (or: claude plugin enable rstaff@rstaff)');
     } else {
       const on = settings && settings.enabledPlugins && settings.enabledPlugins['rstaff@rstaff'] === true;
-      add('plugin installed + enabled', on ? 'PASS' : 'FAIL', on ? 'settings.json (claude CLI unavailable)' : 'run install/install-apply.sh --install');
+      add('plugin installed + enabled', on ? 'PASS' : 'FAIL', on ? 'settings.json (claude CLI unavailable)' : 'run claude plugin install rstaff@rstaff');
     }
   }
 
@@ -299,8 +304,8 @@ if (!STATIC) {
     const settingsHome = (settings && settings.env && settings.env.RSTAFF_HOME) || '';
     const settingsOk = settingsHome && exists(path.join(settingsHome, 'rstaff.json'));
     if (envOk && settingsOk && envHome !== settingsHome) add('RSTAFF_HOME', 'WARN', `shell (${envHome}) and settings.json (${settingsHome}) disagree`);
-    else if (envOk || settingsOk) add('RSTAFF_HOME', envOk && settingsOk ? 'PASS' : 'WARN', envOk && settingsOk ? envHome : `only ${envOk ? 'shell env' : 'settings.json'} sets it — run install/install-apply.sh --install to set both`);
-    else add('RSTAFF_HOME', 'FAIL', 'unset/invalid in both shell and ~/.claude/settings.json — run install/install-apply.sh --install');
+    else if (envOk || settingsOk) add('RSTAFF_HOME', envOk && settingsOk ? 'PASS' : 'WARN', envOk && settingsOk ? envHome : `only ${envOk ? 'shell env' : 'settings.json'} sets it — set both: export RSTAFF_HOME in your shell profile and env.RSTAFF_HOME in ~/.claude/settings.json`);
+    else add('RSTAFF_HOME', 'FAIL', 'unset/invalid in both shell and ~/.claude/settings.json — export RSTAFF_HOME=<control repo path> in your shell profile and set env.RSTAFF_HOME in ~/.claude/settings.json');
   }
 
   // 9. hooks live: SessionStart marker ------------------------------------------

@@ -5,6 +5,24 @@ what one feature run looks like end to end, and what your job is at each gate.
 For the map of the pieces see `ARCHITECTURE.md`; for the safety model see
 `AUTONOMY.md`; for the design research behind it, `research/arch-research-260626.md`.
 
+## Choosing Your Path
+
+The colleague runner represents week one of a redesign, but the older role toolkit still exists.
+Unlike a copilot that asks for approval at every step, a colleague is trusted to decide how to work.
+You run the colleague using `node bin/rstaff run <repo> <ticket>`.
+The runner ships inside the `rstaff-engineer` plugin.
+
+A headless worker, a background process running without a screen, edits a fresh codebase copy.
+The runner tests changes, and an independent referee decides whether to accept them.
+Accepted changes become a draft PR, a pull request marked not ready to merge.
+You judge this PR yes or no in plain words.
+The runner never merges.
+It stops if `var/.STOP` exists or limits are hit.
+To use it, you need a profile in `profiles/<repo>.md`, a logged-in `claude` CLI, and `gh`.
+
+The older role chain still works.
+The walkthrough below describes this chain: `/interview → ticket → /spec → /plan → /build → /review → /ship → /land`.
+
 ## Gemini document-drafting prerequisites
 
 Gemini-backed human-read document drafting requires the Gemini CLI and Google
@@ -80,8 +98,8 @@ plausible-but-wrong implementation later.
 
 **`/plan`** — the Eng Manager locks architecture (where expiry is stored, which
 layer checks it) and writes the task ledger `$CTRL/var/specs/<repo>/invite-expiry.tasks.md`:
-small tasks, each independently verifiable. You skim it: is the decomposition
-sane? This is your last cheap intervention point.
+small tasks, each independently verifiable. You may skim it, but the colleague
+runner needs no plan approval: it decides the plan and owns it.
 
 **`/build` — and walk away.** This is where loop engineering pays. The
 dispatcher runs the task loop above. When you come back you see either
@@ -103,21 +121,22 @@ streak. The recommended step-back is **`/replan`**: a fresh-context,
 first-principles re-derivation that writes a new plan/ledger or asks a forcing
 question — not another `/build` round.
 
-The workflow stays human-gated at the points that require judgment: choose the
-ticket, skim the plan, review the diff, and approve release.
+The role chain stays human-gated at the points that require judgment: choose the
+ticket, review the diff, and approve release. The colleague runner keeps only the
+one-way doors (merge, deploy) and asks at most one question, about the outcome.
 
 ## Your role, redefined
 
 | The system owns | You own |
 |---|---|
 | "Is the code correct?" (verify) | "Is this the right thing to build?" (spec answers) |
-| "Does it match the spec?" (fresh review) | "Is the decomposition sane?" (plan skim) |
+| "Does it match the spec?" (fresh review, or the runner's referee) | At most one question about the outcome, when the repo cannot answer it |
 | Progress memory (ledger, commits) | Irreversible actions (merge, deploy) |
-| Not running away (caps, `var/.STOP`) | Making the final calls at each gate |
+| Not running away (caps, `var/.STOP`) | Yes or no on the PR, in plain words |
 
 The failure mode to guard against isn't the AI going rogue — the rails handle
 that. It's **you skipping the gates because the output looks fine**. The gates
-are cheap (a skim and a PR review); skipping them silently
+are cheap (a PR review and a yes or no); skipping them silently
 converts "loop with quality gates" back into vibe coding with extra steps.
 
 ## Scaling up: parallel features
