@@ -2,7 +2,7 @@
 # (Product repos get their own Makefile from plugins/rstaff/templates/Makefile.sample.)
 # Company strategy + its doc-check gate live in a separate repository.
 
-.PHONY: verify check install health test evals backlog-check core-only e2e-install public-tree
+.PHONY: verify check install health test evals ablate backlog-check core-only e2e-install public-tree
 
 # The full test suite under test/** (node:test, zero deps): core, per-layer, maintainer and hook contract tests.
 test:
@@ -70,6 +70,10 @@ shellquote = '$(subst ','\'',$(1))'
 unexport SKILL CASE RUNS KEEP_TEMP
 evals:
 	@node "$(dir $(lastword $(MAKEFILE_LIST)))maintainer/run-evals.js" --skill $(call shellquote,$(value SKILL)) --case $(call shellquote,$(value CASE)) --runs $(call shellquote,$(value RUNS)) --keep-temp $(call shellquote,$(value KEEP_TEMP))
+
+# Online body ablation; deliberately outside verify.
+ablate:
+	@node "$(dir $(lastword $(MAKEFILE_LIST)))maintainer/ablate/ablate.js" --skill $(call shellquote,$(value SKILL))
 
 # Online install check (network + claude CLI); deliberately outside verify.
 e2e-install:

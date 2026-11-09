@@ -45,7 +45,7 @@ answerable across runs.
   `${CLAUDE_PLUGIN_ROOT}/rules/superpowers-precedence.md`), fix **atomically** (`fix(qa): <short>` per bug),
   add a **regression test**, and **re-verify in the browser** that it's gone.
 
-**Self-regulation caps (don't run away, don't thrash — from gstack `/qa`):**
+**Self-regulation caps (don't run away, don't thrash — from gstack's /qa):**
 - **Max ~25 fixes** in one run; beyond that, stop and hand the rest back as a report.
 - **Stop after 2 fixes that had to be reverted** — the tree is unstable; report and stop.
 - **High-uncertainty fixes → report, don't fix.** If you can't name the root cause
@@ -53,6 +53,6 @@ answerable across runs.
 - Keep each fix surgical (`${CLAUDE_PLUGIN_ROOT}/rules/surgical-changes.md`) — no drive-by refactors.
 
 ### 4. Gate + hand-off
-Run `make verify` after fixes. Do **not** self-approve — recommend `/review`
-(fresh context) before `/ship`. Report: the **health score**, bugs found, bugs
+Run `make verify` after fixes. Do **not** self-approve — recommend `/rstaff:review`
+(fresh context) before `/rstaff:ship`. Report: the **health score**, bugs found, bugs
 fixed, regression tests added, and before/after screenshots.

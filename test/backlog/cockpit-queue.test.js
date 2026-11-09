@@ -205,3 +205,13 @@ test('a branch value naming no ref still shows its prose, and is never called st
   assert.match(out, /^- Aristotle\/merged — merged · \(deleted — merged to main\)$/m);
   assert.doesNotMatch(out, /row is stale/);
 });
+
+// The CI and open-PR attention lines print only with gh data, so check the
+// source literals: shipped commands must carry their plugin prefix.
+test('cockpit attention lines name commands with their plugin prefix', () => {
+  const BARE_COMMAND = /(^|[\s(`'"])\/(build|qa|write|review|land|cockpit|dispatch|health|ship|design|spec)\b/;
+  const lines = fs.readFileSync(cockpit, 'utf8').split('\n')
+    .filter((line) => /attention\.push\(`\$\{r\.slug\}/.test(line));
+  assert.equal(lines.length, 2, 'found the CI and open-PR attention lines');
+  for (const line of lines) assert.doesNotMatch(line, BARE_COMMAND);
+});

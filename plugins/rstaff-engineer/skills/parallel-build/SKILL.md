@@ -25,11 +25,11 @@ Read each only at the step that needs it:
 | `references/external-writer.md` | The resolved `impl` is an external backend (`codex`) |
 | `references/review-packet.md` | The persisted route sends review to Codex rather than a fresh Claude `reviewer` |
 | `references/run-state.md` | Writing the feature status file, or reasoning about resume / git reconciliation |
-| `references/worktrees.md` | Setting up or tearing down a per-feature worktree under `/dispatch` |
+| `references/worktrees.md` | Setting up or tearing down a per-feature worktree under `/rstaff-engineer:dispatch` |
 
 ## Roles (writer ≠ reviewer holds at every layer)
-- **Dispatcher** — the `/build` session, or one `feature-runner` per feature under
-  `/dispatch`. Owns the ledger and is the ONLY thing that commits.
+- **Dispatcher** — the `/rstaff-engineer:build` session, or one `feature-runner` per feature under
+  `/rstaff-engineer:dispatch`. Owns the ledger and is the ONLY thing that commits.
 - **Writer** — a fresh `implementer` subagent (effective `impl: claude`, the default) or
   an external backend (`codex` via `delegate.js … execute`, sandboxed to
   `workspace-write`). It writes code to green and never commits, reviews, or edits the ledger.
@@ -100,15 +100,15 @@ decision (`git stash push -u`, never `git clean`/`reset --hard`); two consecutiv
 different tasks failing verify stops the feature (dead-man).
 
 ## Resume & run state
-Re-running `/build` (or `/dispatch <slug>`) reads the ledger **from `$CTRL`** and continues
+Re-running `/rstaff-engineer:build` (or `/rstaff-engineer:dispatch <slug>`) reads the ledger **from `$CTRL`** and continues
 from the first non-`done` task, so it survives compaction, restarts, and a discarded
 worktree. The reconcile in step 2 is what makes that safe: match the trailer **exactly**
 (`git log --grep '^rstaff-task: <slug>/<id>$'`) — a bare substring makes `T1` match `T10`.
-`references/run-state.md` has the status-file format `/cockpit` parses.
+`references/run-state.md` has the status-file format `/rstaff-backlog:cockpit` parses.
 
 ## Boundaries
-- Serial **within** a feature; parallelism is per feature (`/dispatch`, one worktree each).
-- Per-task review or a task-mode SKIP never waives the whole-branch `/review` before ship.
+- Serial **within** a feature; parallelism is per feature (`/rstaff-engineer:dispatch`, one worktree each).
+- Per-task review or a task-mode SKIP never waives the whole-branch `/rstaff:review` before ship.
 - Golden-conversation smoke for agent/UI features is an operator gate, not a runner action.
 - Runners stop at `ready_for_review` — they never push, ship, merge, or open PRs.
   Humans decide.

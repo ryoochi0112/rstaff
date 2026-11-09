@@ -358,7 +358,7 @@ test('v1 allowlist matches the contracted public prefixes and denies', () => {
     .split(/\r?\n/).map(line => line.trim()).filter(line => line && !line.startsWith('#'));
   assert.deepEqual(entries, ['.claude-plugin/', '.github/', '.gitignore', 'AGENTS.md', 'CHANGELOG.md',
     'CLAUDE.md', 'CODE_OF_CONDUCT.md', 'CONTRIBUTING.md', 'LICENSE', 'Makefile', 'README.md',
-    'SECURITY.md', 'THIRD_PARTY.md', 'docs/', 'install/', 'maintainer/',
+    'SECURITY.md', 'THIRD_PARTY.md', 'bin/', 'docs/', 'install/', 'maintainer/',
     'plugins/', 'test/', '!docs/research/', '!maintainer/public-overlay/']);
 });
 

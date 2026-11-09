@@ -63,7 +63,7 @@ If the adapter is `codex`, follow these steps:
    external model's project guidance (it already encodes our rules). The
    external model gets **no vote**; you and the human decide.
 
-6. **Cost note:** `/consult` is an explicit, cost-incurring call (see
+6. **Cost note:** `/rstaff-delegation:consult` is an explicit, cost-incurring call (see
    `docs/AUTONOMY.md`) — reserve it for high-stakes plans and risky diffs, not
    routine checks. Inspect measured usage with `/rstaff-usage:spend`; do not infer API dollars
    from ChatGPT-subscription token use.

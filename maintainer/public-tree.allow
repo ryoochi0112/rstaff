@@ -12,6 +12,7 @@ Makefile
 README.md
 SECURITY.md
 THIRD_PARTY.md
+bin/
 docs/
 install/
 maintainer/
@@ -19,3 +20,47 @@ plugins/
 test/
 !docs/research/
 !maintainer/public-overlay/
+# Explicit file registrations below are covered by the maintainer/ and test/ prefixes.
+# maintainer/ablate/analyst.js
+# test/maintainer/ablate-analyst.test.js
+# test/fixtures/ablate/scenarios/analyst-agree.json
+# test/fixtures/ablate/scenarios/analyst-disagree.json
+# test/fixtures/ablate/scenarios/analyst-no-verdict.json
+# test/fixtures/ablate/scenarios/analyst-arm-mutation.json
+# maintainer/ablate/ticket.js
+# test/maintainer/ablate-replay.test.js
+# test/fixtures/ablate/legacy-raw/01-known-fail.json
+# test/fixtures/ablate/legacy-raw/01-known-fail.stderr
+# test/fixtures/ablate/legacy-raw/02-null.json
+# test/fixtures/ablate/legacy-raw/02-null.stderr
+# test/fixtures/ablate/legacy-raw/03-full.json
+# test/fixtures/ablate/legacy-raw/03-full.stderr
+# test/fixtures/ablate/legacy-raw/04-full.json
+# test/fixtures/ablate/legacy-raw/04-full.stderr
+# test/fixtures/ablate/legacy-raw/05-null.json
+# test/fixtures/ablate/legacy-raw/05-null.stderr
+# test/fixtures/ablate/legacy-raw/06-null.json
+# test/fixtures/ablate/legacy-raw/06-null.stderr
+# test/fixtures/ablate/legacy-raw/07-full.json
+# test/fixtures/ablate/legacy-raw/07-full.stderr
+# test/fixtures/ablate/legacy-raw/08-full.json
+# test/fixtures/ablate/legacy-raw/08-full.stderr
+# test/fixtures/ablate/legacy-raw/09-null.json
+# test/fixtures/ablate/legacy-raw/09-null.stderr
+# test/fixtures/ablate/legacy-raw/10-placebo.json
+# test/fixtures/ablate/legacy-raw/10-placebo.stderr
+# test/fixtures/ablate/legacy-raw/11-full.json
+# test/fixtures/ablate/legacy-raw/11-full.stderr
+# test/fixtures/ablate/legacy-raw/12-placebo.json
+# test/fixtures/ablate/legacy-raw/12-placebo.stderr
+# test/fixtures/ablate/legacy-raw/13-placebo.json
+# test/fixtures/ablate/legacy-raw/13-placebo.stderr
+# test/fixtures/ablate/legacy-raw/14-full.json
+# test/fixtures/ablate/legacy-raw/14-full.stderr
+# test/fixtures/ablate/legacy-raw/15-placebo.json
+# test/fixtures/ablate/legacy-raw/15-placebo.stderr
+# test/fixtures/ablate/legacy-raw/probe-post-full.jsonl
+# test/fixtures/ablate/legacy-raw/probe-pre-full.jsonl
+# test/fixtures/ablate/legacy-raw/probe-pre-known-fail.jsonl
+# test/fixtures/ablate/legacy-raw/probe-pre-null.jsonl
+# test/fixtures/ablate/legacy-raw/probe-pre-placebo.jsonl

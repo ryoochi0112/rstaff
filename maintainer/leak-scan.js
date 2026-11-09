@@ -18,7 +18,8 @@ const TERMS = [
 const TICKET_PREFIXES = ['PROCESS', 'SKILL', 'TP', 'FEAT', 'MAINT', 'EXP', 'BLK', 'OD', 'SPIKE', 'INTEGRATION', 'AP', 'AI', 'DS', 'PM', 'ENG'];
 const TICKET_ID = new RegExp(`\\b(${TICKET_PREFIXES.join('|')})-\\d+\\b`, 'gi');
 const EMAIL = /\b[A-Z0-9._%+-]+@([A-Z0-9.-]+\.[A-Z]{2,})\b/gi;
-const PUBLIC_EMAIL_DOMAINS = new Set(['users.noreply.github.com', 'example.invalid']);
+// anthropic.com: the public co-author address Claude Code puts on commits it helped write.
+const PUBLIC_EMAIL_DOMAINS = new Set(['users.noreply.github.com', 'example.invalid', 'anthropic.com']);
 
 function sha256(text) {
   return crypto.hash ? crypto.hash('sha256', text, 'hex')

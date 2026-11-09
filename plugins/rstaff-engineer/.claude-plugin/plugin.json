@@ -1,6 +1,6 @@
 {
   "name": "rstaff-engineer",
-  "version": "0.13.0",
+  "version": "0.13.8",
   "description": "Engineering workflow commands, parallel delivery skills, and implementation conventions.",
   "author": {
     "name": "ryo.ochi"

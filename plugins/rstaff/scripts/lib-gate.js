@@ -31,6 +31,46 @@ function resolveVerify(top, ctrl) {
   }
 }
 
+// Paths that differ between two tree objects, or null when git cannot compare them.
+function changedPaths(top, fromTree, toTree) {
+  if (typeof fromTree !== 'string' || typeof toTree !== 'string') return null;
+  const env = { ...process.env };
+  delete env.GIT_DIR;
+  delete env.GIT_WORK_TREE;
+  delete env.GIT_INDEX_FILE;
+  const diff = spawnSync('git', ['-C', top, 'diff', '--name-only', '-z', fromTree, toTree], { env, encoding: 'utf8' });
+  if (diff.error || diff.status !== 0) return null;
+  return diff.stdout.split('\0').filter(Boolean);
+}
+const DOCS_ONLY = /^(docs|specs|backlog|profiles)\//;
+// The validator `make backlog-check` runs; named by its make target when the control repo has one.
+function backlogValidator() {
+  return `node ${shellquote(path.join(path.resolve(__dirname, '..'), 'scripts', 'lib-backlog.js'))} validate`;
+}
+function backlogCheckName(ctrl) {
+  return /^backlog-check:/m.test(readOptional(path.join(ctrl, 'Makefile'))) ? 'make backlog-check' : backlogValidator();
+}
+// Docs-only rule: when every change since the baseline sits under docs/, specs/,
+// backlog/ or profiles/, the stop needs no verify. A backlog/ change inside the control repo
+// needs the backlog validator green instead, run here. Anything else keeps the verify rule.
+function docsOnly(top, ctrl, baseline, wtree) {
+  const none = { allow: false, verify: null };
+  const paths = changedPaths(top, baseline, wtree);
+  if (!paths || !paths.length || !paths.every((p) => DOCS_ONLY.test(p))) return none;
+  if (!paths.some((p) => p.startsWith('backlog/'))) return { allow: true, verify: null };
+  try {
+    if (fs.realpathSync(top) !== fs.realpathSync(ctrl)) return none;
+  } catch (_) {
+    return none;
+  }
+  const env = { ...process.env, RSTAFF_HOME: ctrl };
+  delete env.GIT_DIR;
+  delete env.GIT_WORK_TREE;
+  delete env.GIT_INDEX_FILE;
+  const run = spawnSync(backlogValidator(), { shell: true, cwd: ctrl, env, encoding: 'utf8', timeout: 8000 });
+  return { allow: !run.error && run.status === 0, verify: backlogCheckName(ctrl) };
+}
+
 function validSid(sid) {
   return typeof sid === 'string' && /^[A-Za-z0-9_-]{1,128}$/.test(sid);
 }
@@ -166,4 +206,4 @@ function rewriteCommand(cmd, verifyCmd, runnerPath, sid) {
   }).join('');
   return changed ? rewritten : null;
 }
-module.exports = { resolveVerify, expandVerify, validSid, statePath, loadState, saveState, repoEntry, shellquote, splitTopLevel, rewriteCommand };
+module.exports = { resolveVerify, expandVerify, changedPaths, docsOnly, backlogCheckName, validSid, statePath, loadState, saveState, repoEntry, shellquote, splitTopLevel, rewriteCommand };

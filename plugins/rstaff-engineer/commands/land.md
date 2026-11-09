@@ -39,7 +39,7 @@ From `$ARGUMENTS`, else the PR for the current branch (`gh pr view --json number
   Proceed only when `reviewed.verdict` is `pass` and `reviewed.current` is
   `true`; treat `current: null` exactly like `false`. Otherwise STOP, print
   `reviewed.reason` and every path in `reviewed.moved` as "these files changed
-  after the PASS", then recommend `/review`. An explicit human override may
+  after the PASS", then recommend `/rstaff:review`. An explicit human override may
   still proceed.
 - **Review is not current (`reviewed.current` not true):** refuse to merge.
 - **No conflicts:** mergeable.
@@ -58,7 +58,7 @@ for the repo, run it and capture status. If there's no deploy step, say so.
 ### 5. Canary — verify production health
 Against the prod URL (arg or configured): hit the health endpoint + key pages;
 watch for 5xx, console errors, and obvious regressions (use the same browser
-capability as `/qa` if a URL is given). Compare error rate to baseline if available.
+capability as `/rstaff-engineer:qa` if a URL is given). Compare error rate to baseline if available.
 
 ### 6. Record + report
 On healthy deploy, refresh the eng cockpit cache

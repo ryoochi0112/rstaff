@@ -1,6 +1,6 @@
 # Task ledger format — `<slug>.tasks.md` (control repo)
 
-The **single source of truth** for a build's run state. `/design` writes it; `/build`
+The **single source of truth** for a build's run state. `/rstaff-engineer:design` writes it; `/rstaff-engineer:build`
 and `feature-runner` read and update it.
 
 ## Where it lives (control repo — never the product repo)
@@ -17,7 +17,7 @@ $CTRL/var/specs/<repo>/<slug>.qa.md     # QA runbook (optional)
 - `<repo>` = the product repo's directory name — the **same token** as its
   `$CTRL/profiles/<repo>.md` and its `var/dispatch/<repo>/` status files.
 - `var/` is gitignored, so these are **local operator working state**: they survive
-compaction and restarts (a file `/build` re-reads from `$CTRL`), but they are
+compaction and restarts (a file `/rstaff-engineer:build` re-reads from `$CTRL`), but they are
 committed nowhere and never travel in
   the product PR. rstaff makes **zero edits to the product repo.**
 
@@ -78,7 +78,7 @@ reviewer: auto | claude | codex    # optional; default auto
 
 ## Rules
 - **Single-token `- status:` lines** stay greppable; the summary table is for
-  humans and `/cockpit`. Keep the two consistent.
+  humans and `/rstaff-backlog:cockpit`. Keep the two consistent.
 - **Statuses:** `pending → in_progress → done`; `parked` (needs human / repeatedly
   failed verify); `blocked` (a dependency parked); `not_attempted` (feature stopped
   before reaching it, e.g. dead-man).
@@ -107,7 +107,7 @@ reviewer: auto | claude | codex    # optional; default auto
   `- route-reason:`, so the exception is auditable and a resumed run replays it.
   This is not a vote on who should write high-risk code; it stops the ledger and
   `route.js` from disagreeing in silence. Measured 2026-08-02: four high-risk
-  tasks were pinned to Claude by a `/build` brief, quietly opting out of the
+  tasks were pinned to Claude by a `/rstaff-engineer:build` brief, quietly opting out of the
   cross-provider policy for a whole feature with nothing recording why. A pin
   that keeps needing the same reason is evidence to change the default in
   `route.js` — not to keep writing the pin.
@@ -115,10 +115,10 @@ reviewer: auto | claude | codex    # optional; default auto
   the invocation, not buried in a ledger row.
 - **class** defaults to `logic`. `docs` and `config` tasks skip the per-task
   reviewer gate; verify still runs and the checkpoint commit is still tagged.
-  The whole-branch `/review` before ship remains mandatory for every class — a
+  The whole-branch `/rstaff:review` before ship remains mandatory for every class — a
   light path never waives it.
 - **risk + impl + reviewer + route** make both routing decisions resumable and
-  auditable. `/design` assigns `risk`; `impl` and `reviewer` default to `auto`.
+  auditable. `/rstaff-engineer:design` assigns `risk`; `impl` and `reviewer` default to `auto`.
   Before spawning, the runner must execute `node "$(node "${CLAUDE_PLUGIN_ROOT}/scripts/locate.js" rstaff-delegation)/scripts/route.js" resolve --ledger
   <absolute path> --task <id> --write` and use its JSON result
   (`impl`/`writerModel`/`writerEffort`, `reviewer`/`reviewerModel`/`reviewerEffort`).
@@ -146,7 +146,7 @@ reviewer: auto | claude | codex    # optional; default auto
   explicit override) to change a stored route deliberately.
 - **Sizing:** one fresh subagent should finish a task from spec + brief + repo
   alone — roughly ≤5 files, one verify cycle, tree green at the end. 3–8 tasks is
-  typical. If a feature is ≤2 trivial tasks, skip the ledger and use plain `/build`.
+  typical. If a feature is ≤2 trivial tasks, skip the ledger and use plain `/rstaff-engineer:build`.
 - **Ordering:** sequence so each task's checkpoint commit is a working state.
 - Only the dispatcher/runner edits this file. Implementers never touch it.
 

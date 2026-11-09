@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+// rstaff — the bare runner CLI. Code lives in plugins/rstaff-engineer/scripts/runner/.
+'use strict';
+const path = require('node:path');
+const { main } = require(path.join(__dirname, '..', 'plugins', 'rstaff-engineer', 'scripts', 'runner', 'cli.js'));
+main(process.argv.slice(2), { binDir: __dirname }).then((code) => { process.exitCode = code; }, (error) => { process.stderr.write(`rstaff: ${error.message}\n`); process.exitCode = 1; });

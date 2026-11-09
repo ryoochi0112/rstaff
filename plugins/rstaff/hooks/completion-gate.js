@@ -17,7 +17,7 @@ function main() {
   const { readEventStrict, resolveHome } = lib;
   const { spawnSync } = require('node:child_process');
   const { fingerprint } = require('../scripts/lib-review-rounds.js');
-  const { resolveVerify, statePath, loadState, saveState, repoEntry } = require('../scripts/lib-gate.js');
+  const { resolveVerify, docsOnly, statePath, loadState, saveState, repoEntry } = require('../scripts/lib-gate.js');
   const { event, malformed } = readEventStrict();
   if (malformed) throw new Error('malformed event input');
   if (typeof event.cwd !== 'string' || !event.cwd.trim()) throw new Error('missing event cwd');
@@ -57,20 +57,23 @@ function main() {
   const entry = repoEntry(state, top);
   const { wtree } = fp;
   if (wtree === entry.baseline || entry.greens.includes(wtree)) return;
+  const docs = docsOnly(top, ctrl, entry.baseline, wtree);
+  if (docs.allow) return;
+  const required = docs.verify || verify;
   const count = (entry.blocks[wtree] || 0) + 1;
   entry.blocks[wtree] = count;
   saveState(file, state);
   const short = wtree.slice(0, 7);
   if (count > 3) {
-    emit({ systemMessage: `rstaff completion gate gave up after 3 blocks: no green ${verify} on tree ${short} — this stop is NOT verified.` });
+    emit({ systemMessage: `rstaff completion gate gave up after 3 blocks: no green ${required} on tree ${short} — this stop is NOT verified.` });
     return;
   }
   const baseline = entry.baseline === null ? 'no session baseline' : 'edited since session start';
   const green = entry.greens.at(-1)?.slice(0, 7) || 'none';
   emit({ decision: 'block', reason:
-    `rstaff completion gate: this session changed the tree, but no green \`${verify}\` matches it.\n`
+    `rstaff completion gate: this session changed the tree, but no green \`${required}\` matches it.\n`
     + `  tree: ${short} (${baseline}) · last green: ${green}\n`
-    + `  → run \`${verify}\`; the stop is allowed once it exits 0 on this tree.\n`
+    + `  → run \`${required}\`; the stop is allowed once it exits 0 on this tree.\n`
     + `  (block ${count}/3 · escape: RSTAFF_GATE=off — see SECURITY.md)` });
 }
 

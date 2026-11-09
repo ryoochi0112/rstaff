@@ -34,7 +34,7 @@ the deliverable.
 **Weekly quota brake.** When `rstaff.json` sets `codexQuota.weeklyBrakePercent` (rstaff's own: 85) and the newest codex row in `var/usage.jsonl` shows weekly quota (`quota.secondary.end`) at or above it, `route.js` sends `auto` writers and `auto` reviewers to Claude and records the reason in the route. A reading whose window has already reset (`resetsAt` passed) is ignored, and so is a missing or invalid key. Explicit codex (`impl: codex`, `--impl codex`, `reviewer: codex`) and routes already persisted in the ledger bypass the brake; `--reroute` re-resolves a stored route with it.
 
 **`class: docs` drafts on Gemini.** A docs task under `impl: auto` resolves to
-the `gemini` writer (`gemini-3.8-flash`, the same model `/write` drafts with).
+the `gemini` writer (`gemini-3.8-flash`, the same model `/rstaff-delegation:write` drafts with).
 delegate.js wires gemini as a read-only `draft`, so the runner has the band's
 Claude implementer apply the draft to the task's files; the docs class already
 skips the per-task review gate and verify still runs. `impl: gemini` is refused
@@ -66,7 +66,7 @@ carry the old `claude/inherited` sentinel and replay verbatim (the runner omits
 `model:` for it).
 
 An explicitly named `impl:` is passed through untouched — its availability is a
-`/dispatch` preflight decision with a human in the loop. **Where** that name is
+`/rstaff-engineer:dispatch` preflight decision with a human in the loop. **Where** that name is
 written still decides the writer's model, because the three places it can come
 from do not mean the same thing:
 
@@ -78,7 +78,7 @@ from do not mean the same thing:
 
 Only the per-task line is an *exception*, so only it gets the `default` sentinel.
 Measured 2026-09-09: collapsing all three and keying the tier table
-off `impl: auto` alone meant `/build` writing its resolved backend into the ledger
+off `impl: auto` alone meant `/rstaff-engineer:build` writing its resolved backend into the ledger
 header silently moved every later task in that ledger onto `default` — and a
 writer was dispatched onto a `config.toml` model the installed codex-cli refuses,
 consuming the attempt with nothing written.
@@ -91,7 +91,7 @@ Whether the band's *model* offers that effort is a narrower question the CLI's o
 model catalog answers, and it is checked in two places, because the tier table and
 an override fail differently:
 
-- `/health`'s **codex tier support** check walks the tier table and FAILs a band
+- `/rstaff:health`'s **codex tier support** check walks the tier table and FAILs a band
   whose model doesn't offer its effort.
 - `route.js resolve` checks the **overridden** axis only — `--impl-model`/
   `--impl-effort`/`--review-model`/`--review-effort` produce a pair the tier walk
@@ -100,7 +100,7 @@ an override fail differently:
   so the check reads the top-level `model =` from codex's `config.toml` to learn
   what that effort will land on.
 
-**The tier table is never blocked at resolve time**, only reported by `/health`.
+**The tier table is never blocked at resolve time**, only reported by `/rstaff:health`.
 The catalog is a *cache*: an old one lists a real model with a real level list
 that simply predates a newer level, and blocking on that would turn "your cache is
 stale" into "all routing is down" with no escape but deleting the file. An
@@ -121,7 +121,7 @@ base_instructions` and then `Model metadata for gpt-6-astra not found. Defaultin
 to fallback metadata`; and `gpt-6-astra` — listed in that cache with every reasoning level, so
 `pairSupport` answered `ok` — died at spawn with HTTP 400 "requires a newer
 version of Codex". **A catalog check cannot see this**; only the version fields
-can. `/health`'s **codex default model** check reports the inversion and names the
+can. `/rstaff:health`'s **codex default model** check reports the inversion and names the
 model. It does not block: under that same skew `gpt-5.6-sol` still ran fine, so
 refusing every codex route would take the working paths down with the broken one.
 

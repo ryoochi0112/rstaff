@@ -11,7 +11,7 @@
       "name": "rstaff",
       "source": "./plugins/rstaff",
       "description": "Always-on security and verification gates with independent review, release, and diagnostic commands.",
-      "version": "0.13.0",
+      "version": "0.13.8",
       "author": {
         "name": "ryo.ochi"
       },
@@ -29,21 +29,21 @@
     {
       "name": "rstaff-pm",
       "source": "./plugins/rstaff-pm",
-      "version": "0.13.0",
+      "version": "0.13.8",
       "description": "Product/PM toolkit: interview ideas into falsifiable tickets and tickets into specs, each judged by a fresh-context critic.",
       "category": "workflow"
     },
     {
       "name": "rstaff-ds",
       "source": "./plugins/rstaff-ds",
-      "version": "0.13.0",
+      "version": "0.13.8",
       "description": "Data-science toolkit: notebook conventions and a fresh-context analysis reviewer; the notebook re-run gate lives in core.",
       "category": "workflow"
     },
     {
       "name": "rstaff-engineer",
       "source": "./plugins/rstaff-engineer",
-      "version": "0.13.0",
+      "version": "0.13.8",
       "description": "Engineering workflow commands, parallel delivery skills, and implementation conventions.",
       "author": {
         "name": "ryo.ochi"
@@ -54,7 +54,7 @@
     {
       "name": "rstaff-ai",
       "source": "./plugins/rstaff-ai",
-      "version": "0.13.0",
+      "version": "0.13.8",
       "description": "Optional AI evaluation and controlled experimentation tools for agent-generated output.",
       "author": {
         "name": "ryo.ochi"
@@ -70,28 +70,28 @@
     {
       "name": "rstaff-ai-datadog",
       "source": "./plugins/rstaff-ai-datadog",
-      "version": "0.13.0",
+      "version": "0.13.8",
       "description": "Optional Datadog LLM Observability analysis; requires a Datadog account and the Datadog connector.",
       "category": "workflow"
     },
     {
       "name": "rstaff-usage",
       "source": "./plugins/rstaff-usage",
-      "version": "0.13.0",
+      "version": "0.13.8",
       "description": "Token usage accounting and context cost guards.",
       "category": "workflow"
     },
     {
       "name": "rstaff-backlog",
       "source": "./plugins/rstaff-backlog",
-      "version": "0.13.0",
+      "version": "0.13.8",
       "description": "A live engineering dashboard.",
       "category": "workflow"
     },
     {
       "name": "rstaff-delegation",
       "source": "./plugins/rstaff-delegation",
-      "version": "0.13.0",
+      "version": "0.13.8",
       "description": "External model consultation, routed task execution, and document drafting.",
       "category": "workflow"
     }

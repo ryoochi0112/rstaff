@@ -1,13 +1,13 @@
 ---
-description: OpenAI/codex shortcut for /consult — route the current plan, diff, or question to Codex for a read-only cross-model review, then reconcile. Equivalent to `/consult codex $ARGUMENTS`.
+description: OpenAI/codex shortcut for /consult — route the current plan, diff, or question to Codex for a read-only cross-model review, then reconcile. Equivalent to `/rstaff-delegation:consult codex $ARGUMENTS`.
 argument-hint: [plan | diff | review | "<specific question>"]
 allowed-tools: Bash, Read, Grep, Glob
 ---
 
-Convenience alias — **equivalent to `/consult codex $ARGUMENTS`**. Run `/consult`
+Convenience alias — **equivalent to `/rstaff-delegation:consult codex $ARGUMENTS`**. Run `/rstaff-delegation:consult`
 with adapter `codex` and the rest of `$ARGUMENTS` as the artifact selector: same
 availability check, artifact assembly, read-only `delegate.js` run, and
-AGREE/DIVERGE reconcile. See `/consult` for that logic — it is not duplicated
+AGREE/DIVERGE reconcile. See `/rstaff-delegation:consult` for that logic — it is not duplicated
 here.
 
 Two things worth knowing that are specific to this adapter:

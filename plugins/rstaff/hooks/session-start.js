@@ -15,7 +15,7 @@ if (!fs.existsSync(path.join(home, 'rstaff.json'))) {
   const why = process.env.RSTAFF_HOME
     ? `RSTAFF_HOME=${process.env.RSTAFF_HOME} is invalid`
     : 'RSTAFF_HOME unset, no rstaff.json found walking up';
-  const msg = `rstaff: control repo NOT found (${why}) — memory OFF. Fix: install/install-apply.sh --install, then /health.`;
+  const msg = `rstaff: control repo NOT found (${why}) — memory OFF. Fix: export RSTAFF_HOME=<control repo path> in your shell profile (create one with /rstaff:setup), then /rstaff:health.`;
   warn(msg);
   emitContext('SessionStart', msg);
 }
@@ -49,7 +49,7 @@ function credentialWarnings(profileText, nowMs = Date.now()) {
     const exp = Date.parse(`${m[2]}T23:59:59Z`);
     if (Number.isNaN(exp)) continue;
     const days = Math.floor((exp - nowMs) / 864e5);
-    if (days < 0) out.push(`- ❌ \`${m[1]}\` EXPIRED ${m[2]} (${-days}d ago) — refresh before /build or /qa.`);
+    if (days < 0) out.push(`- ❌ \`${m[1]}\` EXPIRED ${m[2]} (${-days}d ago) — refresh before /rstaff-engineer:build or /rstaff-engineer:qa.`);
     else if (days <= WARN_DAYS) out.push(`- ⚠ \`${m[1]}\` expires ${m[2]} (${days}d left) — refresh soon.`);
   }
   return out;
@@ -99,7 +99,7 @@ try {
   // Credential preflight (non-blocking): warn if a dev token in the profile's
   // `## credentials` section is past / near its recorded expiry. Metadata only.
   const cw = credentialWarnings(safeRead(prof));
-  if (cw.length) parts.push(`## ⚠ Credential preflight — refresh before /build or /qa\n${cw.join('\n')}\n`);
+  if (cw.length) parts.push(`## ⚠ Credential preflight — refresh before /rstaff-engineer:build or /rstaff-engineer:qa\n${cw.join('\n')}\n`);
 } catch (_) {}
 
 // Backlog stays pull-only: inject counts and a /cockpit pointer, never the queue.
@@ -123,7 +123,7 @@ if (!parts.length) {
 
 const header = `# rstaff memory (control repo: ${home})
 Engineering-team memory below. Give a repo a profile at profiles/<repo>.md so the loop knows its verify/run/QA commands.
-Human-read docs (README/ADR/design doc/Notion): propose \`/write\` in one line first; AI-read artifacts stay on Claude.
+Human-read docs (README/ADR/design doc/Notion): propose \`/rstaff-delegation:write\` in one line first; AI-read artifacts stay on Claude.
 
 `;
 process.stdout.write(JSON.stringify({

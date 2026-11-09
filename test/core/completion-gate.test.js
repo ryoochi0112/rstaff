@@ -97,13 +97,14 @@ function verify(f, command = 'make verify', cwd = f.top) {
   return spawnSync('sh', ['-c', rewritten], { cwd, env: f.env, encoding: 'utf8', timeout: 10000 });
 }
 
-function pmFixture(t) {
+function pmFixture(t, { makefile = null } = {}) {
   const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'rstaff-pm-gate-')));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const ctrl = path.join(root, 'control');
   fs.mkdirSync(path.join(ctrl, 'backlog'), { recursive: true });
   fs.writeFileSync(path.join(ctrl, 'rstaff.json'), '{"rstaff":"control-repo"}');
   fs.writeFileSync(path.join(ctrl, '.gitignore'), 'var/\n');
+  if (makefile) fs.writeFileSync(path.join(ctrl, 'Makefile'), makefile);
   const backlog = path.join(ctrl, 'backlog/acme.md');
   const ticket = '# Backlog — acme\n\n## PRODUCT-001: Test a product idea\n'
     + '- status: open\n- pri: P1\n- route: plan\n- deps: -\n- source: hand\n'
@@ -628,3 +629,85 @@ test('DS: rstaff:nbgate profile blocks a notebook edit until the expanded nbgate
   assert.deepEqual(readState(f).repos[f.top].greens, [hash]);
   silent(runHook(f, 'stop'));
 });
+
+// Docs-only rule: docs trees need no verify; backlog trees in the control repo need the validator.
+const DOCS_DIRS = ['docs', 'specs', 'profiles']; // backlog/ outside the control repo keeps the verify rule (tested below)
+function addDoc(f, dir, name = 'note.md') {
+  fs.mkdirSync(path.join(f.top, dir), { recursive: true });
+  fs.writeFileSync(path.join(f.top, dir, name), `written after session start in ${dir}\n`);
+}
+
+test('docs-only: a new file under each docs directory allows Stop silently and records nothing', (t) => {
+  for (const dir of DOCS_DIRS) {
+    const f = fixture(t, 'false');
+    silent(runHook(f, 'baseline'));
+    addDoc(f, dir);
+    assert.notEqual(tree(f), readState(f).repos[f.top].baseline);
+    silent(runHook(f, 'stop'));
+    assert.deepEqual(readState(f).repos[f.top].greens, []);
+    assert.deepEqual(readState(f).repos[f.top].blocks, {});
+  }
+});
+
+test('docs-only: a mixed diff still blocks with the verify golden; a nested docs path is not docs-only', (t) => {
+  const f = fixture(t, 'false');
+  silent(runHook(f, 'baseline'));
+  addDoc(f, 'docs');
+  silent(runHook(f, 'stop'));
+  edit(f);
+  const mixed = runHook(f, 'stop');
+  blocked(mixed);
+  assert.equal(mixed.out.reason, golden(tree(f)));
+  const g = fixture(t, 'false');
+  silent(runHook(g, 'baseline'));
+  addDoc(g, 'src/docs');
+  const nested = runHook(g, 'stop');
+  blocked(nested);
+  assert.equal(nested.out.reason, golden(tree(g)));
+});
+
+test('docs-only: without a session baseline a docs-only edit still blocks', (t) => {
+  const f = fixture(t, 'false');
+  silent(runHook(f, 'baseline'));
+  addDoc(f, 'docs');
+  fs.rmSync(file(f));
+  const r = runHook(f, 'stop');
+  blocked(r);
+  assert.equal(r.out.reason, golden(tree(f), { baseline: 'no session baseline' }));
+});
+
+test('docs-only: a backlog/ change outside the control repo keeps the verify rule', (t) => {
+  const f = fixture(t, 'false');
+  silent(runHook(f, 'baseline'));
+  addDoc(f, 'backlog', 'acme.md');
+  const r = runHook(f, 'stop');
+  blocked(r);
+  assert.equal(r.out.reason, golden(tree(f)));
+});
+
+const MAKEFILE = 'verify: ; @false\nbacklog-check: ; @true\n';
+for (const withMake of [false, true]) {
+  test(`docs-only: a backlog edit in the control repo passes on the validator alone, not make verify (${withMake ? 'make backlog-check' : 'validator fallback'})`, (t) => {
+    const f = pmFixture(t, withMake ? { makefile: MAKEFILE } : {});
+    const check = withMake ? 'make backlog-check' : VALIDATE;
+    silent(runHook(f, 'baseline'));
+    fs.writeFileSync(f.backlog, f.ticket.replace('- context: A testable idea.', '- context: A testable idea, edited.'));
+    assert.notEqual(tree(f), readState(f).repos[f.ctrl].baseline);
+    silent(runHook(f, 'stop'));
+    assert.deepEqual(readState(f).repos[f.ctrl].greens, []);
+    fs.writeFileSync(f.backlog, f.ticket.replace('- source: hand', '- source: interview'));
+    const invalid = tree(f);
+    const red = runHook(f, 'stop');
+    blocked(red);
+    assert.equal(red.out.reason, golden(invalid, { verify: check }));
+    assert.equal(readState(f).repos[f.ctrl].blocks[invalid], 1);
+    fs.writeFileSync(f.backlog, f.ticket.replace('- context: A testable idea.', '- context: A testable idea, fixed.'));
+    silent(runHook(f, 'stop'));
+    if (withMake) {
+      fs.writeFileSync(path.join(f.ctrl, 'README.md'), 'a code-side change\n');
+      const mixed = runHook(f, 'stop');
+      blocked(mixed);
+      assert.equal(mixed.out.reason, golden(tree(f)));
+    }
+  });
+}

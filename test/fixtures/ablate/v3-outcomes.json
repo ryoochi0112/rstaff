@@ -1,0 +1,511 @@
+{
+  "legacy": true,
+  "probes": {
+    "pre": {
+      "full": {
+        "models": [
+          "claude-haiku-4-5-20251001"
+        ],
+        "rstaffPlugins": [
+          {
+            "name": "rstaff",
+            "path": "arms/full"
+          }
+        ]
+      },
+      "known-fail": {
+        "models": [
+          "claude-haiku-4-5-20251001"
+        ],
+        "rstaffPlugins": [
+          {
+            "name": "rstaff",
+            "path": "arms/known-fail"
+          }
+        ]
+      },
+      "null": {
+        "models": [
+          "claude-haiku-4-5-20251001"
+        ],
+        "rstaffPlugins": [
+          {
+            "name": "rstaff",
+            "path": "arms/null"
+          }
+        ]
+      },
+      "placebo": {
+        "models": [
+          "claude-haiku-4-5-20251001"
+        ],
+        "rstaffPlugins": [
+          {
+            "name": "rstaff",
+            "path": "arms/placebo"
+          }
+        ]
+      }
+    },
+    "post": {
+      "full": {
+        "models": [
+          "claude-haiku-4-5-20251001"
+        ],
+        "rstaffPlugins": [
+          {
+            "name": "rstaff",
+            "path": "arms/full"
+          }
+        ]
+      }
+    }
+  },
+  "legs": [
+    {
+      "seq": 1,
+      "arm": "known-fail",
+      "runs": [
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        }
+      ]
+    },
+    {
+      "seq": 2,
+      "arm": "null",
+      "runs": [
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        }
+      ]
+    },
+    {
+      "seq": 3,
+      "arm": "full",
+      "runs": [
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        }
+      ]
+    },
+    {
+      "seq": 4,
+      "arm": "full",
+      "runs": [
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        }
+      ]
+    },
+    {
+      "seq": 5,
+      "arm": "null",
+      "runs": [
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        }
+      ]
+    },
+    {
+      "seq": 6,
+      "arm": "null",
+      "runs": [
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        }
+      ]
+    },
+    {
+      "seq": 7,
+      "arm": "full",
+      "runs": [
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        }
+      ]
+    },
+    {
+      "seq": 8,
+      "arm": "full",
+      "runs": [
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        }
+      ]
+    },
+    {
+      "seq": 9,
+      "arm": "null",
+      "runs": [
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        }
+      ]
+    },
+    {
+      "seq": 10,
+      "arm": "placebo",
+      "runs": [
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        }
+      ]
+    },
+    {
+      "seq": 11,
+      "arm": "full",
+      "runs": [
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        }
+      ]
+    },
+    {
+      "seq": 12,
+      "arm": "placebo",
+      "runs": [
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        }
+      ]
+    },
+    {
+      "seq": 13,
+      "arm": "placebo",
+      "runs": [
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        }
+      ]
+    },
+    {
+      "seq": 14,
+      "arm": "full",
+      "runs": [
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        }
+      ]
+    },
+    {
+      "seq": 15,
+      "arm": "placebo",
+      "runs": [
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": true,
+          "error": false,
+          "subjectText": null
+        },
+        {
+          "judgePass": false,
+          "error": false,
+          "subjectText": null
+        }
+      ]
+    }
+  ]
+}

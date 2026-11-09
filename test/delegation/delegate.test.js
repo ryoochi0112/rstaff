@@ -919,18 +919,20 @@ test('run: gemini draft removes its scratch dir when the sandbox guard throws', 
   const dir = tmpdir('gemini-danger');
   fs.writeFileSync(path.join(dir, 'gemini'), '#!/bin/sh\nexit 0\n');
   fs.chmodSync(path.join(dir, 'gemini'), 0o755);
-  const scratchDirs = () => fs.readdirSync(os.tmpdir())
-    .filter((name) => name.startsWith('rstaff-gemini-draft-')).sort();
-  const before = scratchDirs();
+  // A private TMPDIR, so other tests or processes creating and removing their
+  // own rstaff-gemini-draft-* dirs in the shared os.tmpdir() cannot race this check.
+  const privateTmp = path.join(dir, 'tmp');
+  fs.mkdirSync(privateTmp);
 
-  withEnv({ RSTAFF_DELEGATE_ALLOW_DANGER: undefined }, () => {
+  withEnv({ RSTAFF_DELEGATE_ALLOW_DANGER: undefined, TMPDIR: privateTmp }, () => {
+    assert.equal(os.tmpdir(), privateTmp);
     assert.throws(() => D.run({
       adapter: 'gemini', mode: 'draft', sandbox: 'danger-full-access', prompt: 'draft this',
       cwd: dir, timeoutMs: 10000, env: { PATH: dir },
     }), /RSTAFF_DELEGATE_ALLOW_DANGER/);
   });
 
-  assert.deepEqual(scratchDirs(), before, 'failed gemini draft must not leak its scratch directory');
+  assert.deepEqual(fs.readdirSync(privateTmp), [], 'failed gemini draft must not leak its scratch directory');
 });
 
 test('run: gemini draft removes its CLI chat log without removing unrelated projects', () => {

@@ -61,7 +61,7 @@ read-only reviewer — the author never approves their own work.
    not run `record` again; re-run `status --repo <repo> --branch <branch> --goal
    "<filled goal>" --why "<filled why>"`.
    Use the reviewer’s verdict and P0/P1 counts, with `pass` or `block` in
-   lowercase for the CLI. `--mode whole` is mandatory: `/review` is the
+   lowercase for the CLI. `--mode whole` is mandatory: `/rstaff:review` is the
    whole-branch reviewer, and only whole-branch verdicts feed the streak. Read
    the resulting `tripped` field and any memo printed to stdout.
 
@@ -71,7 +71,7 @@ read-only reviewer — the author never approves their own work.
      `$(node "${CLAUDE_PLUGIN_ROOT}/scripts/locate.js" rstaff-engineer)`
      and use its `/rstaff-engineer:build`, then re-review. If absent, say
      "Engineer layer absent; fix the blocking findings directly, then re-review." Only a PASS
-     (or an explicit human override) clears it for `/ship`.
+     (or an explicit human override) clears it for `/rstaff:ship`.
    - **When `tripped: true`:** The closing output MUST be the generated
      structural memo printed by `record`. Before handing it to the user, fill
      `Goal (restated):` from the spec’s acceptance criteria and fill

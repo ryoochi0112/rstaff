@@ -21,9 +21,9 @@ stop requiring status plus lettered options, and the advisory breaker trips
 after two consecutive whole-branch BLOCKs.
 - Each slug needs its spec **and** ledger in the control repo
   (`$CTRL/var/specs/<repo>/<slug>.md` + `…/<slug>.tasks.md`) — if a ledger is missing,
-  offer to run `/design`'s decomposition (or stop).
+  offer to run `/rstaff-engineer:design`'s decomposition (or stop).
 - **Overlap check:** if two features' ledger `files:` unions intersect, warn and
-  recommend serializing that pair (first-merged wins; the other rebases at `/ship`).
+  recommend serializing that pair (first-merged wins; the other rebases at `/rstaff:ship`).
 - **Cap** concurrent features (default **3**; the profile's worktree setup cost is
   real — see `references/worktrees.md`).
 - **Stale-run lock:** for each slug, read `$CTRL/var/dispatch/<repo>/<slug>.md`;
@@ -31,7 +31,7 @@ after two consecutive whole-branch BLOCKs.
   human explicitly overrides — do not create a second worktree/runner for a slug
   already in flight (two writers to one ledger/worktree corrupts it).
 - **`--impl <backend>` (optional; default: leave the ledger's own header, which
-  `/design` writes as `auto`):** pin the implementer backend for every feature
+  `/rstaff-engineer:design` writes as `auto`):** pin the implementer backend for every feature
   dispatched this run, overriding `auto` per-task routing (a ledger can still
   override per-task — see `references/task-format.md`). For `codex`, check availability *before*
   spawning anything — the same probe `delegate.js` uses internally: `command -v
@@ -49,10 +49,10 @@ after two consecutive whole-branch BLOCKs.
 Per `references/worktrees.md`: `git worktree add ../<repo>-worktrees/<slug> -b
 feat/<slug>`, then run the profile's setup commands, and write the resolved
 `--impl` backend into the ledger's HEADER `impl:` field only when one was passed
-(`references/task-format.md`); otherwise preserve the header `/design` wrote.
+(`references/task-format.md`); otherwise preserve the header `/rstaff-engineer:design` wrote.
 Preserve/add header `impl: auto` and `reviewer: auto` when absent; the runner
 persists each exact task route immediately before spawn. The spec + ledger already live in the control repo
-(written by `/design`) — **do not commit them to the branch**; no rstaff process
+(written by `/rstaff-engineer:design`) — **do not commit them to the branch**; no rstaff process
 artifacts belong in the product tree. Write the initial status file to its
 **absolute** path under `$CTRL`.
 
@@ -69,9 +69,9 @@ after every task.
 
 ### 4. Roll up + hand off
 Runners stop at `ready_for_review` (or `needs_human`). Print a per-feature board
-and point at `var/dispatch/<repo>/` (or `/cockpit`). Then, per feature:
-`/review` (fresh whole-branch, in the worktree) → `/ship` (runs `verify:full`,
-changeset per profile, opens the PR, offers worktree cleanup) → `/land`.
+and point at `var/dispatch/<repo>/` (or `/rstaff-backlog:cockpit`). Then, per feature:
+`/rstaff:review` (fresh whole-branch, in the worktree) → `/rstaff:ship` (runs `verify:full`,
+changeset per profile, opens the PR, offers worktree cleanup) → `/rstaff-engineer:land`.
 **Never** push/ship/merge here — humans decide.
 
 If `locate.js rstaff-delegation` exits 1, say exactly once per run "rstaff-delegation not installed — all tasks use the Claude writer" and skip external routing and dispatch.

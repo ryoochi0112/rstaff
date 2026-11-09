@@ -36,7 +36,7 @@ runs at whatever tier the CLI happens to be configured for rather than the one t
 route authorized.
 
 `--cwd` scopes the run to the runner's own working directory: the worktree under
-`/dispatch`, or the product-repo root under `/build`'s dispatcher mode (see "Paths are
+`/rstaff-engineer:dispatch`, or the product-repo root under `/rstaff-engineer:build`'s dispatcher mode (see "Paths are
 absolute" in `../SKILL.md`). codex adds `-C <cwd/worktree>` itself. `delegate.js` owns
 the adapter's exact flags — do not hand-assemble them.
 
@@ -61,14 +61,14 @@ branch goes to review without reading it. What actually gates "done" is the inde
 reviewer's own `make verify` run, not a claim in the model's text — that is what keeps
 the gate mechanical for every backend.
 
-This is exactly the property `/consult`'s reconciliation cannot offer. There, the
+This is exactly the property `/rstaff-delegation:consult`'s reconciliation cannot offer. There, the
 external model gets no vote; here, its diff still has to survive an independent Claude
 review to land at all.
 
 ## Preflight and availability
 
 An explicitly named `impl:` is passed through untouched — availability for a named
-backend stays a `/dispatch` preflight decision, where the human gets a say. Per
+backend stays a `/rstaff-engineer:dispatch` preflight decision, where the human gets a say. Per
 `AUTONOMY.md`, treat the first `--impl` dispatch run as an L1-first trial and instrument
 its token spend before trusting it at the default concurrency cap.
 

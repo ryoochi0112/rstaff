@@ -11,7 +11,7 @@ walk-up to `rstaff.json`). Read the spec at `$CTRL/var/specs/<repo>/<slug>.md` (
 task) and the repo's verify command — `make verify`, or the command in its rstaff
 **product profile**
 (`$CTRL/profiles/<repo>.md`, surfaced at session start). If
-there's no spec, run `/design` first or write a 5-line one.
+there's no spec, run `/rstaff-engineer:design` first or write a 5-line one.
 
 **Branch first** if you're on the default branch (git-workflow rule).
 
@@ -49,7 +49,7 @@ When delegation is located, follow the persisted routing steps below.
 
 ### If a task ledger exists (`$CTRL/var/specs/<repo>/<slug>.tasks.md`) → dispatcher mode
 Accepts an optional **`--impl <claude|codex>`** flag (default `claude`).
-For `codex`, preflight availability the same way `/dispatch` does
+For `codex`, preflight availability the same way `/rstaff-engineer:dispatch` does
 (`command -v codex`, or `delegate.js`'s exported `isAvailable()`).
 Unavailable (backend not installed) → stop and
 report why, or fall back to `claude` only with the human's explicit ok. Before
@@ -59,7 +59,7 @@ field (`references/task-format.md`).
 Run the loop in `${CLAUDE_PLUGIN_ROOT}/skills/parallel-build/SKILL.md`: pop the
 next ready task (deps done), check `$CTRL/var/.STOP`, implement it by the resolved
 route's **`writerMode`** — `subagent`: a fresh **`implementer` subagent** (unchanged);
-`execute` (codex): shell `node "$(node "${CLAUDE_PLUGIN_ROOT}/scripts/locate.js" rstaff-delegation)/scripts/delegate.js" <impl> execute` scoped to the repo root (`/build`'s
+`execute` (codex): shell `node "$(node "${CLAUDE_PLUGIN_ROOT}/scripts/locate.js" rstaff-delegation)/scripts/delegate.js" <impl> execute` scoped to the repo root (`/rstaff-engineer:build`'s
 dispatcher mode has no worktree) instead; `draft` (gemini, docs only): `delegate.js gemini
 draft`, then an `implementer` applies the draft — as in the skill. If the request asks to keep certain tasks off
 Codex, record that in the ledger as `- impl:` + `- impl-reason:` on those tasks —
@@ -98,8 +98,8 @@ through — you, Claude, are implementing directly in this session).
 
 ### Always
 **Hand off — never self-approve.** When the work is green, do **not** call it done.
-Tell the user to run `/review` (a fresh, independent whole-branch reviewer). Commit
-only if asked, or via `/ship`. Never use `--no-verify`. Keep the diff minimal and
+Tell the user to run `/rstaff:review` (a fresh, independent whole-branch reviewer). Commit
+only if asked, or via `/rstaff:ship`. Never use `--no-verify`. Keep the diff minimal and
 on-topic — no unrelated churn.
 
 **Don't silently redefine a task.** If you conclude a task should be built differently
@@ -112,6 +112,6 @@ for something a user talks to or sees. Before `ready_for_review`, if the feature
 agent or has a UI: boot the app (the profile's `run` command), run **one** real
 end-to-end exchange (a canonical prompt / the core user flow), and paste the transcript
 into the feature's QA doc. This is an **operator-run, interactive** step (you, or an
-interactive `/build`) — not a headless subagent action. `/qa` is the deeper pass; this
+interactive `/rstaff-engineer:build`) — not a headless subagent action. `/rstaff-engineer:qa` is the deeper pass; this
 is the minimum "I actually talked to it once" gate that catches integration breaks unit
 tests miss.

@@ -3,6 +3,31 @@
 How rstaff lets AI "keep working" **without** becoming a runaway. The principle:
 earn autonomy gradually, and always keep a hand on the kill-switch.
 
+## The colleague runner (week 1 of the autonomy redesign)
+
+Since 2026-11-09 rstaff's autonomy is designed around one picture: **a trustful
+professional colleague, not a copilot** (decision D8 of the autonomy redesign spec,
+kept in the control repo). The runner, `bin/rstaff run <repo> <ticket>`, is week 1 of
+that redesign. Its rules are simpler than the levels below, and they are the ones new
+pieces are measured against:
+
+- **No plan approvals.** The colleague decides how. It asks at most one question per
+  ticket, about the outcome, and only when the repo cannot answer it.
+- **Check first only before a one-way door:** deploy, delete data, message anyone
+  outside, spend beyond the job's money cap, merge. Every PR the runner opens is a draft.
+- **Hard rails, written into the job before the run:** a time cap, a money cap, at most
+  three worker rounds, and the shared kill-switch `var/.STOP`. The runner reads the
+  switch between steps and, since 0.13.6, every two seconds while a worker or referee
+  runs, ending it at once.
+- **The runner grades the tree, not the worker.** It runs the test command and the job's
+  checks itself and keeps receipts; a fresh read-only referee accepts or rejects.
+- **Autonomy grows with the record, never by argument.** Each accepted PR earns a
+  slightly bigger ticket and fewer check-ins; a failure in a run earns one new piece.
+
+The levels, rails and cost rules below belong to the older maintenance loop
+(`/sweep`) and to `/dispatch`. They still apply there, and `var/.STOP` is the one
+kill-switch shared by all of them.
+
 ## The three levels (set via `RSTAFF_AUTONOMY`, default `report`)
 | Level | `RSTAFF_AUTONOMY` | What it does | Human role |
 |---|---|---|---|
@@ -17,7 +42,7 @@ doubt, drop a level.
 **Delegated batches (`--impl codex`) are L2-only.** Start a delegated
 task type at report/L2 and instrument its spend before scaling; L3/unattended
 delegation to a non-Claude backend is out of scope for now and deferred to a
-follow-up (`batch.md` refuses it; `loop-operator.md` only ever runs `impl: claude`).
+follow-up (`sweep.md` refuses it; `loop-operator.md` only ever runs `impl: claude`).
 
 ## Hard rails (enforced by `loop-operator`, Phase 3)
 An unattended (L3) loop will not start without **all** of:
@@ -81,9 +106,9 @@ cross-eval and parallel dispatch are token-heavy). Before scaling:
 ## Quick reference
 ```bash
 export RSTAFF_AUTONOMY=report      # safe default
-/batch report "lint fixes"         # L1: just tells you what it'd do
-/batch assisted "dep bumps"        # L2: PRs you review
-RSTAFF_AUTONOMY=unattended /batch unattended "deprecated API replacement"  # L3: capped + supervised
+/sweep report "lint fixes"         # L1: just tells you what it'd do
+/sweep assisted "dep bumps"        # L2: PRs you review
+RSTAFF_AUTONOMY=unattended /sweep unattended "deprecated API replacement"  # L3: capped + supervised
 touch var/.STOP               # stop any running loop, now
 ```
 

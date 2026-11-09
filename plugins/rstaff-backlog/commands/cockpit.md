@@ -13,7 +13,7 @@ Give a live read on where the **engineering** work stands.
 2. Then add **≤3 bullets** of judgment the table can't compute — e.g. "the
    dispatch run parked on T3 is waiting on your exit-reason decision", or "that
    repo has 10 open PRs but none are yours — not your loop". No restating the table.
-3. Stop there — `/cockpit` reads, it doesn't edit.
+3. Stop there — `/rstaff-backlog:cockpit` reads, it doesn't edit.
 
 Runtime is a few seconds; GitHub sections skip unavailable data when `gh` is
 unavailable (they print "skipped", never hang). Company strategy is not shown

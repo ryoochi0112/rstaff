@@ -6,7 +6,7 @@ description: The interview discipline for turning a vague request into a precise
 # Grilling — one question at a time
 
 Adapted from mattpocock/skills `grilling` + gstack `office-hours`. The reusable
-engine behind `/spec` and any pre-work clarification.
+engine behind `/rstaff-pm:spec` and any pre-work clarification.
 
 **Grilling converges; brainstorming diverges.** Grilling narrows a vague request
 to a precise one by interrogation. When the problem is instead a genuinely open

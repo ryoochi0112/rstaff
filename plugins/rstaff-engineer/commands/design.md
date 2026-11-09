@@ -13,7 +13,7 @@ before designing — reuse what exists.
 Resolve the control repo `$CTRL` (= `$RSTAFF_HOME`, or a walk-up to `rstaff.json`).
 The spec + ledger live there — `$CTRL/var/specs/<repo>/<slug>.{md,tasks.md}`, never in
 the product repo — where `<repo>` is the product repo's directory name (its
-`$CTRL/profiles/<repo>.md` token). If `/spec` already wrote `$CTRL/var/specs/<repo>/<slug>.md`,
+`$CTRL/profiles/<repo>.md` token). If `/rstaff-pm:spec` already wrote `$CTRL/var/specs/<repo>/<slug>.md`,
 **augment it** (keep its Problem/Users/Acceptance sections; add the engineering
 sections below). Otherwise create it. Produce that spec with:
 
@@ -50,11 +50,11 @@ sections below). Otherwise create it. Produce that spec with:
    effect. A *bounded, reversible* interface change with strong tests is
    `medium`, not `high`. Order them so every checkpoint commit is a working state.
    **Skip** the ledger for a trivial ≤2-task
-   feature (plain `/build` handles it). This ledger is what lets `/build` and
-   `/dispatch` run tasks (and whole features) in parallel and resume after a crash.
+   feature (plain `/rstaff-engineer:build` handles it). This ledger is what lets `/rstaff-engineer:build` and
+   `/rstaff-engineer:dispatch` run tasks (and whole features) in parallel and resume after a crash.
 
 Use **forcing questions** (AskUserQuestion) for any genuine ambiguity in scope,
 acceptance, or constraints — don't guess. Keep the plan tight enough to scan,
-concrete enough for `/build` to execute. Do **not** write implementation code here.
+concrete enough for `/rstaff-engineer:build` to execute. Do **not** write implementation code here.
 
 If `locate.js rstaff-delegation` exits 1, say exactly once per run "rstaff-delegation not installed — all tasks use the Claude writer" and skip external routing and dispatch.

@@ -28,10 +28,10 @@ function files(dir) {
 
 const markdownFiles = dir => files(dir).filter(file => file.endsWith('.md'));
 
-test('rstaff-engineer manifest depends on core, PM and superpowers at 0.13.0', () => {
+test('rstaff-engineer manifest depends on core, PM and superpowers at 0.13.8', () => {
   const manifest = JSON.parse(fs.readFileSync(path.join(ENGINEER, '.claude-plugin/plugin.json'), 'utf8'));
   assert.equal(manifest.name, 'rstaff-engineer');
-  assert.equal(manifest.version, '0.13.0');
+  assert.equal(manifest.version, '0.13.8');
   assert.deepEqual(manifest.dependencies, ['rstaff', 'rstaff-pm', 'superpowers@superpowers-marketplace']);
 });
 
@@ -114,7 +114,7 @@ test('engineer is listed in the marketplace and installer validation', () => {
   const entry = marketplace.plugins.find(plugin => plugin.name === 'rstaff-engineer');
   assert.ok(entry);
   assert.equal(entry.source, './plugins/rstaff-engineer');
-  assert.equal(entry.version, '0.13.0');
+  assert.equal(entry.version, '0.13.8');
   assert.match(fs.readFileSync(path.join(ROOT, 'install/install-apply.sh'), 'utf8'),
     /"plugins\/rstaff-engineer\/\.claude-plugin\/plugin\.json"/);
 });
